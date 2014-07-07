@@ -27,7 +27,7 @@ private:
     PointsOfInterestDAO dao;
     
     void load();
-    
+    void setDAO(const PointsOfInterestDAO& dao);
 public:
     PointOfInterest();
     PointOfInterest(unsigned int id);
@@ -49,7 +49,6 @@ public:
     unsigned int serializedLength() const;
     void serialize(unsigned char* buffer) const;
     
-    void setDAO(const PointsOfInterestDAO& dao);
     void save();
     bool remove();
     

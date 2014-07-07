@@ -101,7 +101,7 @@ void DataRequestDelegate::fetchAllPOIs() {
                 bufferLength += pois[i].serializedLength();
             }
             
-            printf("%d\n", bufferLength);
+//            printf("%d\n", bufferLength);
             unsigned char buffer[bufferLength];
             
             buffer[0] = 0x01;

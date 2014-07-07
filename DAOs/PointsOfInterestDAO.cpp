@@ -182,8 +182,8 @@ void PointsOfInterestDAO::allPOIDAOs(std::function<void(PointsOfInterestDAO*, in
         throw "No POIs to load";
         return;
     }
-    
     countStatement.finalize();
+    
     PointsOfInterestDAO* daos = new PointsOfInterestDAO[count];
     
     const char* poisQuery = "SELECT points_of_interest.*, poi_attributes.soil, poi_attributes.stone, poi_attributes.wilderness "
