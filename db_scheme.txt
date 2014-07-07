@@ -1,0 +1,12 @@
+create table points_of_interest (
+    id INTEGER PRIMARY KEY,
+    name TEXT
+);
+
+create table poi_attributes (
+  poi INTEGER UNIQUE,
+  soil INTEGER CHECK(soil > 0 AND soil <= 10),
+  stone INTEGER CHECK(stone > 0 AND stone <= 10),
+  wilderness INTEGER CHECK(wilderness > 0 AND wilderness <= 10),
+  FOREIGN KEY(poi) REFERENCES points_of_interest(id)ON DELETE CASCADE ON UPDATE CASCADE
+);
