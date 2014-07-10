@@ -96,7 +96,8 @@ void DataRequestDelegate::deletePOI(unsigned int id) {
 void DataRequestDelegate::fetchAllPOIs() {
     PointOfInterest::getAllPOIs([] (PointOfInterest* pois, int count) -> void {
         try {
-            unsigned int bufferLength = sizeof(unsigned int) + 2; //Bytes for response success code, final byte, and data length.
+            unsigned int bufferHeaderLength = sizeof(unsigned int) + 2;
+            unsigned int bufferLength = bufferHeaderLength + 1; //Bytes for response success code, final byte, and data length.
             for (int i = 0; i < count; i++) {
                 bufferLength += pois[i].serializedLength();
             }
@@ -105,10 +106,11 @@ void DataRequestDelegate::fetchAllPOIs() {
             unsigned char buffer[bufferLength];
             
             buffer[0] = 0x01;
+            buffer[1] = sizeof(unsigned int);
             buffer[bufferLength - 1] = 0xff;
-            memcpy(buffer + 1, &bufferLength, sizeof(unsigned int));
+            memcpy(buffer + 2, &bufferLength, sizeof(unsigned int));
             
-            unsigned int bufferWriteHead = 1 + sizeof(unsigned int);
+            unsigned int bufferWriteHead = bufferHeaderLength;
             for(int i = 0; i < count; i++) {
                 pois[i].serialize(buffer + bufferWriteHead);
                 bufferWriteHead += pois[i].serializedLength();
