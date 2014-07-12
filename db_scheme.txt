@@ -10,3 +10,11 @@ create table poi_attributes (
   wilderness INTEGER CHECK(wilderness > 0 AND wilderness <= 10),
   FOREIGN KEY(poi) REFERENCES points_of_interest(id)ON DELETE CASCADE ON UPDATE CASCADE
 );
+
+create table route (
+  id INTEGER PRIMARY KEY,
+  poi_a INTEGER,
+  poi_b INTEGER CHECK (poi_a <> poi_b),
+  FOREIGN KEY(poi_a) REFERENCES points_of_interest(id) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY(poi_b) REFERENCES points_of_interest(id) ON DELETE CASCADE ON UPDATE CASCADE
+);

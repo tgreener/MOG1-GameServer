@@ -36,12 +36,14 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 # Object Files
 OBJECTFILES= \
 	${OBJECTDIR}/DAOs/PointsOfInterestDAO.o \
+	${OBJECTDIR}/DAOs/RouteDAO.o \
 	${OBJECTDIR}/DBConnection.o \
 	${OBJECTDIR}/DBStatement.o \
 	${OBJECTDIR}/DBUtil.o \
 	${OBJECTDIR}/DataRequestDelegate.o \
 	${OBJECTDIR}/GameCommandDelegate.o \
 	${OBJECTDIR}/Models/PointOfInterest.o \
+	${OBJECTDIR}/Models/Route.o \
 	${OBJECTDIR}/Server.o \
 	${OBJECTDIR}/ServiceLocator.o \
 	${OBJECTDIR}/StringUtil.o \
@@ -78,6 +80,11 @@ ${OBJECTDIR}/DAOs/PointsOfInterestDAO.o: DAOs/PointsOfInterestDAO.cpp
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -IDAOs -IModels -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/DAOs/PointsOfInterestDAO.o DAOs/PointsOfInterestDAO.cpp
 
+${OBJECTDIR}/DAOs/RouteDAO.o: DAOs/RouteDAO.cpp 
+	${MKDIR} -p ${OBJECTDIR}/DAOs
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -IDAOs -IModels -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/DAOs/RouteDAO.o DAOs/RouteDAO.cpp
+
 ${OBJECTDIR}/DBConnection.o: DBConnection.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
@@ -107,6 +114,11 @@ ${OBJECTDIR}/Models/PointOfInterest.o: Models/PointOfInterest.cpp
 	${MKDIR} -p ${OBJECTDIR}/Models
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -IDAOs -IModels -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Models/PointOfInterest.o Models/PointOfInterest.cpp
+
+${OBJECTDIR}/Models/Route.o: Models/Route.cpp 
+	${MKDIR} -p ${OBJECTDIR}/Models
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -IDAOs -IModels -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Models/Route.o Models/Route.cpp
 
 ${OBJECTDIR}/Server.o: Server.cpp 
 	${MKDIR} -p ${OBJECTDIR}

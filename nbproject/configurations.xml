@@ -15,6 +15,8 @@
       <itemPath>ImmutableServiceLocator.h</itemPath>
       <itemPath>Models/PointOfInterest.h</itemPath>
       <itemPath>DAOs/PointsOfInterestDAO.h</itemPath>
+      <itemPath>Models/Route.h</itemPath>
+      <itemPath>DAOs/RouteDAO.h</itemPath>
       <itemPath>Server.h</itemPath>
       <itemPath>ServiceLocator.h</itemPath>
       <itemPath>StringUtil.h</itemPath>
@@ -36,6 +38,8 @@
       <itemPath>GameCommandDelegate.cpp</itemPath>
       <itemPath>Models/PointOfInterest.cpp</itemPath>
       <itemPath>DAOs/PointsOfInterestDAO.cpp</itemPath>
+      <itemPath>Models/Route.cpp</itemPath>
+      <itemPath>DAOs/RouteDAO.cpp</itemPath>
       <itemPath>Server.cpp</itemPath>
       <itemPath>ServiceLocator.cpp</itemPath>
       <itemPath>StringUtil.cpp</itemPath>
@@ -89,6 +93,10 @@
       </item>
       <item path="DAOs/PointsOfInterestDAO.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="DAOs/RouteDAO.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="DAOs/RouteDAO.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="DBConnection.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="DBConnection.h" ex="false" tool="3" flavor2="0">
@@ -116,6 +124,10 @@
       <item path="Models/PointOfInterest.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="Models/PointOfInterest.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Models/Route.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Models/Route.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="Server.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -181,6 +193,10 @@
       </item>
       <item path="DAOs/PointsOfInterestDAO.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="DAOs/RouteDAO.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="DAOs/RouteDAO.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="DBConnection.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="DBConnection.h" ex="false" tool="3" flavor2="0">
@@ -208,6 +224,10 @@
       <item path="Models/PointOfInterest.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="Models/PointOfInterest.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Models/Route.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Models/Route.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="Server.cpp" ex="false" tool="1" flavor2="0">
       </item>
