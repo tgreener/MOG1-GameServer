@@ -13,13 +13,15 @@
 
 class RouteDAO;
 
-typedef std::function<void(RouteDAO*, int)> AllRoutesCallback;
+typedef std::function<void(RouteDAO*, int)> AllRouteDAOsCallback;
 
 class RouteDAO : public AbstractDAO {
 private:
-    int id;
+    unsigned int id;
     int poiA;
     int poiB;
+    
+    bool needsWrite;
     
     bool checkValuesSet();
 public:
@@ -29,16 +31,16 @@ public:
     virtual bool retrieve(unsigned int id);
     virtual bool remove(unsigned int id);
     virtual int write();
-    virtual int write(unsigned int id);
+    virtual int write(int id);
     
-    unsigned int getID();
-    unsigned int getPOIA();
-    unsigned int getPOIB();
+    unsigned int getID() const;
+    unsigned int getPOIA() const;
+    unsigned int getPOIB() const;
     
     void setPOIA(unsigned int a);
-    void setPOIb(unsigned int b);
+    void setPOIB(unsigned int b);
     
-    static void allRouteDAOs(AllRoutesCallback callback);
+    static void allRouteDAOs(AllRouteDAOsCallback callback);
 };
 
 #endif	/* ROUTEDAO_H */

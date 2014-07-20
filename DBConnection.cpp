@@ -41,6 +41,8 @@ DBStatement DBConnection::prepare(const char* query, const char** nextQuery) {
     return statement;
 }
 
-
+unsigned int DBConnection::lastInsertRowId() {
+    return sqlite3_last_insert_rowid(db);
+}
 
 

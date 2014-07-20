@@ -46,20 +46,17 @@ bool PointsOfInterestDAO::retrieve(unsigned int id) {
         wilderness = statement.getColumnInt(4);
         
         statement.finalize();
-        
         return true;
     }
     
     statement.finalize();
-    
     return false;
 }
 
 bool PointsOfInterestDAO::remove(unsigned int id) {
     DBConnection* dbc = ServiceLocator::getServiceLocator().getDBConnection();
-    const char* query;
+    const char* query = "DELETE FROM points_of_interest WHERE id = ?";;
     
-    query = "DELETE FROM points_of_interest WHERE id = ?";
     DBStatement statement = dbc->prepare(query, NULL);
     statement.bindInt(1, id);
     

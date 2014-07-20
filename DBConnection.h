@@ -25,6 +25,7 @@ public:
     
     int open(const char* dbfile);
     DBStatement prepare(const char* query, const char** nextQuery);
+    unsigned int lastInsertRowId();
     int close();
 };
 

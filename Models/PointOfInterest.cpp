@@ -53,7 +53,7 @@ void PointOfInterest::save() {
     }
     
     if(result < 0) {
-        ServiceLocator::getServiceLocator().sendMessageToClient("Something went wrong writing POI.\n");
+        throw "Something went wrong writing POI.\n";
     }
 }
 
