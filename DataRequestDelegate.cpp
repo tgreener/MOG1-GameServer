@@ -2,11 +2,43 @@
 #include "DataRequestDelegate.h"
 #include "ServiceLocator.h"
 #include "Models/PointOfInterest.h"
+#include "Models/Route.h"
 #include <cstdio>
 #include <cstring>
 
-void insufficientDataMessage() {
+void DataRequestDelegate::insufficientDataMessage() {
     ServiceLocator::getServiceLocator().sendMessageToClient("Insufficient data.");
+}
+
+void DataRequestDelegate::nullResponse() {
+    unsigned char buffer[2];
+    buffer[0] = 0;
+    buffer[1] = 0xff;
+    ServiceLocator::getServiceLocator().sendMessageToClient((char*)buffer, 2);
+}
+
+void DataRequestDelegate::respondWithID(int id) {
+    unsigned int responseLength;
+    unsigned char* response;
+
+    if(id > 0) {
+        responseLength = sizeof(unsigned int) + 2;
+
+        response = new unsigned char[responseLength];
+        memset(response, 0, responseLength);
+        response[0] = 0x01;
+        memcpy(response + 1, &id, sizeof(unsigned int));
+        response[responseLength - 1] = 0xff;
+    }
+    else {
+        responseLength = 2;
+        response = new unsigned char[responseLength];
+        response[0] = 0;
+        response[1] = 0xff;
+    }
+
+    ServiceLocator::getServiceLocator().sendMessageToClient((char*)response, responseLength);
+    delete[] response;
 }
 
 int DataRequestDelegate::createPointOfInterest(char* bs, int length) {
@@ -32,11 +64,12 @@ int DataRequestDelegate::createPointOfInterest(char* bs, int length) {
 void DataRequestDelegate::fetchPOI(unsigned int id) {
     try {
         PointOfInterest poi(id);
-        unsigned int bufferSize = 1 + poi.serializedLength();
+        unsigned int bufferSize = 2 + poi.serializedLength();
         unsigned char buffer[bufferSize];
 
         buffer[0] = 1;
         poi.serialize(buffer + 1);
+        buffer[bufferSize - 1] = 0xff;
 
         ServiceLocator::getServiceLocator().sendMessageToClient((char*)buffer, bufferSize);
     }
@@ -46,29 +79,7 @@ void DataRequestDelegate::fetchPOI(unsigned int id) {
 }
 
 void DataRequestDelegate::addPOI(char* bytes, int length) {
-    int newRecordID = createPointOfInterest(bytes, length);
-    int responseLength;
-    unsigned char* response;
-
-    if(newRecordID >= 0) {
-        unsigned int id = newRecordID;
-        responseLength = sizeof(unsigned int) + 2;
-
-        response = new unsigned char[responseLength];
-        memset(response, 0, responseLength);
-        response[0] = 0x01;
-        memcpy(response + 1, &id, sizeof(unsigned int));
-        response[responseLength - 1] = 0xff;
-    }
-    else {
-        responseLength = 2;
-        response = new unsigned char[responseLength];
-        response[0] = 0;
-        response[1] = 0xff;
-    }
-
-    ServiceLocator::getServiceLocator().sendMessageToClient((char*)response, responseLength);
-    delete[] response;
+    respondWithID(createPointOfInterest(bytes, length));
 }
 
 void DataRequestDelegate::deletePOI(unsigned int id) {
@@ -102,7 +113,6 @@ void DataRequestDelegate::fetchAllPOIs() {
                 bufferLength += pois[i].serializedLength();
             }
             
-//            printf("%d\n", bufferLength);
             unsigned char buffer[bufferLength];
             
             buffer[0] = 0x01;
@@ -124,24 +134,47 @@ void DataRequestDelegate::fetchAllPOIs() {
     });
 }
 
-int DataRequestDelegate::createRoute(unsigned int rID, unsigned int poiAID, unsigned int poiBID) {
-    return 0;
-}
-
-void DataRequestDelegate::fetchRoute(unsigned int id) {
-    
-}
-
-void DataRequestDelegate::deleteRoute(unsigned int id) {
-    
+int DataRequestDelegate::createRoute(char* bytes, int length) {
+    if((unsigned char)bytes[length - 1] == 0xff) {
+        RouteAttributes attribs = Route::extractAttributes(bytes + 2, length - 2);
+        if(attribs.poiAID == 0) return -1;
+        
+        Route newRoute(attribs);
+        newRoute.save();
+        
+        return newRoute.getID();
+    }
+    return -1;
 }
 
 void DataRequestDelegate::addRoute(char* bytes, int length) {
-    
+    respondWithID(createRoute(bytes, length));
+}
+
+void DataRequestDelegate::fetchRoute(unsigned int id) {
+    try {
+        Route route(id);
+        
+        unsigned int bufferSize = 2 + route.serializedLength();
+        unsigned char buffer[bufferSize];
+
+        buffer[0] = 1;
+        route.serialize(buffer + 1);
+        buffer[bufferSize - 1] = 0xff;
+
+        ServiceLocator::getServiceLocator().sendMessageToClient((char*)buffer, bufferSize);
+    }
+    catch (const char* e) {
+        ServiceLocator::getServiceLocator().sendMessageToClient(e);
+    }
+}
+
+void DataRequestDelegate::deleteRoute(unsigned int id) {
+    nullResponse();
 }
 
 void DataRequestDelegate::fetchAllRoutes() {
-    
+    nullResponse();
 }
 
 void DataRequestDelegate::interpretCommand(char* bytes, int length) {
@@ -179,7 +212,7 @@ void DataRequestDelegate::interpretCommand(char* bytes, int length) {
                 insufficientDataMessage();
                 break;
             }
-            fetchPOI(bytes[2]);
+            fetchRoute(bytes[2]);
             break;
         }
         case 0x06 : {

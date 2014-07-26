@@ -34,6 +34,10 @@ void Server::init() {
     sl.setAsServiceLocator();
     sl.setDBConnection(&dbc);
     sl.setServer(this);
+    
+    interpreterVector.push_back(&sysDel);
+    interpreterVector.push_back(&gameDel);
+    interpreterVector.push_back(&dataDel);
 }
 
 void Server::serviceSocket() {
@@ -56,24 +60,13 @@ void Server::serviceSocket() {
 }
 
 void Server::interpretByteMessage(char* bytes, int length) {
-    if(length <= 0) {
-        return;
-    }
+    if(length <= 0) return;
     
-    switch(bytes[0]) {
-        case 0x01 :
-            sysDel.interpretCommand(bytes, length);
-            return;
-        case 0x02 :
-            gameDel.interpretCommand(bytes, length);
-            return;
-        case 0x03 :
-            dataDel.interpretCommand(bytes, length);
-            return;
-        default :
-            sl.sendMessageToClient("Unrecognized command.\n");
-            break;
+    if(bytes[0] >= 1 && interpreterVector.size()) {
+        unsigned int i = bytes[0] - 1;
+        interpreterVector[i]->interpretCommand(bytes, length);
     }
+    else sl.sendMessageToClient("Unrecognized command.\n");
 }
 
 void Server::stopServer() {

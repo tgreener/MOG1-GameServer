@@ -14,6 +14,14 @@
 
 class Route;
 
+typedef struct RouteAttribs {
+    unsigned int poiAID = 0;
+    unsigned int poiBID = 0;
+    unsigned int difficulty = 0;
+    bool bidirectional = false;
+    bool reverse = false;
+} RouteAttributes;
+
 typedef std::function<void(Route*, int)> AllRoutesCallback;
 
 class Route : public AbstractModel {
@@ -22,6 +30,7 @@ private:
     
 public:
     Route();
+    Route(RouteAttributes& attribs);
     Route(unsigned int id);
     ~Route();
     
@@ -30,11 +39,13 @@ public:
     PointOfInterest getEndpointB() const;
     unsigned int getDifficulty() const;
     bool isBidirectional() const;
+    bool isReverse() const;
     
     void setEndpointA(unsigned int poiID);
     void setEndpointB(unsigned int poiID);
     void setDifficulty(unsigned int dif);
     void setBidirectional(bool dir);
+    void setReverse(bool rev);
     
     virtual void bark() const;
     virtual void save();
@@ -43,6 +54,7 @@ public:
     virtual bool remove() ;
     
     static void getAllRoutes(AllRoutesCallback callback);
+    static RouteAttributes extractAttributes(char* bytes, int length);
 };
 
 #endif	/* ROUTE_H */

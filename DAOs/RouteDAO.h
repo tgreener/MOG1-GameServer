@@ -23,6 +23,7 @@ private:
     
     unsigned int difficulty;
     bool bidirected;
+    bool reverse;
     
     bool needsWrite;
     
@@ -41,11 +42,13 @@ public:
     unsigned int getPOIB() const;
     unsigned int getDifficulty() const;
     bool isBidrectional() const;
+    bool isReverse() const;
     
     void setPOIA(unsigned int a);
     void setPOIB(unsigned int b);
     void setDifficulty(unsigned int dif);
     void setBidirectional(bool bidir);
+    void setReverse(bool rev);
     
     static void allRouteDAOs(AllRouteDAOsCallback callback);
 };

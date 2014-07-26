@@ -12,12 +12,16 @@
 
 class DataRequestDelegate : public ByteCodeDelegate {
 private:
+    void insufficientDataMessage();
+    void nullResponse();
+    void respondWithID(int id);
+    
     int createPointOfInterest(char* bytes, int length);
     void fetchPOI(unsigned int id);
     void deletePOI(unsigned int id);
     void addPOI(char* bytes, int length);
     
-    int createRoute(unsigned int rID, unsigned int poiAID, unsigned int poiBID);
+    int createRoute(char* bytes, int length);
     void fetchRoute(unsigned int id);
     void deleteRoute(unsigned int id);
     void addRoute(char* bytes, int length);

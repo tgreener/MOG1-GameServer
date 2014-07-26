@@ -17,6 +17,7 @@ create table route (
   poi_b INTEGER CHECK (poi_a <> poi_b),
   difficulty INTEGER CHECK (difficulty >= 1 AND difficulty <= 100),
   bidirected INTEGER CHECK (bidirected >= 0 AND bidirected <= 1),
+  reverse INTEGER DEFAULT 0,
   UNIQUE (poi_a, poi_b),
   CHECK (poi_a < poi_b),
   FOREIGN KEY(poi_a) REFERENCES points_of_interest(id) ON DELETE CASCADE ON UPDATE CASCADE,
