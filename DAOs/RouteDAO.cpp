@@ -3,7 +3,7 @@
 #include "../DBStatement.h"
 #include "../ServiceLocator.h"
 
-RouteDAO::RouteDAO() : needsWrite(false), poiA(0), poiB(0), id(0) {
+RouteDAO::RouteDAO() : needsWrite(false), poiA(0), poiB(0), id(0), difficulty(0), bidirected(false) {
     
 }
 
@@ -12,7 +12,7 @@ RouteDAO::~RouteDAO() {
 }
     
 bool RouteDAO::checkValuesSet() {
-    return poiA != 0 || poiB != 0;
+    return poiA != 0 && poiB != 0;
 }
 
 bool RouteDAO::retrieve(unsigned int id) {
@@ -24,8 +24,11 @@ bool RouteDAO::retrieve(unsigned int id) {
     statement.bindInt(1, this->id);
     
     if(statement.step()) {
-        poiA = statement.getColumnInt(1);
-        poiB = statement.getColumnInt(2);
+        this->poiA = statement.getColumnInt(1);
+        this->poiB = statement.getColumnInt(2);
+        
+        this->difficulty = statement.getColumnInt(3);
+        this->bidirected = statement.getColumInt(4) == 1;
         
         statement.finalize();
         return true;
@@ -48,12 +51,15 @@ bool RouteDAO::remove(unsigned int id) {
 }
 
 int RouteDAO::write() {
-    const char* query = "INSERT INTO route (poi_a, poi_b) VALUES (?, ?)";
+    const char* query = "INSERT INTO route (poi_a, poi_b, difficulty, bidirected) VALUES (?, ?, ?, ?)";
     DBConnection& dbc = *(ServiceLocator::getServiceLocator().getDBConnection());
     DBStatement statement = dbc.prepare(query, nullptr);
     
     statement.bindInt(1, poiA);
     statement.bindInt(2, poiB);
+    
+    statement.bindInt(3, difficulty);
+    statement.bindInt(4, (unsigned int)bidirected);
     
     statement.step();
     statement.finalize();
@@ -64,14 +70,16 @@ int RouteDAO::write() {
 }
 
 int RouteDAO::write(int id) {
-    const char* query = "UPDATE route SET poi_a = ?, poi_b = ? WHERE id = ?";
+    const char* query = "UPDATE route SET poi_a = ?, poi_b = ?, difficulty = ?, bidirected = ? WHERE id = ?";
     
     DBConnection& dbc = *(ServiceLocator::getServiceLocator().getDBConnection());
     DBStatement statement = dbc.prepare(query, nullptr);
     
     statement.bindInt(1, poiA);
     statement.bindInt(2, poiB);
-    statement.bindInt(3, id);
+    statement.bindInt(3, difficulty);
+    statement.bindInt(4, (unsigned int)bidirected);
+    statement.bindInt(5, id);
     
     statement.step();
     statement.finalize();
@@ -92,12 +100,28 @@ unsigned int RouteDAO::getPOIB() const {
     return this->poiB;
 }
 
+unsigned int RouteDAO::getDifficulty() const {
+    return this->difficulty;
+}
+
+bool RouteDAO::isBidrectional() const {
+    return this->bidirected;
+}
+
 void RouteDAO::setPOIA(unsigned int a) {
-    poiA = a;
+    this->poiA = a;
 }
 
 void RouteDAO::setPOIB(unsigned int b) {
-    poiB = b;
+    this->poiB = b;
+}
+
+void RouteDAO::setDifficulty(unsigned int dif) {
+    this->difficulty = dif;
+}
+
+void RouteDAO::setBidirectional(bool bidir) {
+    this->bidirected = bidir;
 }
 
 void RouteDAO::allRouteDAOs(AllRouteDAOsCallback callback) {

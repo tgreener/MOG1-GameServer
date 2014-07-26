@@ -28,9 +28,13 @@ public:
     unsigned int getID() const;
     PointOfInterest getEndpointA() const;
     PointOfInterest getEndpointB() const;
+    unsigned int getDifficulty() const;
+    bool isBidirectional() const;
     
     void setEndpointA(unsigned int poiID);
     void setEndpointB(unsigned int poiID);
+    void setDifficulty(unsigned int dif);
+    void setBidirectional(bool dir);
     
     virtual void bark() const;
     virtual void save();

@@ -154,6 +154,30 @@ void DataRequestDelegate::interpretCommand(char* bytes, int length) {
             fetchAllPOIs();
             break;
         }
+        case 0x05 : {
+            if(length < 3) {
+                insufficientDataMessage();
+                break;
+            }
+            fetchPOI(bytes[2]);
+            break;
+        }
+        case 0x06 : {
+            addRoute(bytes, length);
+            break;
+        }
+        case 0x07 : {
+            if(length < 3) {
+                insufficientDataMessage();
+                break;
+            }
+            deleteRoute(bytes[2]);
+            break;
+        }
+        case 0x08 : {
+            fetchAllRoutes();
+            break;
+        }
         default : {
             ServiceLocator::getServiceLocator().sendMessageToClient("Unrecognized data command.");
             break;

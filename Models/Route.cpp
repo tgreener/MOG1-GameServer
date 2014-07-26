@@ -28,6 +28,14 @@ PointOfInterest Route::getEndpointB() const {
     return PointOfInterest(dao.getPOIB());
 }
 
+unsigned int Route::getDifficulty() const {
+    return dao.getDifficulty();
+}
+
+bool Route::isBidirectional() const {
+    return dao.isBidrectional();
+}
+
 void Route::setEndpointA(unsigned int poiID) {
     dao.setPOIA(poiID);
 }
@@ -36,8 +44,12 @@ void Route::setEndpointB(unsigned int poiID) {
     dao.setPOIB(poiID);
 }
 
-void Route::getAllRoutes(AllRoutesCallback callback) {
-    callback(nullptr, 0);
+void Route::setDifficulty(unsigned int dif) {
+    dao.setDifficulty(dif);
+}
+
+void Route::setBidirectional(bool dir) {
+    dao.setBidirectional(dir);
 }
 
 unsigned int Route::serializedLength() const {
@@ -71,4 +83,8 @@ void Route::bark() const {
     str += "\n}\n";
     
     ServiceLocator::getServiceLocator().sendMessageToClient(str.c_str());
+}
+
+void Route::getAllRoutes(AllRoutesCallback callback) {
+    callback(nullptr, 0);
 }
