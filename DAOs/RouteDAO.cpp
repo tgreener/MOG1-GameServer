@@ -136,5 +136,44 @@ void RouteDAO::setReverse(bool rev) {
 }
 
 void RouteDAO::allRouteDAOs(AllRouteDAOsCallback callback) {
-    callback(nullptr, 0);
+    DBConnection& dbc = *(ServiceLocator::getServiceLocator().getDBConnection());
+    
+    const char* countQuery = "SELECT COUNT() FROM route";
+    DBStatement countStatement = dbc.prepare(countQuery, NULL);
+    
+    countStatement.step();
+    int count = countStatement.getColumnInt(0);
+    if(count <= 0) {
+        throw "No Routes to load";
+        return;
+    }
+    countStatement.finalize();
+    
+    RouteDAO* daos = new RouteDAO[count];
+    
+    const char* poisQuery = "SELECT * FROM route";
+    DBStatement statement = dbc.prepare(poisQuery, NULL);
+    
+    for(int i = 0; i < count; i++) {
+        statement.step();
+        
+        unsigned int id = statement.getColumnInt(0);
+        unsigned int poiA = statement.getColumnInt(1);
+        unsigned int poiB = statement.getColumnInt(2);
+        unsigned int diff = statement.getColumnInt(3);
+        bool bidirectional = statement.getColumnInt(4) != 0;
+        bool reverse = statement.getColumnInt(5) != 0;
+        
+        daos[i].id = id;
+        daos[i].setPOIA(poiA);
+        daos[i].setPOIB(poiB);
+        daos[i].setDifficulty(diff);
+        daos[i].setBidirectional(bidirectional);
+        daos[i].setReverse(reverse);
+    }
+    statement.finalize();
+    
+    callback(daos, count);
+    
+    delete[] daos;
 }

@@ -107,7 +107,19 @@ void Route::bark() const {
 }
 
 void Route::getAllRoutes(AllModelsCallback callback) {
-    callback(nullptr, 0);
+    RouteDAO::allRouteDAOs([&](RouteDAO* daos, int count) -> void {
+        Route* routes = new Route[count];
+        AbstractModel** rps = new AbstractModel*[count];
+        
+        for(int i = 0; i < count; i++) {
+            routes[i].dao = daos[i];
+            rps[i] = &routes[i];
+        }
+
+        callback(rps, count);
+        delete[] rps;
+        delete[] routes;
+    });
 }
 
 RouteAttributes Route::extractAttributes(char* bytes, int length) {

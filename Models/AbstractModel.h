@@ -8,6 +8,8 @@
 #ifndef ABSTRACTMODEL_H
 #define	ABSTRACTMODEL_H
 
+#include <functional>
+
 class AbstractModel {
 public:
     virtual void bark() const = 0;
