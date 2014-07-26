@@ -28,7 +28,7 @@ bool RouteDAO::retrieve(unsigned int id) {
         this->poiB = statement.getColumnInt(2);
         
         this->difficulty = statement.getColumnInt(3);
-        this->bidirected = statement.getColumInt(4) == 1;
+        this->bidirected = statement.getColumnInt(4) == 1;
         
         statement.finalize();
         return true;
