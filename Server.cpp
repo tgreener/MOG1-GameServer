@@ -21,7 +21,7 @@ void Server::init() {
     socklen_t ssaLength = (strlen(serverSocketAddress.sun_path) + 1 )+
                           sizeof(serverSocketAddress.sun_family);
     
-    if(bind(serverSocketHandle, ssaPointer, ssaLength) < 0) {
+    if(::bind(serverSocketHandle, ssaPointer, ssaLength) < 0) {
         printf("Could not bind socket.\n");
     }
     

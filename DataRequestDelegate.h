@@ -10,9 +10,12 @@
 
 #include "ByteCodeDelegate.h"
 #include "Models/AbstractModel.h"
+#include <functional>
 
 class DataRequestDelegate : public ByteCodeDelegate {
 private:
+    std::function<void(AbstractModel**, int)> fetchAllModelsCallback;
+    
     void insufficientDataMessage();
     void nullResponse();
     void respondWithID(int id);
@@ -33,6 +36,7 @@ private:
     void fetchAllRoutes();
 public:
     void interpretCommand(char* bytes, int length);
+    DataRequestDelegate();
 };
 
 #endif	/* DATAREQUESTDELEGATE_H */

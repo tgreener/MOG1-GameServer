@@ -22,8 +22,6 @@ typedef struct RouteAttribs {
     bool reverse = false;
 } RouteAttributes;
 
-typedef std::function<void(Route*, int)> AllRoutesCallback;
-
 class Route : public AbstractModel {
 private:
     RouteDAO dao;
@@ -53,7 +51,7 @@ public:
     virtual void serialize(unsigned char* buffer) const;
     virtual bool remove() ;
     
-    static void getAllRoutes(AllRoutesCallback callback);
+    static void getAllRoutes(AllModelsCallback callback);
     static RouteAttributes extractAttributes(char* bytes, int length);
 };
 

@@ -52,7 +52,7 @@ public:
     void save();
     bool remove();
     
-    static void getAllPOIs(std::function<void(PointOfInterest*, int)> callback);
+    static void getAllPOIs(AllModelsCallback callback);
 };
 
 #endif	/* POINTOFINTEREST_H */

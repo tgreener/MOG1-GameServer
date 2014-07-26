@@ -18,5 +18,7 @@ public:
     virtual bool remove() = 0;
 };
 
+typedef std::function<void(AbstractModel**, int)> AllModelsCallback;
+
 #endif	/* MODEL_H */
 

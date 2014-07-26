@@ -106,7 +106,7 @@ void Route::bark() const {
     ServiceLocator::getServiceLocator().sendMessageToClient(str.c_str());
 }
 
-void Route::getAllRoutes(AllRoutesCallback callback) {
+void Route::getAllRoutes(AllModelsCallback callback) {
     callback(nullptr, 0);
 }
 
