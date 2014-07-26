@@ -124,6 +124,26 @@ void DataRequestDelegate::fetchAllPOIs() {
     });
 }
 
+int DataRequestDelegate::createRoute(unsigned int rID, unsigned int poiAID, unsigned int poiBID) {
+    return 0;
+}
+
+void DataRequestDelegate::fetchRoute(unsigned int id) {
+    
+}
+
+void DataRequestDelegate::deleteRoute(unsigned int id) {
+    
+}
+
+void DataRequestDelegate::addRoute(char* bytes, int length) {
+    
+}
+
+void DataRequestDelegate::fetchAllRoutes() {
+    
+}
+
 void DataRequestDelegate::interpretCommand(char* bytes, int length) {
     if(length <= 1) {
         return;
