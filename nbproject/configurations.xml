@@ -25,6 +25,9 @@
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
                    projectFiles="true">
+      <itemPath>db_purge.txt</itemPath>
+      <itemPath>db_scheme.txt</itemPath>
+      <itemPath>game_data.db</itemPath>
     </logicalFolder>
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
@@ -136,6 +139,12 @@
       </item>
       <item path="SystemCommandDelegate.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="db_purge.txt" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="db_scheme.txt" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="game_data.db" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
       </item>
     </conf>
@@ -218,6 +227,12 @@
       <item path="SystemCommandDelegate.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="SystemCommandDelegate.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="db_purge.txt" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="db_scheme.txt" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="game_data.db" ex="false" tool="3" flavor2="0">
       </item>
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
       </item>

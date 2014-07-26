@@ -9,12 +9,15 @@
 #define	DATAREQUESTDELEGATE_H
 
 #include "ByteCodeDelegate.h"
+#include "Models/AbstractModel.h"
 
 class DataRequestDelegate : public ByteCodeDelegate {
 private:
     void insufficientDataMessage();
     void nullResponse();
     void respondWithID(int id);
+    void deleteModel(AbstractModel& model);
+    void fetchModel(AbstractModel& model);
     
     int createPointOfInterest(char* bytes, int length);
     void fetchPOI(unsigned int id);

@@ -41,6 +41,31 @@ void DataRequestDelegate::respondWithID(int id) {
     delete[] response;
 }
 
+void DataRequestDelegate::deleteModel(AbstractModel& model) {
+    bool deleted = model.remove();
+
+    unsigned char buffer[2];
+    buffer[0] = 0;
+    buffer[1] = 0xff;
+
+    if(deleted) {
+        buffer[0] = 1;
+    }
+
+    ServiceLocator::getServiceLocator().sendMessageToClient((char*)buffer, 2);
+}
+
+void DataRequestDelegate::fetchModel(AbstractModel& model) {
+    unsigned int bufferSize = 2 + model.serializedLength();
+    unsigned char buffer[bufferSize];
+
+    buffer[0] = 1;
+    model.serialize(buffer + 1);
+    buffer[bufferSize - 1] = 0xff;
+
+    ServiceLocator::getServiceLocator().sendMessageToClient((char*)buffer, bufferSize);
+}
+
 int DataRequestDelegate::createPointOfInterest(char* bs, int length) {
     unsigned char* bytes = (unsigned char*)bs;
     if(bytes[length - 1] == 0xff && bytes[length - 2] == '\0') {
@@ -61,47 +86,28 @@ int DataRequestDelegate::createPointOfInterest(char* bs, int length) {
     }
 }
 
-void DataRequestDelegate::fetchPOI(unsigned int id) {
-    try {
-        PointOfInterest poi(id);
-        unsigned int bufferSize = 2 + poi.serializedLength();
-        unsigned char buffer[bufferSize];
-
-        buffer[0] = 1;
-        poi.serialize(buffer + 1);
-        buffer[bufferSize - 1] = 0xff;
-
-        ServiceLocator::getServiceLocator().sendMessageToClient((char*)buffer, bufferSize);
-    }
-    catch (const char* e) {
-        ServiceLocator::getServiceLocator().sendMessageToClient(e);
-    }
-}
-
 void DataRequestDelegate::addPOI(char* bytes, int length) {
     respondWithID(createPointOfInterest(bytes, length));
 }
 
-void DataRequestDelegate::deletePOI(unsigned int id) {
-    bool deleted = false;
-    
+void DataRequestDelegate::fetchPOI(unsigned int id) {
     try {
         PointOfInterest poi(id);
-        deleted = poi.remove();
+        fetchModel(poi);
     }
     catch (const char* e) {
         ServiceLocator::getServiceLocator().sendMessageToClient(e);
     }
+}
 
-    unsigned char buffer[2];
-    buffer[0] = 0;
-    buffer[1] = 0xff;
-
-    if(deleted) {
-        buffer[0] = 1;
+void DataRequestDelegate::deletePOI(unsigned int id) {
+    try {
+        PointOfInterest poi(id);
+        deleteModel(poi);
     }
-
-    ServiceLocator::getServiceLocator().sendMessageToClient((char*)buffer, 2);
+    catch (const char* e) {
+        ServiceLocator::getServiceLocator().sendMessageToClient(e);
+    }
 }
 
 void DataRequestDelegate::fetchAllPOIs() {
@@ -154,15 +160,7 @@ void DataRequestDelegate::addRoute(char* bytes, int length) {
 void DataRequestDelegate::fetchRoute(unsigned int id) {
     try {
         Route route(id);
-        
-        unsigned int bufferSize = 2 + route.serializedLength();
-        unsigned char buffer[bufferSize];
-
-        buffer[0] = 1;
-        route.serialize(buffer + 1);
-        buffer[bufferSize - 1] = 0xff;
-
-        ServiceLocator::getServiceLocator().sendMessageToClient((char*)buffer, bufferSize);
+        fetchModel(route);
     }
     catch (const char* e) {
         ServiceLocator::getServiceLocator().sendMessageToClient(e);
@@ -170,7 +168,13 @@ void DataRequestDelegate::fetchRoute(unsigned int id) {
 }
 
 void DataRequestDelegate::deleteRoute(unsigned int id) {
-    nullResponse();
+    try {
+        Route r(id);
+        deleteModel(r);
+    }
+    catch (const char* e) {
+        ServiceLocator::getServiceLocator().sendMessageToClient(e);
+    }
 }
 
 void DataRequestDelegate::fetchAllRoutes() {
