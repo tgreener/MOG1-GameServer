@@ -73,77 +73,77 @@ LDLIBSOPTIONS=
 
 ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/gamedataserver: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
-	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/gamedataserver ${OBJECTFILES} ${LDLIBSOPTIONS} -lsqlite3
+	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/gamedataserver ${OBJECTFILES} ${LDLIBSOPTIONS}
 
 ${OBJECTDIR}/DAOs/PointsOfInterestDAO.o: DAOs/PointsOfInterestDAO.cpp 
 	${MKDIR} -p ${OBJECTDIR}/DAOs
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -IDAOs -IModels -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/DAOs/PointsOfInterestDAO.o DAOs/PointsOfInterestDAO.cpp
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/DAOs/PointsOfInterestDAO.o DAOs/PointsOfInterestDAO.cpp
 
 ${OBJECTDIR}/DAOs/RouteDAO.o: DAOs/RouteDAO.cpp 
 	${MKDIR} -p ${OBJECTDIR}/DAOs
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -IDAOs -IModels -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/DAOs/RouteDAO.o DAOs/RouteDAO.cpp
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/DAOs/RouteDAO.o DAOs/RouteDAO.cpp
 
 ${OBJECTDIR}/DBConnection.o: DBConnection.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -IDAOs -IModels -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/DBConnection.o DBConnection.cpp
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/DBConnection.o DBConnection.cpp
 
 ${OBJECTDIR}/DBStatement.o: DBStatement.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -IDAOs -IModels -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/DBStatement.o DBStatement.cpp
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/DBStatement.o DBStatement.cpp
 
 ${OBJECTDIR}/DBUtil.o: DBUtil.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -IDAOs -IModels -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/DBUtil.o DBUtil.cpp
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/DBUtil.o DBUtil.cpp
 
 ${OBJECTDIR}/DataRequestDelegate.o: DataRequestDelegate.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -IDAOs -IModels -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/DataRequestDelegate.o DataRequestDelegate.cpp
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/DataRequestDelegate.o DataRequestDelegate.cpp
 
 ${OBJECTDIR}/GameCommandDelegate.o: GameCommandDelegate.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -IDAOs -IModels -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/GameCommandDelegate.o GameCommandDelegate.cpp
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/GameCommandDelegate.o GameCommandDelegate.cpp
 
 ${OBJECTDIR}/Models/PointOfInterest.o: Models/PointOfInterest.cpp 
 	${MKDIR} -p ${OBJECTDIR}/Models
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -IDAOs -IModels -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Models/PointOfInterest.o Models/PointOfInterest.cpp
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Models/PointOfInterest.o Models/PointOfInterest.cpp
 
 ${OBJECTDIR}/Models/Route.o: Models/Route.cpp 
 	${MKDIR} -p ${OBJECTDIR}/Models
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -IDAOs -IModels -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Models/Route.o Models/Route.cpp
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Models/Route.o Models/Route.cpp
 
 ${OBJECTDIR}/Server.o: Server.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -IDAOs -IModels -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Server.o Server.cpp
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Server.o Server.cpp
 
 ${OBJECTDIR}/ServiceLocator.o: ServiceLocator.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -IDAOs -IModels -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/ServiceLocator.o ServiceLocator.cpp
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/ServiceLocator.o ServiceLocator.cpp
 
 ${OBJECTDIR}/StringUtil.o: StringUtil.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -IDAOs -IModels -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/StringUtil.o StringUtil.cpp
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/StringUtil.o StringUtil.cpp
 
 ${OBJECTDIR}/SystemCommandDelegate.o: SystemCommandDelegate.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -IDAOs -IModels -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/SystemCommandDelegate.o SystemCommandDelegate.cpp
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/SystemCommandDelegate.o SystemCommandDelegate.cpp
 
 ${OBJECTDIR}/main.o: main.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -IDAOs -IModels -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/main.o main.cpp
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/main.o main.cpp
 
 # Subprojects
 .build-subprojects:

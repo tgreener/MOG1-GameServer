@@ -11,6 +11,7 @@
 #include <cstdlib>
 #include <stdio.h>
 #include <string.h>
+#include <vector>
 
 #include <sys/socket.h>
 #include <sys/un.h>
@@ -29,6 +30,8 @@ using namespace std;
 #define QUEUE_SIZE 10
 #define DB_FILE "game_data.db"
 
+typedef vector<ByteCodeDelegate*> InterpreterVector;
+
 class Server {
 private:
     int serverSocketHandle;
@@ -36,6 +39,7 @@ private:
     
     const char* filename;
     bool isServicingConnections;
+    InterpreterVector interpreterVector;
     
     int setAddress(struct sockaddr_un *address);
     int readMessageFromClient(int clientSocketHandle, char* buffer, int bufferSize);

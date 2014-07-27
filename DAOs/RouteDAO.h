@@ -18,8 +18,12 @@ typedef std::function<void(RouteDAO*, int)> AllRouteDAOsCallback;
 class RouteDAO : public AbstractDAO {
 private:
     unsigned int id;
-    int poiA;
-    int poiB;
+    unsigned int poiA;
+    unsigned int poiB;
+    
+    unsigned int difficulty;
+    bool bidirected;
+    bool reverse;
     
     bool needsWrite;
     
@@ -36,9 +40,15 @@ public:
     unsigned int getID() const;
     unsigned int getPOIA() const;
     unsigned int getPOIB() const;
+    unsigned int getDifficulty() const;
+    bool isBidrectional() const;
+    bool isReverse() const;
     
     void setPOIA(unsigned int a);
     void setPOIB(unsigned int b);
+    void setDifficulty(unsigned int dif);
+    void setBidirectional(bool bidir);
+    void setReverse(bool rev);
     
     static void allRouteDAOs(AllRouteDAOsCallback callback);
 };

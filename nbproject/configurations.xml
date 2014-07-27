@@ -27,6 +27,7 @@
                    projectFiles="true">
       <itemPath>db_purge.txt</itemPath>
       <itemPath>db_scheme.txt</itemPath>
+      <itemPath>game_data.db</itemPath>
     </logicalFolder>
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
@@ -62,18 +63,11 @@
   <confs>
     <conf name="Debug" type="1">
       <toolsSet>
-        <compilerSet>GNU|GNU</compilerSet>
+        <compilerSet>default</compilerSet>
         <dependencyChecking>true</dependencyChecking>
         <rebuildPropChanged>false</rebuildPropChanged>
       </toolsSet>
       <compileType>
-        <cTool>
-          <standard>10</standard>
-          <incDir>
-            <pElem>DAOs</pElem>
-            <pElem>Models</pElem>
-          </incDir>
-        </cTool>
         <ccTool>
           <standard>8</standard>
           <incDir>
@@ -148,6 +142,8 @@
       <item path="db_purge.txt" ex="false" tool="3" flavor2="0">
       </item>
       <item path="db_scheme.txt" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="game_data.db" ex="false" tool="3" flavor2="0">
       </item>
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -161,19 +157,9 @@
       <compileType>
         <cTool>
           <developmentMode>5</developmentMode>
-          <standard>10</standard>
-          <incDir>
-            <pElem>DAOs</pElem>
-            <pElem>Models</pElem>
-          </incDir>
         </cTool>
         <ccTool>
           <developmentMode>5</developmentMode>
-          <standard>8</standard>
-          <incDir>
-            <pElem>DAOs</pElem>
-            <pElem>Models</pElem>
-          </incDir>
         </ccTool>
         <fortranCompilerTool>
           <developmentMode>5</developmentMode>
@@ -181,9 +167,6 @@
         <asmTool>
           <developmentMode>5</developmentMode>
         </asmTool>
-        <linkerTool>
-          <commandLine>-lsqlite3</commandLine>
-        </linkerTool>
       </compileType>
       <item path="ByteCodeDelegate.h" ex="false" tool="3" flavor2="0">
       </item>
@@ -248,6 +231,8 @@
       <item path="db_purge.txt" ex="false" tool="3" flavor2="0">
       </item>
       <item path="db_scheme.txt" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="game_data.db" ex="false" tool="3" flavor2="0">
       </item>
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
       </item>

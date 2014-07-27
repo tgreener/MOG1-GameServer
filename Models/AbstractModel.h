@@ -8,6 +8,8 @@
 #ifndef ABSTRACTMODEL_H
 #define	ABSTRACTMODEL_H
 
+#include <functional>
+
 class AbstractModel {
 public:
     virtual void bark() const = 0;
@@ -17,6 +19,8 @@ public:
     
     virtual bool remove() = 0;
 };
+
+typedef std::function<void(AbstractModel**, int)> AllModelsCallback;
 
 #endif	/* MODEL_H */
 

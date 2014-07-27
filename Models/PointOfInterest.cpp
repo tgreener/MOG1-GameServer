@@ -123,15 +123,18 @@ void PointOfInterest::serialize(unsigned char* buffer) const {
     strcpy((char*)buffer + 4, (char*)this->getName());
 }
 
-void PointOfInterest::getAllPOIs(std::function<void(PointOfInterest*,int)> callback) {
+void PointOfInterest::getAllPOIs(AllModelsCallback callback) {
     PointsOfInterestDAO::allPOIDAOs([&](PointsOfInterestDAO* daos, int count) -> void {
         PointOfInterest* pois = new PointOfInterest[count];
+        AbstractModel** pps = new AbstractModel*[count];
         
         for(int i = 0; i < count; i++) {
             pois[i].setDAO(daos[i]);
+            pps[i] = &pois[i];
         }
 
-        callback(pois, count);
+        callback(pps, count);
+        delete[] pps;
         delete[] pois;
     });
 }

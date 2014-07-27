@@ -7,13 +7,13 @@ CND_BASEDIR=`pwd`
 CND_BUILDDIR=build
 CND_DISTDIR=dist
 # Debug configuration
-CND_PLATFORM_Debug=GNU-MacOSX
-CND_ARTIFACT_DIR_Debug=dist/Debug/GNU-MacOSX
+CND_PLATFORM_Debug=CLang-MacOSX
+CND_ARTIFACT_DIR_Debug=dist/Debug/CLang-MacOSX
 CND_ARTIFACT_NAME_Debug=gamedataserver
-CND_ARTIFACT_PATH_Debug=dist/Debug/GNU-MacOSX/gamedataserver
-CND_PACKAGE_DIR_Debug=dist/Debug/GNU-MacOSX/package
+CND_ARTIFACT_PATH_Debug=dist/Debug/CLang-MacOSX/gamedataserver
+CND_PACKAGE_DIR_Debug=dist/Debug/CLang-MacOSX/package
 CND_PACKAGE_NAME_Debug=gamedataserver.tar
-CND_PACKAGE_PATH_Debug=dist/Debug/GNU-MacOSX/package/gamedataserver.tar
+CND_PACKAGE_PATH_Debug=dist/Debug/CLang-MacOSX/package/gamedataserver.tar
 # Release configuration
 CND_PLATFORM_Release=CLang-MacOSX
 CND_ARTIFACT_DIR_Release=dist/Release/CLang-MacOSX

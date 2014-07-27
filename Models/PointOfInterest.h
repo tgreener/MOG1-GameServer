@@ -45,14 +45,13 @@ public:
     void setAttributeStone(int s);
     void setAttributeWilderness(int w);
     
-    void bark() const;
-    unsigned int serializedLength() const;
-    void serialize(unsigned char* buffer) const;
+    virtual void bark() const;
+    virtual unsigned int serializedLength() const;
+    virtual void serialize(unsigned char* buffer) const;
+    virtual void save();
+    virtual bool remove();
     
-    void save();
-    bool remove();
-    
-    static void getAllPOIs(std::function<void(PointOfInterest*, int)> callback);
+    static void getAllPOIs(AllModelsCallback callback);
 };
 
 #endif	/* POINTOFINTEREST_H */
