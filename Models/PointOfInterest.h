@@ -28,6 +28,9 @@ private:
     
     void load();
     void setDAO(const PointsOfInterestDAO& dao);
+    
+    static int createPointOfInterest(const char* bytes, int length);
+    static void getAllPOIs(AllModelsCallback callback);
 public:
     PointOfInterest();
     PointOfInterest(unsigned int id);
@@ -51,7 +54,10 @@ public:
     virtual void save();
     virtual bool remove();
     
-    static void getAllPOIs(AllModelsCallback callback);
+    static ByteInterpreterFunction getFetchFunction();
+    static ByteInterpreterFunction getAddFunction();
+    static ByteInterpreterFunction getDeleteFunction();
+    static ByteInterpreterFunction getFetchAllFunction();
 };
 
 #endif	/* POINTOFINTEREST_H */

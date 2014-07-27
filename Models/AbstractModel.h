@@ -13,11 +13,10 @@
 class AbstractModel;
 
 typedef std::function<void(AbstractModel**, int)> AllModelsCallback;
+typedef std::function<void(const char* bytes, int length)> ByteInterpreterFunction;
 
 class AbstractModel {
 public:
-    virtual AbstractModel();
-    
     virtual void bark() const = 0;
     virtual void save() = 0;
     virtual unsigned int serializedLength() const = 0;
@@ -26,10 +25,13 @@ public:
     virtual bool remove() = 0;
     
 protected:
-    AllModelsCallback amc;
+    static AllModelsCallback getAllModelsCallback;
+    static void deleteModel(AbstractModel& model);
+    static void fetchModel(AbstractModel& model);
+    static void respondWithID(int id);
+    static void insufficientDataMessage();
+    static void nullResponse();
 };
-
-typedef std::function<void(const char* bytes, unsigned int length)> ByteInterpreterFunction;
 
 #endif	/* MODEL_H */
 

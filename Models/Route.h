@@ -26,6 +26,10 @@ class Route : public AbstractModel {
 private:
     RouteDAO dao;
     
+    static int createRoute(const char* bytes, int length);
+    static void getAllRoutes(AllModelsCallback callback);
+    static RouteAttributes extractAttributes(const char* bytes, int length);
+    
 public:
     Route();
     Route(RouteAttributes& attribs);
@@ -50,9 +54,6 @@ public:
     virtual unsigned int serializedLength() const;
     virtual void serialize(unsigned char* buffer) const;
     virtual bool remove() ;
-    
-    static void getAllRoutes(AllModelsCallback callback);
-    static RouteAttributes extractAttributes(char* bytes, int length);
     
     static ByteInterpreterFunction getFetchFunction();
     static ByteInterpreterFunction getAddFunction();
