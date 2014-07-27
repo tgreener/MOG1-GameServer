@@ -118,6 +118,10 @@
       </item>
       <item path="Models/AbstractModel.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="Models/Location.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Models/Location.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="Models/PointOfInterest.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="Models/PointOfInterest.h" ex="false" tool="3" flavor2="0">
@@ -208,6 +212,10 @@
       <item path="Models/AbstractModel.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="Models/AbstractModel.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Models/Location.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Models/Location.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="Models/PointOfInterest.cpp" ex="false" tool="1" flavor2="0">
       </item>
