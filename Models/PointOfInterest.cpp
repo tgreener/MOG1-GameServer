@@ -138,3 +138,69 @@ void PointOfInterest::getAllPOIs(AllModelsCallback callback) {
         delete[] pois;
     });
 }
+
+int PointOfInterest::createPointOfInterest(const char* bs, int length) {
+    unsigned char* bytes = (unsigned char*)bs;
+    if(bytes[length - 1] == 0xff && bytes[length - 2] == '\0') {
+        POIAttrib attribs;
+        attribs.soil = bytes[2];
+        attribs.stone = bytes[3];
+        attribs.wilderness = bytes[4];
+        
+        attribs.name = bytes + 5;
+        
+        PointOfInterest poi(attribs);
+        poi.save();
+        
+        return poi.getID();
+    }
+    else {
+        return -1;
+    }
+}
+
+ByteInterpreterFunction PointOfInterest::getFetchFunction() {
+    return [](const char* bytes, int length) -> void {
+        if(length >= 3) {
+            try {
+                unsigned int id = bytes[2];
+                PointOfInterest poi(id);
+                AbstractModel::fetchModel(poi);
+            }
+            catch (const char* e) {
+                ServiceLocator::getServiceLocator().sendMessageToClient(e);
+            }
+            return;
+        }
+        AbstractModel::insufficientDataMessage();
+    };
+}
+
+ByteInterpreterFunction PointOfInterest::getDeleteFunction() {
+    return [](const char* bytes, int length) -> void {
+        if(length >= 3) {
+            try {
+                unsigned int id = bytes[2];
+                PointOfInterest poi(id);
+                AbstractModel::deleteModel(poi);
+            }
+            catch (const char* e) {
+                ServiceLocator::getServiceLocator().sendMessageToClient(e);
+            }
+            return;
+        }
+        AbstractModel::insufficientDataMessage();
+    };
+}
+
+ByteInterpreterFunction PointOfInterest::getAddFunction() {
+    return [](const char* bytes, int length) -> void {
+        AbstractModel::respondWithID(PointOfInterest::createPointOfInterest(bytes, length));
+    };
+}
+
+ByteInterpreterFunction PointOfInterest::getFetchAllFunction() {
+    return [](const char* bytes, int length) -> void {
+        PointOfInterest::getAllPOIs(AbstractModel::getAllModelsCallback);
+    };
+}

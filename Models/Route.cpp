@@ -122,7 +122,7 @@ void Route::getAllRoutes(AllModelsCallback callback) {
     });
 }
 
-RouteAttributes Route::extractAttributes(char* bytes, int length) {
+RouteAttributes Route::extractAttributes(const char* bytes, int length) {
     RouteAttributes attribs;
     if(length >= 5) {
         attribs.poiAID = bytes[0];
@@ -133,4 +133,63 @@ RouteAttributes Route::extractAttributes(char* bytes, int length) {
     }
     
     return attribs;
+}
+
+ByteInterpreterFunction Route::getFetchFunction() {
+    return [](const char* bytes, int length) -> void {
+        if(length >= 3) {
+            try {
+                unsigned int id = bytes[2];
+                Route route(id);
+                AbstractModel::fetchModel(route);
+            }
+            catch (const char* e) {
+                ServiceLocator::getServiceLocator().sendMessageToClient(e);
+            }
+            
+            return;
+        }
+        AbstractModel::insufficientDataMessage();
+    };
+}
+
+ByteInterpreterFunction Route::getDeleteFunction() {
+    return [](const char* bytes, int length) -> void {
+        if(length >= 3) {
+            try {
+                unsigned int id = bytes[2];
+                Route route(id);
+                AbstractModel::deleteModel(route);
+            }
+            catch (const char* e) {
+                ServiceLocator::getServiceLocator().sendMessageToClient(e);
+            }
+        }
+        AbstractModel::insufficientDataMessage();
+    };
+}
+
+ByteInterpreterFunction Route::getAddFunction() {
+    return [](const char* bytes, int length) -> void {
+        AbstractModel::respondWithID(Route::createRoute(bytes, length));
+    };
+}
+
+ByteInterpreterFunction Route::getFetchAllFunction() {
+    return [](const char* bytes, int length) -> void {
+        Route::getAllRoutes(AbstractModel::getAllModelsCallback);
+    };
+}
+
+int Route::createRoute(const char* bytes, int length) {
+    if((unsigned char)bytes[length - 1] == 0xff) {
+        RouteAttributes attribs = Route::extractAttributes(bytes + 2, length - 2);
+        if(attribs.poiAID == 0) return -1;
+        
+        Route newRoute(attribs);
+        newRoute.save();
+        
+        return newRoute.getID();
+    }
+    return -1;
 }
