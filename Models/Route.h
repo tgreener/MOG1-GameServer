@@ -53,6 +53,11 @@ public:
     
     static void getAllRoutes(AllModelsCallback callback);
     static RouteAttributes extractAttributes(char* bytes, int length);
+    
+    static ByteInterpreterFunction getFetchFunction();
+    static ByteInterpreterFunction getAddFunction();
+    static ByteInterpreterFunction getDeleteFunction();
+    static ByteInterpreterFunction getFetchAllFunction();
 };
 
 #endif	/* ROUTE_H */

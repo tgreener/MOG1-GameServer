@@ -32,6 +32,7 @@
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
+      <itemPath>Models/AbstractModel.cpp</itemPath>
       <itemPath>DBConnection.cpp</itemPath>
       <itemPath>DBStatement.cpp</itemPath>
       <itemPath>DBUtil.cpp</itemPath>
@@ -112,6 +113,8 @@
       <item path="GameCommandDelegate.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="ImmutableServiceLocator.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Models/AbstractModel.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="Models/AbstractModel.h" ex="false" tool="3" flavor2="0">
       </item>
@@ -201,6 +204,8 @@
       <item path="GameCommandDelegate.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="ImmutableServiceLocator.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Models/AbstractModel.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="Models/AbstractModel.h" ex="false" tool="3" flavor2="0">
       </item>
