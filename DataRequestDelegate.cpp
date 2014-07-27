@@ -224,7 +224,6 @@ DataRequestDelegate::DataRequestDelegate() {
             for (int i = 0; i < count; i++) {
                 bufferLength += models[i]->serializedLength();
             }
-            printf("count: %d, buffer length: %d\n", count, bufferLength);
             
             unsigned char buffer[bufferLength];
             
