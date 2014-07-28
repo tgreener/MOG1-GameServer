@@ -8,7 +8,7 @@
 #ifndef ROUTE_H
 #define	ROUTE_H
 
-#include "AbstractModel.h"
+#include "Location.h"
 #include "../DAOs/RouteDAO.h"
 #include "PointOfInterest.h"
 
@@ -22,7 +22,7 @@ typedef struct RouteAttribs {
     bool reverse = false;
 } RouteAttributes;
 
-class Route : public AbstractModel {
+class Route : public Location {
 private:
     RouteDAO dao;
     

@@ -9,7 +9,7 @@
 #define	POINTOFINTEREST_H
 
 #include <functional>
-#include "AbstractModel.h"
+#include "Location.h"
 #include "../DAOs/PointsOfInterestDAO.h"
 
 typedef struct PointOfInterestAttributes {
@@ -19,7 +19,7 @@ typedef struct PointOfInterestAttributes {
     int wilderness;
 } POIAttrib;
 
-class PointOfInterest : public AbstractModel{
+class PointOfInterest : public Location {
 private:
     unsigned int id;
     bool needsUpdate;

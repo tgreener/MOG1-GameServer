@@ -43,6 +43,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/DataRequestDelegate.o \
 	${OBJECTDIR}/GameCommandDelegate.o \
 	${OBJECTDIR}/Models/AbstractModel.o \
+	${OBJECTDIR}/Models/Location.o \
 	${OBJECTDIR}/Models/PointOfInterest.o \
 	${OBJECTDIR}/Models/Route.o \
 	${OBJECTDIR}/Server.o \
@@ -115,6 +116,11 @@ ${OBJECTDIR}/Models/AbstractModel.o: Models/AbstractModel.cpp
 	${MKDIR} -p ${OBJECTDIR}/Models
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Models/AbstractModel.o Models/AbstractModel.cpp
+
+${OBJECTDIR}/Models/Location.o: Models/Location.cpp 
+	${MKDIR} -p ${OBJECTDIR}/Models
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Models/Location.o Models/Location.cpp
 
 ${OBJECTDIR}/Models/PointOfInterest.o: Models/PointOfInterest.cpp 
 	${MKDIR} -p ${OBJECTDIR}/Models

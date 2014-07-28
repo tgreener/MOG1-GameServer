@@ -33,9 +33,11 @@ bool PointsOfInterestDAO::retrieve(unsigned int id) {
     DBConnection* dbc = ServiceLocator::getServiceLocator().getDBConnection();
     const char* query;
     
-    query = "SELECT points_of_interest.*, poi_attributes.soil, poi_attributes.stone, poi_attributes.wilderness "
-            "FROM points_of_interest INNER JOIN poi_attributes "
-            "ON points_of_interest.id = poi_attributes.poi WHERE id = ?";
+    query = "SELECT point_of_interest.id, location.name, "
+            "point_of_interest.soil, point_of_interest.stone, point_of_interest.wilderness, location.id "
+            "FROM location INNER JOIN point_of_interest "
+            "ON location.id = point_of_interest.location_id " 
+            "WHERE point_of_interest.id = ? AND location.is_point_of_interest <> 0";
     DBStatement statement = dbc->prepare(query, NULL);
     statement.bindInt(1, id);
     
@@ -55,10 +57,21 @@ bool PointsOfInterestDAO::retrieve(unsigned int id) {
 
 bool PointsOfInterestDAO::remove(unsigned int id) {
     DBConnection* dbc = ServiceLocator::getServiceLocator().getDBConnection();
-    const char* query = "DELETE FROM points_of_interest WHERE id = ?";;
+    
+    const char* poiQuery = "SELECT location_id FROM point_of_interest WHERE id = ?";
+    DBStatement poiStatement = dbc->prepare(poiQuery, nullptr);
+    poiStatement.bindInt(1, id);
+    
+    int locationID;
+    if(poiStatement.step()) {
+        locationID = poiStatement.getColumnInt(0);
+    }
+    else return false;
+    
+    const char* query = "DELETE FROM location WHERE id = ? AND is_point_of_interest <> 0";
     
     DBStatement statement = dbc->prepare(query, NULL);
-    statement.bindInt(1, id);
+    statement.bindInt(1, locationID);
     
     int result = statement.step();
     
@@ -66,43 +79,39 @@ bool PointsOfInterestDAO::remove(unsigned int id) {
 }
 
 int PointsOfInterestDAO::write() {
-    const char* query = "INSERT INTO points_of_interest (name) VALUES (?)";
+    const char* query = "INSERT INTO location (name, is_point_of_interest) VALUES (?, 1)";
     DBConnection* dbc = ServiceLocator::getServiceLocator().getDBConnection();
     DBStatement statement1 = dbc->prepare(query, NULL);
     statement1.bindText(1, (const char*)name);
     
-    bool queryResult = statement1.step();
+    bool result = statement1.step();
     statement1.finalize();
     
-    if(!queryResult) {
+    int locationID;
+    if(result) {
+        locationID = dbc->lastInsertRowId();
+    }
+    else {
         return -1;
     }
     
-    int id;
-    query = "SELECT id from points_of_interest WHERE id NOT IN (SELECT poi FROM poi_attributes);";
-    DBStatement statement2 = dbc->prepare(query, NULL);
-    queryResult = statement2.step();
-    if(!queryResult) {
-        return -1;
-    }
-    id = statement2.getColumnInt(0);
-    statement2.finalize();
-    
-    query = "insert into poi_attributes (poi, soil, stone, wilderness) values ("
+    query = "INSERT INTO point_of_interest (location_id, soil, stone, wilderness) VALUES ("
             "?, ?, ?, ?);";
     DBStatement statement3 = dbc->prepare(query, NULL);
     
-    statement3.bindInt(1, id);
+    statement3.bindInt(1, locationID);
     statement3.bindInt(2, soil);
     statement3.bindInt(3, stone);
     statement3.bindInt(4, wilderness);
     
-    queryResult = statement3.step();
+    result = statement3.step();
     statement3.finalize();
     
-    if(!queryResult) {
+    if(!result) {
         return -1;
     }
+    
+    id = dbc->lastInsertRowId();
     
     return id;
 }
@@ -110,9 +119,9 @@ int PointsOfInterestDAO::write() {
 int PointsOfInterestDAO::write(int id) {
     this->id = id;
     
-    const char* query = "UPDATE poi_attributes "
+    const char* query = "UPDATE point_of_interest "
     "SET soil = ?, stone = ?, wilderness = ? "
-    "WHERE poi = ?;";
+    "WHERE id = ?;";
     
     DBConnection* dbc = ServiceLocator::getServiceLocator().getDBConnection();
     DBStatement statement = dbc->prepare(query, NULL);
@@ -170,7 +179,7 @@ void PointsOfInterestDAO::setWilderness(unsigned int wld) {
 void PointsOfInterestDAO::allPOIDAOs(std::function<void(PointsOfInterestDAO*, int)> callback) {
     DBConnection* dbc = ServiceLocator::getServiceLocator().getDBConnection();
     
-    const char* countQuery = "SELECT COUNT() FROM points_of_interest";
+    const char* countQuery = "SELECT COUNT() FROM point_of_interest";
     DBStatement countStatement = dbc->prepare(countQuery, NULL);
     
     countStatement.step();
@@ -183,9 +192,12 @@ void PointsOfInterestDAO::allPOIDAOs(std::function<void(PointsOfInterestDAO*, in
     
     PointsOfInterestDAO* daos = new PointsOfInterestDAO[count];
     
-    const char* poisQuery = "SELECT points_of_interest.*, poi_attributes.soil, poi_attributes.stone, poi_attributes.wilderness "
-            "FROM points_of_interest INNER JOIN poi_attributes "
-            "ON points_of_interest.id = poi_attributes.poi";
+    const char* poisQuery = 
+            "SELECT point_of_interest.id, location.name, "
+            "point_of_interest.soil, point_of_interest.stone, point_of_interest.wilderness, location.id "
+            "FROM location INNER JOIN point_of_interest "
+            "ON location.id = point_of_interest.location_id " 
+            "WHERE location.is_point_of_interest <> 0";
     DBStatement statement = dbc->prepare(poisQuery, NULL);
     
     for(int i = 0; i < count; i++) {
