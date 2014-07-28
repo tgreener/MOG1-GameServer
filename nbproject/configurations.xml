@@ -13,6 +13,7 @@
       <itemPath>DataRequestDelegate.h</itemPath>
       <itemPath>GameCommandDelegate.h</itemPath>
       <itemPath>ImmutableServiceLocator.h</itemPath>
+      <itemPath>Models/Location.h</itemPath>
       <itemPath>Models/PointOfInterest.h</itemPath>
       <itemPath>DAOs/PointsOfInterestDAO.h</itemPath>
       <itemPath>Models/Route.h</itemPath>
@@ -38,6 +39,7 @@
       <itemPath>DBUtil.cpp</itemPath>
       <itemPath>DataRequestDelegate.cpp</itemPath>
       <itemPath>GameCommandDelegate.cpp</itemPath>
+      <itemPath>Models/Location.cpp</itemPath>
       <itemPath>Models/PointOfInterest.cpp</itemPath>
       <itemPath>DAOs/PointsOfInterestDAO.cpp</itemPath>
       <itemPath>Models/Route.cpp</itemPath>

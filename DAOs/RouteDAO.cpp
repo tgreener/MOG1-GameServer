@@ -41,7 +41,7 @@ bool RouteDAO::retrieve(unsigned int id) {
 bool RouteDAO::remove(unsigned int id) {
     this->id = id;
     DBConnection& dbc = *(ServiceLocator::getServiceLocator().getDBConnection());
-    const char* query = "DELETE FROM route WHERE id=?";
+    const char* query = "DELETE FROM location WHERE id=? AND is_route <> 0";
     
     DBStatement statement = dbc.prepare(query, nullptr);
     statement.bindInt(1, id);

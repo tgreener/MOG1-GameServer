@@ -10,11 +10,9 @@
 
 #include "AbstractModel.h"
 
-class Location : public AbstractModel{
+class Location : public AbstractModel {
 protected:
-    
 public:
-    
 };
 
 #endif	/* LOCATION_H */
