@@ -18,7 +18,12 @@ bool RouteDAO::checkValuesSet() {
 bool RouteDAO::retrieve(unsigned int id) {
     this->id = id;
     DBConnection& dbc = *(ServiceLocator::getServiceLocator().getDBConnection());
-    const char* query = "SELECT * FROM route WHERE id=?";
+    const char* query = 
+            "SELECT route.id, route.poi_a, route.poi_b, route.difficulty, route.bidirected, route.reverse, "
+            "location.id, location.name " 
+            "FROM route INNER JOIN location " 
+            "ON location.id = route.location_id "
+            "WHERE route.id = ?";
     
     DBStatement statement = dbc.prepare(query, nullptr);
     statement.bindInt(1, this->id);
@@ -41,10 +46,21 @@ bool RouteDAO::retrieve(unsigned int id) {
 bool RouteDAO::remove(unsigned int id) {
     this->id = id;
     DBConnection& dbc = *(ServiceLocator::getServiceLocator().getDBConnection());
-    const char* query = "DELETE FROM location WHERE id=? AND is_route <> 0";
     
-    DBStatement statement = dbc.prepare(query, nullptr);
-    statement.bindInt(1, id);
+    const char* routeQuery = "SELECT route.location_id FROM route WHERE route.id = ?";
+    DBStatement routeStatement = dbc.prepare(routeQuery, nullptr);
+    routeStatement.bindInt(1, id);
+    
+    int locationID;
+    if(routeStatement.step()) {
+        locationID = routeStatement.getColumnInt(0);
+    }
+    else return false;
+    
+    const char* deleteQuery = "DELETE FROM location WHERE id=? AND is_route <> 0";
+    
+    DBStatement statement = dbc.prepare(deleteQuery, nullptr);
+    statement.bindInt(1, locationID);
     
     int result = statement.step();
     
@@ -52,8 +68,20 @@ bool RouteDAO::remove(unsigned int id) {
 }
 
 int RouteDAO::write() {
-    const char* query = "INSERT INTO route (poi_a, poi_b, difficulty, bidirected, reverse) VALUES (?, ?, ?, ?, ?)";
+    const char* query = "INSERT INTO location (name, is_route) VALUES (?, 1)";
     DBConnection& dbc = *(ServiceLocator::getServiceLocator().getDBConnection());
+    DBStatement statement1 = dbc.prepare(query, NULL);
+    statement1.bindText(1, "A Route");
+    
+    bool result = statement1.step();
+    statement1.finalize();
+    
+    int locationID;
+    
+    if(result) locationID = dbc.lastInsertRowId();
+    else return -1;
+    
+    query = "INSERT INTO route (poi_a, poi_b, difficulty, bidirected, reverse, location_id) VALUES (?, ?, ?, ?, ?, ?)";
     DBStatement statement = dbc.prepare(query, nullptr);
     
     statement.bindInt(1, poiA);
@@ -62,10 +90,11 @@ int RouteDAO::write() {
     statement.bindInt(3, difficulty);
     statement.bindInt(4, (unsigned int)bidirected);
     statement.bindInt(5, (unsigned int)reverse);
+    statement.bindInt(6, locationID);
     
-    if(statement.step()) {
-        id = dbc.lastInsertRowId();
-    }
+    if(statement.step()) id = dbc.lastInsertRowId();
+    else id = -1;
+    
     statement.finalize();
     
     return id;
@@ -151,7 +180,10 @@ void RouteDAO::allRouteDAOs(AllRouteDAOsCallback callback) {
     
     RouteDAO* daos = new RouteDAO[count];
     
-    const char* poisQuery = "SELECT * FROM route";
+    const char* poisQuery = "SELECT route.id, route.poi_a, route.poi_b, route.difficulty, route.bidirected, route.reverse, "
+            "location.id, location.name " 
+            "FROM route INNER JOIN location " 
+            "ON location.id = route.location_id";
     DBStatement statement = dbc.prepare(poisQuery, NULL);
     
     for(int i = 0; i < count; i++) {

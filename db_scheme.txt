@@ -8,25 +8,24 @@ create table location (
 
 create table point_of_interest (
   id INTEGER PRIMARY KEY,
-  poi INTEGER UNIQUE,
+  location_id INTEGER UNIQUE,
   soil INTEGER CHECK(soil > 0 AND soil <= 10),
   stone INTEGER CHECK(stone > 0 AND stone <= 10),
   wilderness INTEGER CHECK(wilderness > 0 AND wilderness <= 10),
-  FOREIGN KEY(poi) REFERENCES location(id)ON DELETE CASCADE ON UPDATE CASCADE
+  FOREIGN KEY(location_id) REFERENCES location(id)ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 create table route (
   id INTEGER PRIMARY KEY,
-  route INTEGER UNIQUE,
-  location_a INTEGER,
-  location_b INTEGER CHECK (location_a <> location_b),
+  location_id INTEGER UNIQUE,
+  poi_a INTEGER,
+  poi_b INTEGER CHECK (poi_a <> poi_b),
   difficulty INTEGER CHECK (difficulty >= 1 AND difficulty <= 100),
-  bidirected INTEGER CHECK (bidirected >= 0 AND bidirected <= 1),
+  bidirected INTEGER CHECK (bidirected >= 0 AND bidirected <= 1) DEFAULT 1,
   reverse INTEGER CHECK (reverse >= 0 AND reverse <= 1) DEFAULT 0,
-  UNIQUE (location_a, location_b),
-  CHECK (location_a < location_b),
-  CHECK (route <> location_a AND route <> location_b),
-  FOREIGN KEY(location_a) REFERENCES location(id) ON DELETE CASCADE ON UPDATE CASCADE,
-  FOREIGN KEY(location_b) REFERENCES location(id) ON DELETE CASCADE ON UPDATE CASCADE,
-  FOREIGN KEY(route) REFERENCES location(id) ON DELETE CASCADE ON UPDATE CASCADE
+  UNIQUE (poi_a, poi_b),
+  CHECK (poi_a < poi_b),
+  FOREIGN KEY(poi_a) REFERENCES point_of_interest(id) ON DELETE RESTRICT ON UPDATE CASCADE,
+  FOREIGN KEY(poi_b) REFERENCES point_of_interest(id) ON DELETE RESTRICT ON UPDATE CASCADE,
+  FOREIGN KEY(location_id) REFERENCES location(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
