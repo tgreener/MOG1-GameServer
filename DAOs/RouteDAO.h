@@ -30,7 +30,7 @@ private:
     bool checkValuesSet();
 public:
     RouteDAO();
-    ~RouteDAO();
+    virtual ~RouteDAO();
     
     virtual bool retrieve(unsigned int id);
     virtual bool remove(unsigned int id);

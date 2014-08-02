@@ -50,6 +50,7 @@
       <itemPath>ServiceLocator.cpp</itemPath>
       <itemPath>StringUtil.cpp</itemPath>
       <itemPath>SystemCommandDelegate.cpp</itemPath>
+      <itemPath>DAOs/UserDAO.cpp</itemPath>
       <itemPath>main.cpp</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"
@@ -95,6 +96,8 @@
       <item path="DAOs/RouteDAO.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="DAOs/RouteDAO.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="DAOs/UserDAO.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="DAOs/UserDAO.h" ex="false" tool="3" flavor2="0">
       </item>
@@ -194,6 +197,8 @@
       <item path="DAOs/RouteDAO.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="DAOs/RouteDAO.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="DAOs/UserDAO.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="DAOs/UserDAO.h" ex="false" tool="3" flavor2="0">
       </item>

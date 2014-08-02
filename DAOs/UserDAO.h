@@ -9,6 +9,11 @@
 #define	USERDAO_H
 
 #include "AbstractDAO.h"
+#include <functional>
+
+class UserDAO;
+
+typedef std::function<void(UserDAO*, int)> AllUserDAOsCallback;
 
 class UserDAO : public AbstractDAO {
 private:
@@ -16,7 +21,12 @@ private:
     unsigned int location;
     const char* tag;
     
+    bool checkValuesSet();
+    
 public:
+    UserDAO();
+    virtual ~UserDAO() {}
+    
     virtual bool retrieve(unsigned int id);
     virtual bool remove(unsigned int id);
     virtual int write();
@@ -28,6 +38,8 @@ public:
     
     void setLocation(unsigned int location);
     void setTag(const char* tag);
+    
+    static void allUserDAOs(AllUserDAOsCallback callback);
 };
 
 #endif	/* USERDAO_H */

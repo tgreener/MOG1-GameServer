@@ -34,7 +34,6 @@ private:
     
     static int createPointOfInterest(const char* bytes, int length);
     static void getAllPOIs(AllModelsCallback callback);
-    static void getAllPOIs(PointOfInterestCallback callback);
 public:
     PointOfInterest();
     PointOfInterest(unsigned int id);
@@ -57,6 +56,8 @@ public:
     virtual void serialize(unsigned char* buffer) const;
     virtual void save();
     virtual bool remove();
+    
+    static void getAllPOIs(PointOfInterestCallback callback);
     
     static ByteInterpreterFunction getFetchFunction();
     static ByteInterpreterFunction getAddFunction();
