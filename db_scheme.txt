@@ -1,3 +1,10 @@
+create table user (
+    id INTEGER PRIMARY KEY,
+    current_location INTEGER DEFAULT 0,
+    tag TEXT,
+    FOREIGN KEY(current_location) REFERENCES location(id) ON DELETE SET DEFAULT ON UPDATE CASCADE
+);
+
 create table location (
 	id INTEGER PRIMARY KEY,
 	name TEXT,

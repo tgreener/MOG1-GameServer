@@ -8,7 +8,6 @@
 #ifndef POINTOFINTEREST_H
 #define	POINTOFINTEREST_H
 
-#include <functional>
 #include "Location.h"
 #include "../DAOs/PointsOfInterestDAO.h"
 
@@ -18,6 +17,10 @@ typedef struct PointOfInterestAttributes {
     int stone;
     int wilderness;
 } POIAttrib;
+
+class PointOfInterest;
+
+typedef std::function<void(PointOfInterest*, unsigned int)> PointOfInterestCallback;
 
 class PointOfInterest : public Location {
 private:
@@ -31,6 +34,7 @@ private:
     
     static int createPointOfInterest(const char* bytes, int length);
     static void getAllPOIs(AllModelsCallback callback);
+    static void getAllPOIs(PointOfInterestCallback callback);
 public:
     PointOfInterest();
     PointOfInterest(unsigned int id);

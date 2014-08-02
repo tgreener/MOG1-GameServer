@@ -34,7 +34,7 @@ public:
     Route();
     Route(RouteAttributes& attribs);
     Route(unsigned int id);
-    ~Route();
+    virtual ~Route();
     
     unsigned int getID() const;
     PointOfInterest getEndpointA() const;

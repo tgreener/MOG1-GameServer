@@ -139,6 +139,19 @@ void PointOfInterest::getAllPOIs(AllModelsCallback callback) {
     });
 }
 
+void PointOfInterest::getAllPOIs(PointOfInterestCallback callback) {
+    PointsOfInterestDAO::allPOIDAOs([&](PointsOfInterestDAO* daos, int count) -> void {
+        PointOfInterest* pois = new PointOfInterest[count];
+        
+        for(int i = 0; i < count; i++) {
+            pois[i].setDAO(daos[i]);
+        }
+
+        callback(pois, count);
+        delete[] pois;
+    });
+}
+
 int PointOfInterest::createPointOfInterest(const char* bs, int length) {
     unsigned char* bytes = (unsigned char*)bs;
     if(bytes[length - 1] == 0xff && bytes[length - 2] == '\0') {

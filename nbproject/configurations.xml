@@ -22,6 +22,8 @@
       <itemPath>ServiceLocator.h</itemPath>
       <itemPath>StringUtil.h</itemPath>
       <itemPath>SystemCommandDelegate.h</itemPath>
+      <itemPath>Models/User.h</itemPath>
+      <itemPath>DAOs/UserDAO.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
@@ -94,6 +96,8 @@
       </item>
       <item path="DAOs/RouteDAO.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="DAOs/UserDAO.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="DBConnection.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="DBConnection.h" ex="false" tool="3" flavor2="0">
@@ -131,6 +135,8 @@
       <item path="Models/Route.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="Models/Route.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Models/User.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="Server.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -189,6 +195,8 @@
       </item>
       <item path="DAOs/RouteDAO.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="DAOs/UserDAO.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="DBConnection.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="DBConnection.h" ex="false" tool="3" flavor2="0">
@@ -226,6 +234,8 @@
       <item path="Models/Route.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="Models/Route.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Models/User.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="Server.cpp" ex="false" tool="1" flavor2="0">
       </item>

@@ -2,3 +2,4 @@
 /dist/
 connection
 .dep.inc
+.DS_Store
