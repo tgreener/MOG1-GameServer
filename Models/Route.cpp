@@ -135,19 +135,6 @@ void Route::getAllRoutes(AllModelsCallback callback) {
     });
 }
 
-RouteAttributes Route::extractAttributes(const char* bytes, int length) {
-    RouteAttributes attribs;
-    if(length >= 5) {
-        attribs.poiAID = bytes[0];
-        attribs.poiBID = bytes[1];
-        attribs.difficulty = bytes[2];
-        attribs.bidirectional = bytes[3] != 0;
-        attribs.reverse = bytes[4] != 0;
-    }
-    
-    return attribs;
-}
-
 ByteInterpreterFunction Route::getFetchFunction() {
     return [](const char* bytes, int length) -> void {
         if(length >= 3) {
@@ -192,6 +179,19 @@ ByteInterpreterFunction Route::getFetchAllFunction() {
     return [](const char* bytes, int length) -> void {
         Route::getAllRoutes(AbstractModel::getAllModelsCallback);
     };
+}
+
+RouteAttributes Route::extractAttributes(const char* bytes, int length) {
+    RouteAttributes attribs;
+    if(length >= 5) {
+        attribs.poiAID = bytes[0];
+        attribs.poiBID = bytes[1];
+        attribs.difficulty = bytes[2];
+        attribs.bidirectional = bytes[3] != 0;
+        attribs.reverse = bytes[4] != 0;
+    }
+    
+    return attribs;
 }
 
 int Route::createRoute(const char* bytes, int length) {

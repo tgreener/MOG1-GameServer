@@ -10,13 +10,13 @@
 
 #include "AbstractModel.h"
 #include "Location.h"
-#include "DAOs/UserDAO.h"
+#include "../DAOs/UserDAO.h"
 
 class User;
 
 typedef struct UserAtr {
-    unsigned int location;
-    const char* tag;
+    unsigned int location = 0;
+    const char* tag = nullptr;
 } UserAttributes;
 
 typedef std::function<void(User*, unsigned int)> AllUsersCallback;
@@ -25,7 +25,9 @@ class User : public AbstractModel{
 private:
     UserDAO dao;
     
-    static void getAllUsers(AllModelsCallback calback);
+    static int createUser(const char* bytes, int length);
+    static void getAllUsers(AllModelsCallback callback);
+    static UserAttributes extractAttributes(const char* bytes, int length);
 public:
     User();
     User(UserAttributes& attribs);

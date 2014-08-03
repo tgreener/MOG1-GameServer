@@ -22,10 +22,11 @@ private:
     const char* tag;
     
     bool checkValuesSet();
+    void freeTag();
     
 public:
     UserDAO();
-    virtual ~UserDAO() {}
+    virtual ~UserDAO();
     
     virtual bool retrieve(unsigned int id);
     virtual bool remove(unsigned int id);

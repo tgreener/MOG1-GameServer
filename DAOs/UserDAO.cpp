@@ -4,6 +4,16 @@
 
 UserDAO::UserDAO() : id(0), location(0), tag(nullptr) {}
 
+UserDAO::~UserDAO() {
+    freeTag();
+}
+
+void UserDAO::freeTag() {
+    if(tag != nullptr) {
+        delete[] tag;
+    }
+}
+
 bool UserDAO::checkValuesSet() {
     return location > 0 && tag != nullptr;
 }
@@ -21,7 +31,7 @@ bool UserDAO::retrieve(unsigned int id) {
         this->tag = (const char*)(statement.getColumnText(2));
         
         statement.finalize();
-        return true
+        return true;
     }
     
     statement.finalize();
@@ -29,15 +39,40 @@ bool UserDAO::retrieve(unsigned int id) {
 }
 
 bool UserDAO::remove(unsigned int id) {
-    return false;
+    DBConnection& dbc = *(ServiceLocator::getServiceLocator().getDBConnection());
+    const char* query = "DELETE FROM user WHERE id = ?";
+    DBStatement statement = dbc.prepare(query, nullptr);
+    statement.bindInt(1, this->id);
+    
+    int result = statement.step();
+    return result != 0;
 }
 
 int UserDAO::write() {
-    return -1;
+    DBConnection& dbc = *(ServiceLocator::getServiceLocator().getDBConnection());
+    const char* query = "INSERT INTO user (tag) VALUES (?)";
+    DBStatement statement = dbc.prepare(query, nullptr);
+    statement.bindText(1, tag);
+    
+    if(statement.step()) id = dbc.lastInsertRowId();
+    else id = -1;
+    
+    statement.finalize();
+    
+    return id;
 }
 
 int UserDAO::write(int id) {
-    return -1;
+    DBConnection& dbc = *(ServiceLocator::getServiceLocator().getDBConnection());
+    const char* query = "UPDATE user SET current_location = ?, tag = ? WHERE id = ?";
+    DBStatement statement = dbc.prepare(query, nullptr);
+    statement.bindInt(1, this->location);
+    statement.bindText(2, this->tag);
+    
+    statement.step();
+    statement.finalize();
+    
+    return id;
 }
 
 unsigned int UserDAO::getID() const {
@@ -57,6 +92,7 @@ void UserDAO::setLocation(unsigned int location) {
 }
 
 void UserDAO::setTag(const char* tag) {
+    freeTag();
     this->tag = tag;
 }
 

@@ -47,6 +47,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/Models/Location.o \
 	${OBJECTDIR}/Models/PointOfInterest.o \
 	${OBJECTDIR}/Models/Route.o \
+	${OBJECTDIR}/Models/User.o \
 	${OBJECTDIR}/Server.o \
 	${OBJECTDIR}/ServiceLocator.o \
 	${OBJECTDIR}/StringUtil.o \
@@ -137,6 +138,11 @@ ${OBJECTDIR}/Models/Route.o: Models/Route.cpp
 	${MKDIR} -p ${OBJECTDIR}/Models
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -IDAOs -IModels -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Models/Route.o Models/Route.cpp
+
+${OBJECTDIR}/Models/User.o: Models/User.cpp 
+	${MKDIR} -p ${OBJECTDIR}/Models
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -IDAOs -IModels -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Models/User.o Models/User.cpp
 
 ${OBJECTDIR}/Server.o: Server.cpp 
 	${MKDIR} -p ${OBJECTDIR}

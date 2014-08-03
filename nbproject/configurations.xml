@@ -50,6 +50,7 @@
       <itemPath>ServiceLocator.cpp</itemPath>
       <itemPath>StringUtil.cpp</itemPath>
       <itemPath>SystemCommandDelegate.cpp</itemPath>
+      <itemPath>Models/User.cpp</itemPath>
       <itemPath>DAOs/UserDAO.cpp</itemPath>
       <itemPath>main.cpp</itemPath>
     </logicalFolder>
@@ -138,6 +139,8 @@
       <item path="Models/Route.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="Models/Route.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Models/User.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="Models/User.h" ex="false" tool="3" flavor2="0">
       </item>
@@ -239,6 +242,8 @@
       <item path="Models/Route.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="Models/Route.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Models/User.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="Models/User.h" ex="false" tool="3" flavor2="0">
       </item>
