@@ -13,6 +13,7 @@
 class Location : public AbstractModel {
 protected:
 public:
+    virtual unsigned int getID() const = 0;
 };
 
 #endif	/* LOCATION_H */

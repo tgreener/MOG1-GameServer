@@ -184,11 +184,11 @@ void PointsOfInterestDAO::allPOIDAOs(std::function<void(PointsOfInterestDAO*, in
     
     countStatement.step();
     int count = countStatement.getColumnInt(0);
+    countStatement.finalize();
     if(count <= 0) {
-        throw "No POIs to load";
+        callback(nullptr, 0);
         return;
     }
-    countStatement.finalize();
     
     PointsOfInterestDAO* daos = new PointsOfInterestDAO[count];
     

@@ -3,6 +3,7 @@
 #include "ServiceLocator.h"
 #include "Models/PointOfInterest.h"
 #include "Models/Route.h"
+#include "User.h"
 #include <cstdio>
 #include <cstring>
 
@@ -28,4 +29,9 @@ DataRequestDelegate::DataRequestDelegate() {
     functions.push_back(Route::getAddFunction());
     functions.push_back(Route::getDeleteFunction());
     functions.push_back(Route::getFetchAllFunction());
+    
+    functions.push_back(User::getFetchFunction());
+    functions.push_back(User::getAddFunction());
+    functions.push_back(User::getDeleteFunction());
+    functions.push_back(User::getFetchAllFunction());
 }

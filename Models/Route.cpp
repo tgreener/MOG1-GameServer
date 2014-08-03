@@ -106,6 +106,19 @@ void Route::bark() const {
     ServiceLocator::getServiceLocator().sendMessageToClient(str.c_str());
 }
 
+void Route::getAllRoutes(AllRoutesCallback callback) {
+    RouteDAO::allRouteDAOs([&](RouteDAO* daos, int count) -> void {
+        Route* routes = new Route[count];
+        
+        for(int i = 0; i < count; i++) {
+            routes[i].dao = daos[i];
+        }
+
+        callback(routes, count);
+        delete[] routes;
+    });
+}
+
 void Route::getAllRoutes(AllModelsCallback callback) {
     RouteDAO::allRouteDAOs([&](RouteDAO* daos, int count) -> void {
         Route* routes = new Route[count];
@@ -120,19 +133,6 @@ void Route::getAllRoutes(AllModelsCallback callback) {
         delete[] rps;
         delete[] routes;
     });
-}
-
-RouteAttributes Route::extractAttributes(const char* bytes, int length) {
-    RouteAttributes attribs;
-    if(length >= 5) {
-        attribs.poiAID = bytes[0];
-        attribs.poiBID = bytes[1];
-        attribs.difficulty = bytes[2];
-        attribs.bidirectional = bytes[3] != 0;
-        attribs.reverse = bytes[4] != 0;
-    }
-    
-    return attribs;
 }
 
 ByteInterpreterFunction Route::getFetchFunction() {
@@ -179,6 +179,19 @@ ByteInterpreterFunction Route::getFetchAllFunction() {
     return [](const char* bytes, int length) -> void {
         Route::getAllRoutes(AbstractModel::getAllModelsCallback);
     };
+}
+
+RouteAttributes Route::extractAttributes(const char* bytes, int length) {
+    RouteAttributes attribs;
+    if(length >= 5) {
+        attribs.poiAID = bytes[0];
+        attribs.poiBID = bytes[1];
+        attribs.difficulty = bytes[2];
+        attribs.bidirectional = bytes[3] != 0;
+        attribs.reverse = bytes[4] != 0;
+    }
+    
+    return attribs;
 }
 
 int Route::createRoute(const char* bytes, int length) {

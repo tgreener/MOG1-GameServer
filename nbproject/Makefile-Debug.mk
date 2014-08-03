@@ -37,6 +37,7 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 OBJECTFILES= \
 	${OBJECTDIR}/DAOs/PointsOfInterestDAO.o \
 	${OBJECTDIR}/DAOs/RouteDAO.o \
+	${OBJECTDIR}/DAOs/UserDAO.o \
 	${OBJECTDIR}/DBConnection.o \
 	${OBJECTDIR}/DBStatement.o \
 	${OBJECTDIR}/DBUtil.o \
@@ -46,6 +47,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/Models/Location.o \
 	${OBJECTDIR}/Models/PointOfInterest.o \
 	${OBJECTDIR}/Models/Route.o \
+	${OBJECTDIR}/Models/User.o \
 	${OBJECTDIR}/Server.o \
 	${OBJECTDIR}/ServiceLocator.o \
 	${OBJECTDIR}/StringUtil.o \
@@ -86,6 +88,11 @@ ${OBJECTDIR}/DAOs/RouteDAO.o: DAOs/RouteDAO.cpp
 	${MKDIR} -p ${OBJECTDIR}/DAOs
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -IDAOs -IModels -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/DAOs/RouteDAO.o DAOs/RouteDAO.cpp
+
+${OBJECTDIR}/DAOs/UserDAO.o: DAOs/UserDAO.cpp 
+	${MKDIR} -p ${OBJECTDIR}/DAOs
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -IDAOs -IModels -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/DAOs/UserDAO.o DAOs/UserDAO.cpp
 
 ${OBJECTDIR}/DBConnection.o: DBConnection.cpp 
 	${MKDIR} -p ${OBJECTDIR}
@@ -131,6 +138,11 @@ ${OBJECTDIR}/Models/Route.o: Models/Route.cpp
 	${MKDIR} -p ${OBJECTDIR}/Models
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -IDAOs -IModels -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Models/Route.o Models/Route.cpp
+
+${OBJECTDIR}/Models/User.o: Models/User.cpp 
+	${MKDIR} -p ${OBJECTDIR}/Models
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -IDAOs -IModels -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Models/User.o Models/User.cpp
 
 ${OBJECTDIR}/Server.o: Server.cpp 
 	${MKDIR} -p ${OBJECTDIR}

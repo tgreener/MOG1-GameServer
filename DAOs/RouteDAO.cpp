@@ -172,11 +172,11 @@ void RouteDAO::allRouteDAOs(AllRouteDAOsCallback callback) {
     
     countStatement.step();
     int count = countStatement.getColumnInt(0);
+    countStatement.finalize();
     if(count <= 0) {
-        throw "No Routes to load";
+        callback(nullptr, 0);
         return;
     }
-    countStatement.finalize();
     
     RouteDAO* daos = new RouteDAO[count];
     

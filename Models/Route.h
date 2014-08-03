@@ -22,6 +22,8 @@ typedef struct RouteAttribs {
     bool reverse = false;
 } RouteAttributes;
 
+typedef std::function<void(Route*, unsigned int count)> AllRoutesCallback;
+
 class Route : public Location {
 private:
     RouteDAO dao;
@@ -34,7 +36,7 @@ public:
     Route();
     Route(RouteAttributes& attribs);
     Route(unsigned int id);
-    ~Route();
+    virtual ~Route();
     
     unsigned int getID() const;
     PointOfInterest getEndpointA() const;
@@ -53,7 +55,9 @@ public:
     virtual void save();
     virtual unsigned int serializedLength() const;
     virtual void serialize(unsigned char* buffer) const;
-    virtual bool remove() ;
+    virtual bool remove();
+    
+    static void getAllRoutes(AllRoutesCallback callback);
     
     static ByteInterpreterFunction getFetchFunction();
     static ByteInterpreterFunction getAddFunction();
