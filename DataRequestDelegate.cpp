@@ -3,7 +3,7 @@
 #include "ServiceLocator.h"
 #include "Models/PointOfInterest.h"
 #include "Models/Route.h"
-#include "User.h"
+#include "Models/User.h"
 #include <cstdio>
 #include <cstring>
 

@@ -27,11 +27,11 @@ public:
     
     static ImmutableServiceLocator& getServiceLocator();
     
-    DBConnection* getDBConnection();
-    void sendMessageToClient(const char* message);
-    void sendMessageToClient(const char* message, int length);
-    void stopServer();
-    
+    virtual DBConnection* getDBConnection() override;
+    virtual void sendMessageToClient(const char* message) override;
+    virtual void sendMessageToClient(const char* message, int length) override;
+    virtual void stopServer() override;
+   
     void setDBConnection(DBConnection* dbc);
     void setClientSocketHandle(int handle);
     void setAsServiceLocator();

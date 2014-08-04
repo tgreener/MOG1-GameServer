@@ -52,7 +52,9 @@ OBJECTFILES= \
 	${OBJECTDIR}/ServiceLocator.o \
 	${OBJECTDIR}/StringUtil.o \
 	${OBJECTDIR}/SystemCommandDelegate.o \
-	${OBJECTDIR}/main.o
+	${OBJECTDIR}/main.o \
+	${OBJECTDIR}/sys/Semaphore.o \
+	${OBJECTDIR}/sys/ThreadPool.o
 
 
 # C Compiler Flags
@@ -168,6 +170,16 @@ ${OBJECTDIR}/main.o: main.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -IDAOs -IModels -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/main.o main.cpp
+
+${OBJECTDIR}/sys/Semaphore.o: sys/Semaphore.cpp 
+	${MKDIR} -p ${OBJECTDIR}/sys
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -IDAOs -IModels -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/sys/Semaphore.o sys/Semaphore.cpp
+
+${OBJECTDIR}/sys/ThreadPool.o: sys/ThreadPool.cpp 
+	${MKDIR} -p ${OBJECTDIR}/sys
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -IDAOs -IModels -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/sys/ThreadPool.o sys/ThreadPool.cpp
 
 # Subprojects
 .build-subprojects:
