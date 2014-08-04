@@ -7,7 +7,7 @@
 
 __thread ServiceLocator* ServiceLocator::locator;
 
-ServiceLocator::ServiceLocator() : connection(nullptr) {
+ServiceLocator::ServiceLocator() : connection(nullptr), server(nullptr) {
     locator = NULL;
 }
 

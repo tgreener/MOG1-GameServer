@@ -1,6 +1,7 @@
 
 #include "Server.h"
 #include "ServiceLocator.h"
+#include <errno.h>
 
 Server::Server(const char* filename) : filename(filename), isServicingConnections(true) {
 }
@@ -64,7 +65,9 @@ void Server::serviceSocket() {
     while(isServicingConnections) {
         socklen_t csaLength = sizeof(clientSocketAddress);
         int clientSocketHandle = accept(serverSocketHandle, (sockaddr*)&clientSocketAddress, &csaLength);
-        threadPool.acceptClient(clientSocketHandle);
+        if(clientSocketHandle >= 0 && isServicingConnections) {
+            threadPool.acceptClient(clientSocketHandle);
+        }
     }
 }
 
@@ -80,11 +83,13 @@ void Server::interpretByteMessage(char* bytes, int length) {
 
 void Server::stopServer() {
     isServicingConnections = false;
+    if(close(serverSocketHandle) < 0) {
+        printf("Error shutting down server: %s\n", strerror(errno));
+    }
 }
 
 void Server::closeServer() {
     threadPool.flush();
-    close(serverSocketHandle);
     unlink(filename);
 }
 
