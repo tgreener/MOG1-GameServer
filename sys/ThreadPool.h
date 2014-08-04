@@ -22,6 +22,7 @@ typedef std::function<void(void)> GenericFunction;
 class ThreadPool {
 private:
     Semaphore poolLock;
+    Semaphore queueLock;
 
     GenericFunction initFunction;
     GenericFunction deinitFunction;
@@ -32,6 +33,9 @@ private:
     std::vector<std::thread> threads;
     
     unsigned int count;
+    
+    int popHandle();
+    void pushHandle(int handle);
     
 public:
     ThreadPool();

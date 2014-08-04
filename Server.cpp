@@ -50,7 +50,7 @@ void Server::init() {
         interpretByteMessage(buffer, byteCount);
         
         if(close(clientHandle) < 0) {
-            printf("Error closing client socket.\n");
+            printf("Error closing client socket: %s\n", strerror(errno));
         }
     });
     

@@ -7,7 +7,9 @@
 
 ThreadPool::ThreadPool() : 
 count(0), runFunction([](int){}), isRunning(false)
-{}
+{
+    queueLock.signal();
+}
     
 void ThreadPool::setSize(unsigned int count) {
     this->count = count;
@@ -47,8 +49,7 @@ void ThreadPool::run() {
                 poolLock.wait();
                 if(!isRunning) break;
                 
-                int handle = clientHandles.front();
-                clientHandles.pop();
+                int handle = this->popHandle();
                 
                 sl.setClientSocketHandle(handle);
                 runFunction(handle);
@@ -74,6 +75,21 @@ void ThreadPool::flush() {
 }
 
 void ThreadPool::acceptClient(int clientHandle) {
-    clientHandles.push(clientHandle);
+    this->pushHandle(clientHandle);
     poolLock.signal();
+}
+
+int ThreadPool::popHandle() {
+    queueLock.wait();
+    int handle = clientHandles.front();
+    clientHandles.pop();
+    queueLock.signal();
+    
+    return handle;
+}
+
+void ThreadPool::pushHandle(int handle) {
+    queueLock.wait();
+    clientHandles.push(handle);
+    queueLock.signal();
 }

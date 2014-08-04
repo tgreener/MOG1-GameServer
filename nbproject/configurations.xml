@@ -18,10 +18,12 @@
       <itemPath>DAOs/PointsOfInterestDAO.h</itemPath>
       <itemPath>Models/Route.h</itemPath>
       <itemPath>DAOs/RouteDAO.h</itemPath>
+      <itemPath>sys/Semaphore.h</itemPath>
       <itemPath>Server.h</itemPath>
       <itemPath>ServiceLocator.h</itemPath>
       <itemPath>StringUtil.h</itemPath>
       <itemPath>SystemCommandDelegate.h</itemPath>
+      <itemPath>sys/ThreadPool.h</itemPath>
       <itemPath>Models/User.h</itemPath>
       <itemPath>DAOs/UserDAO.h</itemPath>
     </logicalFolder>
@@ -46,10 +48,12 @@
       <itemPath>DAOs/PointsOfInterestDAO.cpp</itemPath>
       <itemPath>Models/Route.cpp</itemPath>
       <itemPath>DAOs/RouteDAO.cpp</itemPath>
+      <itemPath>sys/Semaphore.cpp</itemPath>
       <itemPath>Server.cpp</itemPath>
       <itemPath>ServiceLocator.cpp</itemPath>
       <itemPath>StringUtil.cpp</itemPath>
       <itemPath>SystemCommandDelegate.cpp</itemPath>
+      <itemPath>sys/ThreadPool.cpp</itemPath>
       <itemPath>Models/User.cpp</itemPath>
       <itemPath>DAOs/UserDAO.cpp</itemPath>
       <itemPath>main.cpp</itemPath>
@@ -181,7 +185,11 @@
       </item>
       <item path="sys/Semaphore.cpp" ex="false" tool="1" flavor2="0">
       </item>
+      <item path="sys/Semaphore.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="sys/ThreadPool.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="sys/ThreadPool.h" ex="false" tool="3" flavor2="0">
       </item>
     </conf>
     <conf name="Release" type="1">
@@ -288,7 +296,11 @@
       </item>
       <item path="sys/Semaphore.cpp" ex="false" tool="1" flavor2="0">
       </item>
+      <item path="sys/Semaphore.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="sys/ThreadPool.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="sys/ThreadPool.h" ex="false" tool="3" flavor2="0">
       </item>
     </conf>
   </confs>
