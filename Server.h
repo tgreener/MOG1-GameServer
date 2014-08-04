@@ -22,24 +22,22 @@
 #include "SystemCommandDelegate.h"
 #include "DataRequestDelegate.h"
 #include "GameCommandDelegate.h"
-#include "DBConnection.h"
 #include "ServiceLocator.h"
+#include "sys/ThreadPool.h"
 
 using namespace std;
 
 #define QUEUE_SIZE 10
-#define DB_FILE "game_data.db"
+#define NUM_THREADS 10
 
 typedef vector<ByteCodeDelegate*> InterpreterVector;
 
 class Server {
 private:
     int serverSocketHandle;
-    int clientSocketHandle;
     
     const char* filename;
     bool isServicingConnections;
-    InterpreterVector interpreterVector;
     
     int setAddress(struct sockaddr_un *address);
     int readMessageFromClient(int clientSocketHandle, char* buffer, int bufferSize);
@@ -48,9 +46,10 @@ private:
     SystemCommandDelegate sysDel;
     GameCommandDelegate gameDel;
     DataRequestDelegate dataDel;
+    InterpreterVector interpreterVector;
     
     ServiceLocator sl;
-    DBConnection dbc;
+    ThreadPool threadPool;
     
 public:
     Server(const char* filename);

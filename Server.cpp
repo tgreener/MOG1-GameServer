@@ -1,6 +1,7 @@
 
 #include "Server.h"
 #include "ServiceLocator.h"
+#include <errno.h>
 
 Server::Server(const char* filename) : filename(filename), isServicingConnections(true) {
 }
@@ -29,15 +30,33 @@ void Server::init() {
         printf("Could not force the socket to listen.\n");
     }
     
-    dbc.open(DB_FILE);
-    
     sl.setAsServiceLocator();
-    sl.setDBConnection(&dbc);
     sl.setServer(this);
     
     interpreterVector.push_back(&sysDel);
     interpreterVector.push_back(&gameDel);
     interpreterVector.push_back(&dataDel);
+    
+    threadPool.setSize(NUM_THREADS);
+    
+    threadPool.setSetupFunction([this] (void) -> void {
+        ((ServiceLocator&)(ServiceLocator::getServiceLocator())).setServer(this);
+    });
+    
+    threadPool.setRunFunction([this] (int clientHandle) -> void {
+        char buffer[256];
+        int byteCount = readMessageFromClient(clientHandle, buffer, 256);
+        
+        interpretByteMessage(buffer, byteCount);
+        
+        if(close(clientHandle) < 0) {
+            printf("Error closing client socket.\n");
+        }
+    });
+    
+    threadPool.setTeardownFunction([] (void) -> void {});
+    
+    threadPool.run();
 }
 
 void Server::serviceSocket() {
@@ -45,16 +64,9 @@ void Server::serviceSocket() {
     
     while(isServicingConnections) {
         socklen_t csaLength = sizeof(clientSocketAddress);
-        clientSocketHandle = accept(serverSocketHandle, (sockaddr*)&clientSocketAddress, &csaLength);
-        sl.setClientSocketHandle(clientSocketHandle);
-        
-        char buffer[256];
-        int byteCount = readMessageFromClient(clientSocketHandle, buffer, 256);
-        
-        interpretByteMessage(buffer, byteCount);
-        
-        if(close(clientSocketHandle) < 0) {
-            printf("Error closing client socket.\n");
+        int clientSocketHandle = accept(serverSocketHandle, (sockaddr*)&clientSocketAddress, &csaLength);
+        if(clientSocketHandle >= 0 && isServicingConnections) {
+            threadPool.acceptClient(clientSocketHandle);
         }
     }
 }
@@ -71,11 +83,13 @@ void Server::interpretByteMessage(char* bytes, int length) {
 
 void Server::stopServer() {
     isServicingConnections = false;
+    if(close(serverSocketHandle) < 0) {
+        printf("Error shutting down server: %s\n", strerror(errno));
+    }
 }
 
 void Server::closeServer() {
-    dbc.close();
-    close(serverSocketHandle);
+    threadPool.flush();
     unlink(filename);
 }
 

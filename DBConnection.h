@@ -12,6 +12,8 @@
 #include <stdbool.h>
 #include "DBStatement.h"
 
+#define DB_FILE "game_data.db"
+
 typedef sqlite3* DBHandle;
 
 class DBConnection {
