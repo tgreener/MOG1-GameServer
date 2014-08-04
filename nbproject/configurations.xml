@@ -181,11 +181,7 @@
       </item>
       <item path="sys/Semaphore.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="sys/Semaphore.h" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="sys/ThreadPool.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="sys/ThreadPool.h" ex="false" tool="3" flavor2="0">
       </item>
     </conf>
     <conf name="Release" type="1">
@@ -292,11 +288,7 @@
       </item>
       <item path="sys/Semaphore.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="sys/Semaphore.h" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="sys/ThreadPool.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="sys/ThreadPool.h" ex="false" tool="3" flavor2="0">
       </item>
     </conf>
   </confs>
