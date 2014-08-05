@@ -1,10 +1,3 @@
-create table user (
-    id INTEGER PRIMARY KEY,
-    current_location INTEGER DEFAULT 0,
-    tag TEXT,
-    FOREIGN KEY(current_location) REFERENCES location(id) ON DELETE SET DEFAULT ON UPDATE CASCADE
-);
-
 create table location (
 	id INTEGER PRIMARY KEY,
 	name TEXT,
@@ -12,16 +5,15 @@ create table location (
 	is_route INTEGER CHECK (is_route <= 1 AND is_route >= 0) DEFAULT 0,
 	CHECK (is_point_of_interest <> is_route)
 );
-
 create table point_of_interest (
   id INTEGER PRIMARY KEY,
   location_id INTEGER UNIQUE,
   soil INTEGER CHECK(soil > 0 AND soil <= 10),
   stone INTEGER CHECK(stone > 0 AND stone <= 10),
   wilderness INTEGER CHECK(wilderness > 0 AND wilderness <= 10),
+  population INTEGER DEFAULT 0 NOT NULL CHECK (population >= 0),
   FOREIGN KEY(location_id) REFERENCES location(id)ON DELETE CASCADE ON UPDATE CASCADE
 );
-
 create table route (
   id INTEGER PRIMARY KEY,
   location_id INTEGER UNIQUE,
@@ -35,4 +27,10 @@ create table route (
   FOREIGN KEY(poi_a) REFERENCES point_of_interest(id) ON DELETE RESTRICT ON UPDATE CASCADE,
   FOREIGN KEY(poi_b) REFERENCES point_of_interest(id) ON DELETE RESTRICT ON UPDATE CASCADE,
   FOREIGN KEY(location_id) REFERENCES location(id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+create table user (
+    id INTEGER PRIMARY KEY,
+    current_location INTEGER DEFAULT 0,
+    tag TEXT,
+    FOREIGN KEY(current_location) REFERENCES location(id) ON DELETE SET DEFAULT ON UPDATE CASCADE
 );

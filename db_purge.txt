@@ -1,3 +1,4 @@
 drop table route;
 drop table point_of_interest;
 drop table location;
+drop table user;
