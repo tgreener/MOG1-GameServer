@@ -1,6 +1,7 @@
 
 #include "UserDAO.h"
 #include "../ServiceLocator.h"
+#include "../StringUtil.h"
 
 UserDAO::UserDAO() : id(0), location(0), tag(nullptr) {}
 
@@ -93,7 +94,7 @@ void UserDAO::setLocation(unsigned int location) {
 
 void UserDAO::setTag(const char* tag) {
     freeTag();
-    this->tag = tag;
+    this->tag = heapifyString(tag);
 }
 
 void UserDAO::allUserDAOs(AllUserDAOsCallback callback) {
