@@ -11,7 +11,9 @@
       <itemPath>DBStatement.h</itemPath>
       <itemPath>DBUtil.h</itemPath>
       <itemPath>DataRequestDelegate.h</itemPath>
+      <itemPath>Definitions.h</itemPath>
       <itemPath>GameCommandDelegate.h</itemPath>
+      <itemPath>GameController/GameController.h</itemPath>
       <itemPath>ImmutableServiceLocator.h</itemPath>
       <itemPath>Models/Location.h</itemPath>
       <itemPath>Models/PointOfInterest.h</itemPath>
@@ -43,6 +45,7 @@
       <itemPath>DBUtil.cpp</itemPath>
       <itemPath>DataRequestDelegate.cpp</itemPath>
       <itemPath>GameCommandDelegate.cpp</itemPath>
+      <itemPath>GameController/GameController.cpp</itemPath>
       <itemPath>Models/Location.cpp</itemPath>
       <itemPath>Models/PointOfInterest.cpp</itemPath>
       <itemPath>DAOs/PointsOfInterestDAO.cpp</itemPath>
@@ -133,9 +136,15 @@
       </item>
       <item path="DataRequestDelegate.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="Definitions.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="GameCommandDelegate.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="GameCommandDelegate.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="GameController/GameController.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="GameController/GameController.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="ImmutableServiceLocator.h" ex="false" tool="3" flavor2="0">
       </item>
@@ -244,9 +253,15 @@
       </item>
       <item path="DataRequestDelegate.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="Definitions.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="GameCommandDelegate.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="GameCommandDelegate.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="GameController/GameController.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="GameController/GameController.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="ImmutableServiceLocator.h" ex="false" tool="3" flavor2="0">
       </item>

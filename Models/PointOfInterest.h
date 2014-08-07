@@ -46,10 +46,14 @@ public:
     unsigned int getAttributeSoil() const;
     unsigned int getAttributeStone() const;
     unsigned int getAttributeWilderness() const;
+    unsigned int getPopulation() const;
+    
+    unsigned int getLocationID() const;
     
     void setAttributeSoil(int s);
     void setAttributeStone(int s);
     void setAttributeWilderness(int w);
+    void setPopulation(unsigned int pop);
     
     virtual void bark() const;
     virtual unsigned int serializedLength() const;

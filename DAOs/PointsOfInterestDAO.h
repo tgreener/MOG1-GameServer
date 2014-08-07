@@ -15,9 +15,11 @@
 class PointsOfInterestDAO : public AbstractDAO{
 private:
     unsigned int id;
+    unsigned int locationID;
     unsigned int soil;
     unsigned int stone;
     unsigned int wilderness;
+    unsigned int population;
     
     const unsigned char* name;
     
@@ -37,12 +39,16 @@ public:
     unsigned int getSoil() const;
     unsigned int getStone() const;
     unsigned int getWilderness() const;
+    unsigned int getLocationID() const;
+    unsigned int getPopulation() const;
     const unsigned char* getName() const;
     
     void setName(const unsigned char* n);
     void setSoil(unsigned int sl);
     void setStone(unsigned int st);
     void setWilderness(unsigned int wld);
+    void setLocation(unsigned int loc);
+    void setPopulation(unsigned int pop);
     
     static void allPOIDAOs(std::function<void(PointsOfInterestDAO*, int)>);
 };

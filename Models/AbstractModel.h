@@ -9,11 +9,11 @@
 #define	ABSTRACTMODEL_H
 
 #include <functional>
+#include "../Definitions.h"
 
 class AbstractModel;
 
 typedef std::function<void(AbstractModel**, int)> AllModelsCallback;
-typedef std::function<void(const char* bytes, int length)> ByteInterpreterFunction;
 
 class AbstractModel {
 public:

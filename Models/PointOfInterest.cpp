@@ -34,6 +34,8 @@ void PointOfInterest::setDAO(const PointsOfInterestDAO& otherDao) {
     dao.setSoil(otherDao.getSoil());
     dao.setStone(otherDao.getStone());
     dao.setWilderness(otherDao.getWilderness());
+    dao.setLocation(otherDao.getLocationID());
+    dao.setPopulation(otherDao.getPopulation());
     
     needsUpdate = true;
 }
@@ -76,6 +78,14 @@ unsigned int PointOfInterest::getAttributeWilderness() const {
     return dao.getWilderness();
 }
 
+unsigned int PointOfInterest::getPopulation() const {
+    return dao.getPopulation();
+}
+    
+unsigned int PointOfInterest::getLocationID() const {
+    return dao.getLocationID();
+}
+
 void PointOfInterest::setAttributeSoil(int s) {
     needsUpdate = true;
     dao.setSoil(s);
@@ -89,6 +99,11 @@ void PointOfInterest::setAttributeStone(int s) {
 void PointOfInterest::setAttributeWilderness(int w) {
     needsUpdate = true;
     dao.setWilderness(w);
+}
+
+void PointOfInterest::setPopulation(unsigned int pop) {
+    needsUpdate = true;
+    dao.setPopulation(pop);
 }
 
 void PointOfInterest::bark() const {
@@ -109,18 +124,28 @@ bool PointOfInterest::remove() {
 }
 
 unsigned int PointOfInterest::serializedLength() const {
-    unsigned int length = 4;
+    unsigned int length = 6 * sizeof(unsigned int);
     length += strlen((const char*)getName()) + 1;
     
     return length;
 }
 
 void PointOfInterest::serialize(unsigned char* buffer) const {
-    buffer[0] = id;
-    buffer[1] = this->getAttributeSoil();
-    buffer[2] = this->getAttributeStone();
-    buffer[3] = this->getAttributeWilderness();
-    strcpy((char*)buffer + 4, (char*)this->getName());
+    unsigned int loc = this->getLocationID();
+    unsigned int soil = this->getAttributeSoil();
+    unsigned int stn = this->getAttributeStone();
+    unsigned int wld = this->getAttributeWilderness();
+    unsigned int pop = this->getPopulation();
+    
+//    printf("%d, %d, %d, %d, %d\n", loc, soil, stn, wld, pop);
+    
+    memcpy(buffer + (sizeof(unsigned int) * 0), &id, sizeof(unsigned int));
+    memcpy(buffer + (sizeof(unsigned int) * 1), &loc, sizeof(unsigned int));
+    memcpy(buffer + (sizeof(unsigned int) * 2), &soil, sizeof(unsigned int));
+    memcpy(buffer + (sizeof(unsigned int) * 3), &stn, sizeof(unsigned int));
+    memcpy(buffer + (sizeof(unsigned int) * 4), &wld, sizeof(unsigned int));
+    memcpy(buffer + (sizeof(unsigned int) * 5), &pop, sizeof(unsigned int));
+    strcpy((char*)buffer + (sizeof(unsigned int) * 6), (char*)this->getName());
 }
 
 void PointOfInterest::getAllPOIs(AllModelsCallback callback) {
