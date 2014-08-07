@@ -67,21 +67,26 @@ unsigned int User::serializedLength() const {
     int idSize = sizeof(unsigned int);
     int locationIDSize = sizeof(unsigned int);
     int tagSize = strlen(dao.getTag()) + 1; // Plus null character
+    int metaDataSize = 2; // For response code byte, and final byte
     
-    return idSize + locationIDSize + tagSize; 
+    return idSize + locationIDSize + tagSize + metaDataSize; 
 }
 
 void User::serialize(unsigned char* buffer) const {
     memset(buffer, 0, serializedLength());
+    
+    buffer[0] = 1;
     
     unsigned int id = dao.getID();
     unsigned int loc = dao.getLocation();
     
     unsigned int intSize = sizeof(unsigned int);
     
-    memcpy(buffer, &id, intSize);
-    memcpy(buffer + intSize, &loc, intSize);
+    memcpy(buffer + (intSize * 0), &id, intSize);
+    memcpy(buffer + (intSize * 1), &loc, intSize);
     memcpy(buffer + (intSize * 2), dao.getTag(), strlen(dao.getTag()));
+    
+    buffer[serializedLength() - 1] = 0xff;
 }
 
 bool User::remove() {
@@ -121,7 +126,7 @@ ByteInterpreterFunction User::getFetchFunction() {
     return [](const char* bytes, int length) -> void {
         if(length >= 3) {
             try {
-                unsigned int id = bytes[2];
+                unsigned int id = *((unsigned int*)(bytes + 2));
                 User user(id);
                 AbstractModel::fetchModel(user);
             }

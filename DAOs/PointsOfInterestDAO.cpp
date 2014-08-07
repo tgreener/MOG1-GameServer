@@ -34,7 +34,7 @@ bool PointsOfInterestDAO::retrieve(unsigned int id) {
     const char* query;
     
     query = "SELECT point_of_interest.id, location.name, "
-            "point_of_interest.soil, point_of_interest.stone, point_of_interest.wilderness, location.id "
+            "point_of_interest.soil, point_of_interest.stone, point_of_interest.wilderness, location.id, point_of_interest.population "
             "FROM location INNER JOIN point_of_interest "
             "ON location.id = point_of_interest.location_id " 
             "WHERE point_of_interest.id = ? AND location.is_point_of_interest <> 0";
@@ -46,6 +46,8 @@ bool PointsOfInterestDAO::retrieve(unsigned int id) {
         soil = statement.getColumnInt(2);
         stone = statement.getColumnInt(3);
         wilderness = statement.getColumnInt(4);
+        locationID = statement.getColumnInt(5);
+        population = statement.getColumnInt(6);
         
         statement.finalize();
         return true;
@@ -120,7 +122,7 @@ int PointsOfInterestDAO::write(int id) {
     this->id = id;
     
     const char* query = "UPDATE point_of_interest "
-    "SET soil = ?, stone = ?, wilderness = ? "
+    "SET soil = ?, stone = ?, wilderness = ?, population = ? "
     "WHERE id = ?;";
     
     DBConnection* dbc = ServiceLocator::getServiceLocator().getDBConnection();
@@ -129,7 +131,8 @@ int PointsOfInterestDAO::write(int id) {
     statement.bindInt(1, soil);
     statement.bindInt(2, stone);
     statement.bindInt(3, wilderness);
-    statement.bindInt(4, id);
+    statement.bindInt(4, population);
+    statement.bindInt(5, id);
     
     int result = statement.step();
     if(!result) {
@@ -159,6 +162,14 @@ unsigned int PointsOfInterestDAO::getID() const {
     return id;
 }
 
+unsigned int PointsOfInterestDAO::getLocationID() const {
+    return locationID;
+}
+
+unsigned int PointsOfInterestDAO::getPopulation() const {
+    return population;
+}
+
 void PointsOfInterestDAO::setName(const unsigned char* n) {
     freeName();
     name = heapifyStringUnsigned(n);
@@ -174,6 +185,14 @@ void PointsOfInterestDAO::setStone(unsigned int st) {
 
 void PointsOfInterestDAO::setWilderness(unsigned int wld) {
     wilderness = wld;
+}
+
+void PointsOfInterestDAO::setLocation(unsigned int loc) {
+    locationID = loc;
+}
+
+void PointsOfInterestDAO::setPopulation(unsigned int pop) {
+    population = pop;
 }
 
 void PointsOfInterestDAO::allPOIDAOs(std::function<void(PointsOfInterestDAO*, int)> callback) {
@@ -194,7 +213,7 @@ void PointsOfInterestDAO::allPOIDAOs(std::function<void(PointsOfInterestDAO*, in
     
     const char* poisQuery = 
             "SELECT point_of_interest.id, location.name, "
-            "point_of_interest.soil, point_of_interest.stone, point_of_interest.wilderness, location.id "
+            "point_of_interest.soil, point_of_interest.stone, point_of_interest.wilderness, location.id, point_of_interest.population "
             "FROM location INNER JOIN point_of_interest "
             "ON location.id = point_of_interest.location_id " 
             "WHERE location.is_point_of_interest <> 0";
@@ -208,15 +227,19 @@ void PointsOfInterestDAO::allPOIDAOs(std::function<void(PointsOfInterestDAO*, in
         int soil = statement.getColumnInt(2);
         int stone = statement.getColumnInt(3);
         int wilderness = statement.getColumnInt(4);
+        int location = statement.getColumnInt(5);
+        int population = statement.getColumnInt(6);
         
         daos[i].id = id;
         daos[i].setName(name);
         daos[i].setSoil(soil);
         daos[i].setStone(stone);
         daos[i].setWilderness(wilderness);
+        daos[i].setLocation(location);
+        daos[i].setPopulation(population);
     }
     statement.finalize();
-
+    
     callback(daos, count);
 
     delete[] daos;

@@ -43,6 +43,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/DBUtil.o \
 	${OBJECTDIR}/DataRequestDelegate.o \
 	${OBJECTDIR}/GameCommandDelegate.o \
+	${OBJECTDIR}/GameController/GameController.o \
 	${OBJECTDIR}/Models/AbstractModel.o \
 	${OBJECTDIR}/Models/Location.o \
 	${OBJECTDIR}/Models/PointOfInterest.o \
@@ -120,6 +121,11 @@ ${OBJECTDIR}/GameCommandDelegate.o: GameCommandDelegate.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/GameCommandDelegate.o GameCommandDelegate.cpp
+
+${OBJECTDIR}/GameController/GameController.o: GameController/GameController.cpp 
+	${MKDIR} -p ${OBJECTDIR}/GameController
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/GameController/GameController.o GameController/GameController.cpp
 
 ${OBJECTDIR}/Models/AbstractModel.o: Models/AbstractModel.cpp 
 	${MKDIR} -p ${OBJECTDIR}/Models

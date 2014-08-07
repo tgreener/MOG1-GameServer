@@ -9,10 +9,7 @@
 #define	DATAREQUESTDELEGATE_H
 
 #include "ByteCodeDelegate.h"
-#include "Models/AbstractModel.h"
-#include <vector>
-
-typedef std::vector<ByteInterpreterFunction> InterpreterFunctions;
+#include "Definitions.h"
 
 class DataRequestDelegate : public ByteCodeDelegate {
 private:
