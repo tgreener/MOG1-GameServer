@@ -23,8 +23,8 @@ unsigned int User::getID() const {
     return dao.getID();
 }
 
-unsigned int User::getLocation() const {
-    return dao.getLocation();
+Location User::getLocation() const {
+    return Location(dao.getLocation());
 }
 
 const char* User::getTag() const {

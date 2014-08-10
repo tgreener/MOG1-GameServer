@@ -18,7 +18,7 @@ PointsOfInterestDAO::~PointsOfInterestDAO() {
 }
 
 void PointsOfInterestDAO::freeName() {
-    if(name != NULL) {
+    if(name != nullptr) {
         delete[] name;
     }
 }

@@ -17,7 +17,7 @@ typedef std::function<void(AbstractModel**, int)> AllModelsCallback;
 
 class AbstractModel {
 public:
-    virtual void bark() const = 0;
+//    virtual void bark() const = 0;
     virtual void save() = 0;
     virtual unsigned int serializedLength() const = 0;
     virtual void serialize(unsigned char* buffer) const = 0;

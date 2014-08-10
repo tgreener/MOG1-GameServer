@@ -8,7 +8,7 @@
 #ifndef ROUTE_H
 #define	ROUTE_H
 
-#include "Location.h"
+#include "AbstractModel.h"
 #include "../DAOs/RouteDAO.h"
 #include "PointOfInterest.h"
 
@@ -24,7 +24,7 @@ typedef struct RouteAttribs {
 
 typedef std::function<void(Route*, unsigned int count)> AllRoutesCallback;
 
-class Route : public Location {
+class Route : public AbstractModel{
 private:
     RouteDAO dao;
     
@@ -38,7 +38,7 @@ public:
     Route(unsigned int id);
     virtual ~Route();
     
-    unsigned int getID() const;
+    virtual unsigned int getID() const;
     PointOfInterest getEndpointA() const;
     PointOfInterest getEndpointB() const;
     unsigned int getDifficulty() const;

@@ -63,8 +63,8 @@ unsigned int PointOfInterest::getID() const {
     return id;
 }
 
-const unsigned char* PointOfInterest::getName() const {
-    return dao.getName();
+const char* PointOfInterest::getName() const {
+    return (const char*)(dao.getName());
 }
 
 unsigned int PointOfInterest::getAttributeStone() const {

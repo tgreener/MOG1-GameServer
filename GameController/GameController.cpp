@@ -1,6 +1,7 @@
 
 #include "GameController.h"
 #include "../Models/User.h"
+#include "ResponseInterface.h"
 #include <random>
 
 GameController GameController::instance;
@@ -41,7 +42,19 @@ void GameController::getRandomPointOfInterest(std::function<void(PointOfInterest
 
 ByteInterpreterFunction GameController::getConnectUserFunction() {
     return [] (const char* bytes, int length) {
+        // Parse bytes
+        // Get Tag
+        std::string tag = "";
         
+        UserAttributes attribs;
+        attribs.tag = tag.c_str();
+        
+        instance.getRandomPointOfInterest([&](PointOfInterest& poi){
+            attribs.location = poi.getLocationID();
+        });
+        
+        User connectedUser(attribs);
+        ResponseInterface::userConnectedResponse(connectedUser);
     };
 }
 

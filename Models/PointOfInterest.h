@@ -8,8 +8,8 @@
 #ifndef POINTOFINTEREST_H
 #define	POINTOFINTEREST_H
 
-#include "Location.h"
 #include "../DAOs/PointsOfInterestDAO.h"
+#include "AbstractModel.h"
 
 typedef struct PointOfInterestAttributes {
     const unsigned char* name;
@@ -22,7 +22,7 @@ class PointOfInterest;
 
 typedef std::function<void(PointOfInterest*, unsigned int)> PointOfInterestCallback;
 
-class PointOfInterest : public Location {
+class PointOfInterest : public AbstractModel {
 private:
     unsigned int id;
     bool needsUpdate;
@@ -40,8 +40,8 @@ public:
     PointOfInterest(POIAttrib& attribs);
     ~PointOfInterest();
     
-    unsigned int getID() const;
-    const unsigned char* getName() const;
+    virtual unsigned int getID() const;
+    virtual const char* getName() const;
     
     unsigned int getAttributeSoil() const;
     unsigned int getAttributeStone() const;

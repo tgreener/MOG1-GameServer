@@ -23,8 +23,8 @@ private:
     
     const unsigned char* name;
     
-    void freeName();
     bool checkValuesSet();
+    void freeName();
 public:
     PointsOfInterestDAO();
     PointsOfInterestDAO(int id, const unsigned char* name, int soil, int stone, int wild);
