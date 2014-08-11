@@ -17,7 +17,6 @@ unsigned int GameController::connectUser(std::string tag) {
     attribs.tag = tag.c_str();
     
     getRandomPointOfInterest([&](PointOfInterest& poi) {
-        printf("Random poi location id: %d\n", poi.getLocationID());
         attribs.location = poi.getLocationID();
     });
     
@@ -46,9 +45,6 @@ void GameController::getRandomPointOfInterest(std::function<void(PointOfInterest
             std::uniform_int_distribution<unsigned int> dis(0, length - 1);
             
             unsigned int randomPOIIndex = dis(gen);
-            
-            printf("Random poi index: %d length: %d\n", randomPOIIndex, length);
-            
             randomPOIFunction(pois[randomPOIIndex]);
         }
     });
