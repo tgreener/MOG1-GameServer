@@ -12,7 +12,8 @@
 
 class ResponseInterface {
 public:
-    static void userConnectedResponse(User& connectedUser);
+    static void userConnectedResponse(unsigned int id);
+    static void userDisconnectedResponse(bool completed);
 private:
     
 };

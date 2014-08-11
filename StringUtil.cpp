@@ -61,6 +61,8 @@ void printOctals(char* str, int length) {
 }
 
 const char* heapifyString(const char* n) {
+    if(n == nullptr) return n;
+    
     int length = strlen(n);
     char* result = new char[length];
     strcpy(result, n);
@@ -69,6 +71,8 @@ const char* heapifyString(const char* n) {
 }
 
 const unsigned char* heapifyStringUnsigned(const unsigned char* n) {
+    if(n == nullptr) return n;
+    
     int length = strlen((const char*)n);
     unsigned char* result = new unsigned char[length];
     strcpy((char*)result, (const char*)n);

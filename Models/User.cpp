@@ -66,10 +66,8 @@ void User::save() {
 unsigned int User::serializedLength() const {
     int idSize = sizeof(unsigned int);
     int locationIDSize = sizeof(unsigned int);
-    int tagSize = strlen(dao.getTag()) + 1; // Plus null character
-    int metaDataSize = 2; // For response code byte, and final byte
-    
-    return idSize + locationIDSize + tagSize + metaDataSize; 
+    int tagSize = strlen(dao.getTag()) + 1; // Plus null character    
+    return idSize + locationIDSize + tagSize; 
 }
 
 void User::serialize(unsigned char* buffer) const {

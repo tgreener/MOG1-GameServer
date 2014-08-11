@@ -28,8 +28,8 @@ bool UserDAO::retrieve(unsigned int id) {
     statement.bindInt(1, this->id);
     
     if(statement.step()) {
-        this->location = statement.getColumnInt(1);
-        this->tag = (const char*)(statement.getColumnText(2));
+        setLocation(statement.getColumnInt(1));
+        setTag((const char*)(statement.getColumnText(2)));
         
         statement.finalize();
         return true;
@@ -51,14 +51,19 @@ bool UserDAO::remove(unsigned int id) {
 
 int UserDAO::write() {
     DBConnection& dbc = *(ServiceLocator::getServiceLocator().getDBConnection());
-    const char* query = "INSERT INTO user (tag) VALUES (?)";
+    const char* query = "INSERT INTO user (current_location, tag) VALUES (?, ?)";
     DBStatement statement = dbc.prepare(query, nullptr);
-    statement.bindText(1, tag);
+    statement.bindInt(1, this->location);
+    statement.bindText(2, tag);
     
     if(statement.step()) id = dbc.lastInsertRowId();
     else id = -1;
     
     statement.finalize();
+    
+    if((int)id < 0) {
+        printf("Error inserting user { id : %d, location : %d tag : %s }\n", id, location, tag);
+    }
     
     return id;
 }
