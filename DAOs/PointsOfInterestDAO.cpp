@@ -5,11 +5,11 @@
 
 #include <stdio.h>
 
-PointsOfInterestDAO::PointsOfInterestDAO() : name(NULL), soil(0), stone(0), wilderness(0) {
+PointsOfInterestDAO::PointsOfInterestDAO() : name(nullptr), soil(0), stone(0), wilderness(0) {
 }
 
 PointsOfInterestDAO::PointsOfInterestDAO(int id, const unsigned char* name, int soil, int stone, int wild) : 
-id(id), name(NULL), soil(soil), stone(stone), wilderness(wild) {
+id(id), name(nullptr), soil(soil), stone(stone), wilderness(wild) {
     this->name = heapifyStringUnsigned(name);
 }
 
@@ -24,7 +24,7 @@ void PointsOfInterestDAO::freeName() {
 }
 
 bool PointsOfInterestDAO::checkValuesSet() {
-    return name != NULL && soil > 0 && stone > 0 && wilderness > 0 &&
+    return name != nullptr && soil > 0 && stone > 0 && wilderness > 0 &&
             soil <= 10 && stone <= 10 && wilderness <= 10;
 }
 
@@ -38,10 +38,10 @@ bool PointsOfInterestDAO::retrieve(unsigned int id) {
             "FROM location INNER JOIN point_of_interest "
             "ON location.id = point_of_interest.location_id " 
             "WHERE point_of_interest.id = ? AND location.is_point_of_interest <> 0";
-    DBStatement statement = dbc->prepare(query, NULL);
+    DBStatement statement = dbc->prepare(query, nullptr);
     statement.bindInt(1, id);
     
-    if(statement.step() && statement.getColumnText(1) != NULL) {
+    if(statement.step() && statement.getColumnText(1) != nullptr) {
         name = heapifyStringUnsigned(statement.getColumnText(1));
         soil = statement.getColumnInt(2);
         stone = statement.getColumnInt(3);
@@ -72,7 +72,7 @@ bool PointsOfInterestDAO::remove(unsigned int id) {
     
     const char* query = "DELETE FROM location WHERE id = ? AND is_point_of_interest <> 0";
     
-    DBStatement statement = dbc->prepare(query, NULL);
+    DBStatement statement = dbc->prepare(query, nullptr);
     statement.bindInt(1, locationID);
     
     int result = statement.step();
@@ -83,7 +83,7 @@ bool PointsOfInterestDAO::remove(unsigned int id) {
 int PointsOfInterestDAO::write() {
     const char* query = "INSERT INTO location (name, is_point_of_interest) VALUES (?, 1)";
     DBConnection* dbc = ServiceLocator::getServiceLocator().getDBConnection();
-    DBStatement statement1 = dbc->prepare(query, NULL);
+    DBStatement statement1 = dbc->prepare(query, nullptr);
     statement1.bindText(1, (const char*)name);
     
     bool result = statement1.step();
@@ -99,7 +99,7 @@ int PointsOfInterestDAO::write() {
     
     query = "INSERT INTO point_of_interest (location_id, soil, stone, wilderness) VALUES ("
             "?, ?, ?, ?);";
-    DBStatement statement3 = dbc->prepare(query, NULL);
+    DBStatement statement3 = dbc->prepare(query, nullptr);
     
     statement3.bindInt(1, locationID);
     statement3.bindInt(2, soil);
@@ -126,7 +126,7 @@ int PointsOfInterestDAO::write(int id) {
     "WHERE id = ?;";
     
     DBConnection* dbc = ServiceLocator::getServiceLocator().getDBConnection();
-    DBStatement statement = dbc->prepare(query, NULL);
+    DBStatement statement = dbc->prepare(query, nullptr);
     
     statement.bindInt(1, soil);
     statement.bindInt(2, stone);
@@ -199,7 +199,7 @@ void PointsOfInterestDAO::allPOIDAOs(std::function<void(PointsOfInterestDAO*, in
     DBConnection* dbc = ServiceLocator::getServiceLocator().getDBConnection();
     
     const char* countQuery = "SELECT COUNT() FROM point_of_interest";
-    DBStatement countStatement = dbc->prepare(countQuery, NULL);
+    DBStatement countStatement = dbc->prepare(countQuery, nullptr);
     
     countStatement.step();
     int count = countStatement.getColumnInt(0);
@@ -217,7 +217,7 @@ void PointsOfInterestDAO::allPOIDAOs(std::function<void(PointsOfInterestDAO*, in
             "FROM location INNER JOIN point_of_interest "
             "ON location.id = point_of_interest.location_id " 
             "WHERE location.is_point_of_interest <> 0";
-    DBStatement statement = dbc->prepare(poisQuery, NULL);
+    DBStatement statement = dbc->prepare(poisQuery, nullptr);
     
     for(int i = 0; i < count; i++) {
         statement.step();

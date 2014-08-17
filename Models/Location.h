@@ -29,8 +29,11 @@ public:
 
     virtual void setName(const char* name);
     
-    PointOfInterest getPOI();
-    Route getRoute();
+    PointOfInterest getPOI() const;
+    Route getRoute() const;
+    
+    virtual void onUserEnter(const User& user) override;
+    virtual void onUserExit(const User& user) override;
     
     virtual void save();
     virtual bool remove();

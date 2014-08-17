@@ -14,6 +14,7 @@ class ResponseInterface {
 public:
     static void userConnectedResponse(unsigned int id);
     static void userDisconnectedResponse(bool completed);
+    static void userLocationResponse(const Location& loc);
 private:
     
 };

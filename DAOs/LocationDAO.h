@@ -35,8 +35,8 @@ public:
     void setIsRoute(bool isRoute);
     void setIsPOI(bool isPOI);
     
-    PointOfInterest getPOI();
-    Route getRoute();
+    PointOfInterest getPOI() const;
+    Route getRoute() const;
     
     virtual bool retrieve(unsigned int id);
     virtual bool remove(unsigned int id);

@@ -22,7 +22,7 @@ typedef struct RouteAttribs {
     bool reverse = false;
 } RouteAttributes;
 
-typedef std::function<void(Route*, unsigned int count)> AllRoutesCallback;
+typedef std::function<void(Route*, unsigned int count)> RoutesCallback;
 
 class Route : public AbstractModel{
 private:
@@ -39,6 +39,9 @@ public:
     virtual ~Route();
     
     virtual unsigned int getID() const;
+    unsigned int getLocationID() const;
+    unsigned int getEndpointAID() const;
+    unsigned int getEndpointBID() const;
     PointOfInterest getEndpointA() const;
     PointOfInterest getEndpointB() const;
     unsigned int getDifficulty() const;
@@ -57,7 +60,10 @@ public:
     virtual void serialize(unsigned char* buffer) const;
     virtual bool remove();
     
-    static void getAllRoutes(AllRoutesCallback callback);
+    virtual void onUserEnter(const User& user) override;
+    virtual void onUserExit(const User& user) override;
+    
+    static void getAllRoutes(RoutesCallback callback);
     
     static ByteInterpreterFunction getFetchFunction();
     static ByteInterpreterFunction getAddFunction();

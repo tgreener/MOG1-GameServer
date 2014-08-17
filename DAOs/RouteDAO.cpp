@@ -3,7 +3,7 @@
 #include "../DBStatement.h"
 #include "../ServiceLocator.h"
 
-RouteDAO::RouteDAO() : needsWrite(false), poiA(0), poiB(0), id(0), difficulty(0), bidirected(false), reverse(false) {
+RouteDAO::RouteDAO() : needsWrite(false), poiA(0), poiB(0), id(0), difficulty(0), bidirected(false), reverse(false), locationID(0) {
     
 }
 
@@ -76,8 +76,6 @@ int RouteDAO::write() {
     bool result = statement1.step();
     statement1.finalize();
     
-    int locationID;
-    
     if(result) locationID = dbc.lastInsertRowId();
     else return -1;
     
@@ -124,6 +122,10 @@ unsigned int RouteDAO::getID() const {
     return this->id;
 }
 
+unsigned int RouteDAO::getLocationID() const {
+    return this->locationID;
+}
+
 unsigned int RouteDAO::getPOIA() const {
     return this->poiA;
 }
@@ -164,7 +166,7 @@ void RouteDAO::setReverse(bool rev) {
     this->reverse = rev;
 }
 
-void RouteDAO::allRouteDAOs(AllRouteDAOsCallback callback) {
+void RouteDAO::allRouteDAOs(RouteDAOsCallback callback) {
     DBConnection& dbc = *(ServiceLocator::getServiceLocator().getDBConnection());
     
     const char* countQuery = "SELECT COUNT() FROM route";

@@ -9,8 +9,13 @@
 #define	POINTSOFINTERESTDAO_H
 
 #include "AbstractDAO.h"
+#include "RouteDAO.h"
 #include <stdbool.h>
 #include <functional>
+
+class PointsOfInterestDAO;
+
+typedef std::function<void(PointsOfInterestDAO*, int)> PointOfInterestDAOsCallback;
 
 class PointsOfInterestDAO : public AbstractDAO{
 private:
@@ -50,7 +55,9 @@ public:
     void setLocation(unsigned int loc);
     void setPopulation(unsigned int pop);
     
-    static void allPOIDAOs(std::function<void(PointsOfInterestDAO*, int)>);
+    static void allPOIDAOs(PointOfInterestDAOsCallback callbackWithPOIDAOs);
+    static void outgoingRouteDAOs(RouteDAOsCallback callbackWithRouteDAOs);
+    static void incomingRouteDAOs(RouteDAOsCallback callbackWithRouteDAOs);
 };
 
 #endif	/* POINTSOFINTERESTDAO_H */

@@ -1,6 +1,7 @@
 
 #include "PointOfInterest.h"
 #include "../ServiceLocator.h"
+#include "User.h"
 #include <cstdlib>
 #include <string>
 
@@ -146,6 +147,27 @@ void PointOfInterest::serialize(unsigned char* buffer) const {
     memcpy(buffer + (sizeof(unsigned int) * 4), &wld, sizeof(unsigned int));
     memcpy(buffer + (sizeof(unsigned int) * 5), &pop, sizeof(unsigned int));
     strcpy((char*)buffer + (sizeof(unsigned int) * 6), (char*)this->getName());
+}
+
+void PointOfInterest::onUserEnter(const User& user) {
+    if(user.getLocationID() == dao.getLocationID()) {
+        dao.setPopulation(dao.getPopulation() + 1);
+        save();        
+    }
+    else {
+        printf("Attempted PointOfInterest::onUserEnter when user was not on Route.\n");
+    }
+}
+
+void PointOfInterest::onUserExit(const User& user) {
+    unsigned int population = dao.getPopulation();
+    if(population > 0 && user.getLocationID() == dao.getLocationID()) {
+        dao.setPopulation(population - 1);
+        save();
+    }
+    else {
+        printf("Attempted PointOfInterest::onUserExit when user was not on Route.\n");
+    }
 }
 
 void PointOfInterest::getAllPOIs(AllModelsCallback callback) {

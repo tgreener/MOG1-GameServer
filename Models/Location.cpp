@@ -29,7 +29,7 @@ void Location::setName(const char* name) {
     dao.setName(name);
 }
 
-PointOfInterest Location::getPOI() {
+PointOfInterest Location::getPOI() const {
     if(dao.isPOI()) {
         return dao.getPOI();
     }
@@ -37,12 +37,30 @@ PointOfInterest Location::getPOI() {
     return PointOfInterest();        
 }
 
-Route Location::getRoute() {
+Route Location::getRoute() const {
     if(dao.isRoute()) {
         return dao.getRoute();
     }
     
     return Route();
+}
+
+void Location::onUserEnter(const User& user) override {
+    if(isPOI()) {
+        getPOI().onUserEnter(user);
+    }
+    else if(isRoute()) {
+        getRoute().onUserEnter(user);
+    }
+}
+
+void Location::onUserExit(const User& user) override {
+    if(isPOI()) {
+        getPOI().onUserExit(user);
+    }
+    else if(isRoute()) {
+        getRoute().onUserExit(user);
+    }
 }
 
 void Location::save() {

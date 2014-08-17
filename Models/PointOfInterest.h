@@ -10,6 +10,7 @@
 
 #include "../DAOs/PointsOfInterestDAO.h"
 #include "AbstractModel.h"
+#include "Route.h"
 
 typedef struct PointOfInterestAttributes {
     const unsigned char* name;
@@ -61,7 +62,12 @@ public:
     virtual void save();
     virtual bool remove();
     
+    virtual void onUserEnter(const User& user) override;
+    virtual void onUserExit(const User& user) override;
+    
     static void getAllPOIs(PointOfInterestCallback callback);
+    static void getOutgoingRoutes(RoutesCallback callback);
+    static void getIncomingRoutes(RoutesCallback callback);
     
     static ByteInterpreterFunction getFetchFunction();
     static ByteInterpreterFunction getAddFunction();

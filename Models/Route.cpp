@@ -2,6 +2,7 @@
 #include "Route.h"
 
 #include "../ServiceLocator.h"
+#include "User.h"
 #include <string>
 
 Route::Route() {
@@ -26,6 +27,18 @@ Route::~Route() {}
 
 unsigned int Route::getID() const {
     return dao.getID();
+}
+
+unsigned int Route::getLocationID() const {
+    return dao.getLocationID();
+}
+
+unsigned int Route::getEndpointAID() const {
+    return dao.getPOIA();
+}
+
+unsigned int Route::getEndpointBID() const {
+    return dao.getPOIB();
 }
 
 PointOfInterest Route::getEndpointA() const {
@@ -68,6 +81,24 @@ void Route::setReverse(bool rev) {
     dao.setReverse(rev);
 }
 
+void Route::onUserEnter(const User& user) {
+    if(user.getLocationID() == dao.getLocationID()) {
+        
+    }
+    else {
+        printf("Attempted Route::onUserEnter when user was not on Route.\n");
+    }
+}
+
+void Route::onUserExit(const User& user) {
+    if(user.getLocationID() == dao.getLocationID()) {
+        
+    }
+    else {
+        printf("Attempted Route::onUserExit when user was not on Route.\n");
+    }
+}
+
 unsigned int Route::serializedLength() const {
     return 6;
 }
@@ -106,7 +137,7 @@ void Route::bark() const {
     ServiceLocator::getServiceLocator().sendMessageToClient(str.c_str());
 }
 
-void Route::getAllRoutes(AllRoutesCallback callback) {
+void Route::getAllRoutes(RoutesCallback callback) {
     RouteDAO::allRouteDAOs([&](RouteDAO* daos, int count) -> void {
         Route* routes = new Route[count];
         

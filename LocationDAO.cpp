@@ -67,7 +67,7 @@ bool LocationDAO::retrieve(unsigned int id) {
     return false;
 }
 
-PointOfInterest LocationDAO::getPOI() {
+PointOfInterest LocationDAO::getPOI() const {
     DBConnection* dbc = ServiceLocator::getServiceLocator().getDBConnection();
     const char* query = "SELECT COUNT() FROM point_of_interest WHERE location_id = ?";
     DBStatement countStatement = dbc->prepare(query, nullptr);
@@ -93,7 +93,7 @@ PointOfInterest LocationDAO::getPOI() {
     
 }
 
-Route LocationDAO::getRoute() {
+Route LocationDAO::getRoute() const {
     DBConnection* dbc = ServiceLocator::getServiceLocator().getDBConnection();
     const char* query = "SELECT COUNT() FROM route WHERE location_id = ?";
     DBStatement countStatement = dbc->prepare(query, nullptr);

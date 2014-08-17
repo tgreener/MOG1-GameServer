@@ -37,6 +37,25 @@ bool GameController::disconnectUser(unsigned int userID) {
     }
 }
 
+Location GameController::getUserLocation(unsigned int userID) {
+    User user(userID);
+    
+    return user.getLocation();
+}
+
+void GameController::getRoutesFromPointOfInterest(const PointOfInterest& poi, std::function<void(std::vector<Route>)> callback) {
+    
+}
+
+void GameController::moveUser(const User& user, const Location& loc) {
+    Location currentLocation = user.getLocation();
+    
+    currentLocation.onUserExit(user);
+    user.setLocation(loc);
+    loc.onUserEnter(user);
+    user.save();
+}
+
 void GameController::getRandomPointOfInterest(std::function<void(PointOfInterest&)> randomPOIFunction) {
     PointOfInterest::getAllPOIs([&](PointOfInterest* pois, unsigned int length) -> void {
         if(length > 0) {
@@ -71,6 +90,28 @@ ByteInterpreterFunction GameController::getDisconnectUserFunction() {
         unsigned int id = 1;
         ResponseInterface::userDisconnectedResponse(instance.disconnectUser(id));
         instance.singleConnectionTaken = false;
+    };
+}
+
+ByteInterpreterFunction GameController::getUserLocationFunction() {
+    return [] (const char* bytes, int length) {
+        // Mocking this again. Faking is fun.
+        // Parse bytes
+        // Get ID
+        unsigned int id = 1;
+        ResponseInterface::userLocationResponse(instance.getUserLocation(id));
+    };
+}
+
+ByteInterpreterFunction GameController::getRoutesFromPOIFunction() {
+    return [] (const char* bytes, int length) {
+        
+    };
+}
+
+ByteInterpreterFunction GameController::getMoveUserFunction() {
+    return [] (const char* bytes, int length) {
+        
     };
 }
 

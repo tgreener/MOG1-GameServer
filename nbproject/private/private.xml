@@ -9,10 +9,11 @@
         <group>
             <file>file:/Users/toddgreener/Documents/Development/ForFun/OnlineGame1/GameDataServer/GameCommandDelegate.cpp</file>
             <file>file:/Users/toddgreener/Documents/Development/ForFun/OnlineGame1/GameDataServer/GameController/ResponseInterface.cpp</file>
-            <file>file:/Users/toddgreener/Documents/Development/ForFun/OnlineGame1/GameDataServer/GameController/ResponseInterface.h</file>
             <file>file:/Users/toddgreener/Documents/Development/ForFun/OnlineGame1/GameDataServer/GameController/GameController.cpp</file>
+            <file>file:/Users/toddgreener/Documents/Development/ForFun/OnlineGame1/GameDataServer/GameController/ResponseInterface.h</file>
+            <file>file:/Users/toddgreener/Documents/Development/ForFun/OnlineGame1/GameDataServer/Models/Location.cpp</file>
             <file>file:/Users/toddgreener/Documents/Development/ForFun/OnlineGame1/GameDataServer/GameController/GameController.h</file>
-            <file>file:/Users/toddgreener/Documents/Development/ForFun/OnlineGame1/GameDataServer/GameCommandDelegate.h</file>
+            <file>file:/Users/toddgreener/Documents/Development/ForFun/OnlineGame1/GameDataServer/Models/Location.h</file>
         </group>
     </open-files>
 </project-private>

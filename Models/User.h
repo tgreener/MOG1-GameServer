@@ -35,6 +35,7 @@ public:
     virtual ~User() {}
     
     unsigned int getID() const;
+    unsigned int getLocationID() const;
     Location getLocation() const;
     const char* getTag() const;
     
