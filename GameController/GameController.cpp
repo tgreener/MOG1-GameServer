@@ -47,7 +47,7 @@ void GameController::getRoutesFromPointOfInterest(const PointOfInterest& poi, st
     
 }
 
-void GameController::moveUser(const User& user, const Location& loc) {
+void GameController::moveUser(User& user, Location& loc) {
     Location currentLocation = user.getLocation();
     
     currentLocation.onUserExit(user);

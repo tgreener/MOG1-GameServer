@@ -11,8 +11,7 @@
 #include "AbstractModel.h"
 #include "../DAOs/RouteDAO.h"
 #include "PointOfInterest.h"
-
-class Route;
+#include "User.h"
 
 typedef struct RouteAttribs {
     unsigned int poiAID = 0;
@@ -24,13 +23,15 @@ typedef struct RouteAttribs {
 
 typedef std::function<void(Route*, unsigned int count)> RoutesCallback;
 
-class Route : public AbstractModel{
+class Route : public AbstractModel {
 private:
     RouteDAO dao;
     
     static int createRoute(const char* bytes, int length);
     static void getAllRoutes(AllModelsCallback callback);
     static RouteAttributes extractAttributes(const char* bytes, int length);
+    
+    static void callbackFromDAOs(RouteDAO*, unsigned int count, RoutesCallback callback);
     
 public:
     Route();
@@ -60,10 +61,12 @@ public:
     virtual void serialize(unsigned char* buffer) const;
     virtual bool remove();
     
-    virtual void onUserEnter(const User& user) override;
-    virtual void onUserExit(const User& user) override;
+    virtual void onUserEnter(const User& user);
+    virtual void onUserExit(const User& user);
     
     static void getAllRoutes(RoutesCallback callback);
+    static void outgoingRoutes(unsigned int poiID, RoutesCallback callbackWithRouteDAOs);
+    static void incomingRoutes(unsigned int poiID, RoutesCallback callbackWithRouteDAOs);
     
     static ByteInterpreterFunction getFetchFunction();
     static ByteInterpreterFunction getAddFunction();

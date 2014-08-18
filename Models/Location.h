@@ -9,9 +9,9 @@
 #define	LOCATION_H
 
 #include "AbstractModel.h"
-#include "../DAOs/LocationDAO.h"
 #include "PointOfInterest.h"
 #include "Route.h"
+#include "../DAOs/LocationDAO.h"
 
 class Location : public AbstractModel {
 private:
@@ -32,8 +32,8 @@ public:
     PointOfInterest getPOI() const;
     Route getRoute() const;
     
-    virtual void onUserEnter(const User& user) override;
-    virtual void onUserExit(const User& user) override;
+    virtual void onUserEnter(const User& user);
+    virtual void onUserExit(const User& user);
     
     virtual void save();
     virtual bool remove();

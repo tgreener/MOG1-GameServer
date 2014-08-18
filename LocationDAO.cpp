@@ -67,7 +67,7 @@ bool LocationDAO::retrieve(unsigned int id) {
     return false;
 }
 
-PointOfInterest LocationDAO::getPOI() const {
+unsigned int LocationDAO::getPOIID() const {
     DBConnection* dbc = ServiceLocator::getServiceLocator().getDBConnection();
     const char* query = "SELECT COUNT() FROM point_of_interest WHERE location_id = ?";
     DBStatement countStatement = dbc->prepare(query, nullptr);
@@ -80,20 +80,14 @@ PointOfInterest LocationDAO::getPOI() const {
 
         if(statement.step()) {
             unsigned int poiID = statement.getColumnInt(0);
-            return PointOfInterest(poiID);
-        }
-        else {
-            return PointOfInterest();
+            return poiID;
         }
     }
-    else {
-        return PointOfInterest();
-    }
     
-    
+    return 0;
 }
 
-Route LocationDAO::getRoute() const {
+unsigned int LocationDAO::getRouteID() const {
     DBConnection* dbc = ServiceLocator::getServiceLocator().getDBConnection();
     const char* query = "SELECT COUNT() FROM route WHERE location_id = ?";
     DBStatement countStatement = dbc->prepare(query, nullptr);
@@ -106,15 +100,11 @@ Route LocationDAO::getRoute() const {
 
         if(statement.step()) {
             unsigned int routeID = statement.getColumnInt(0);
-            return Route(routeID);
-        }
-        else {
-            return Route();
+            return routeID;
         }
     }
-    else {
-        return Route();
-    }
+    
+    return 0;
 }
 
 bool LocationDAO::remove(unsigned int id) {

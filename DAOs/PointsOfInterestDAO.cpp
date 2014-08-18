@@ -4,6 +4,7 @@
 #include "../StringUtil.h"
 
 #include <stdio.h>
+#include <vector>
 
 PointsOfInterestDAO::PointsOfInterestDAO() : name(nullptr), soil(0), stone(0), wilderness(0) {
 }

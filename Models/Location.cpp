@@ -31,7 +31,7 @@ void Location::setName(const char* name) {
 
 PointOfInterest Location::getPOI() const {
     if(dao.isPOI()) {
-        return dao.getPOI();
+        return PointOfInterest(dao.getPOIID());
     }
     
     return PointOfInterest();        
@@ -39,13 +39,13 @@ PointOfInterest Location::getPOI() const {
 
 Route Location::getRoute() const {
     if(dao.isRoute()) {
-        return dao.getRoute();
+        return Route(dao.getRouteID());
     }
     
     return Route();
 }
 
-void Location::onUserEnter(const User& user) override {
+void Location::onUserEnter(const User& user) {
     if(isPOI()) {
         getPOI().onUserEnter(user);
     }
@@ -54,7 +54,7 @@ void Location::onUserEnter(const User& user) override {
     }
 }
 
-void Location::onUserExit(const User& user) override {
+void Location::onUserExit(const User& user) {
     if(isPOI()) {
         getPOI().onUserExit(user);
     }

@@ -61,7 +61,7 @@ void PointOfInterest::save() {
 }
 
 unsigned int PointOfInterest::getID() const {
-    return id;
+    return dao.getID();
 }
 
 const char* PointOfInterest::getName() const {
@@ -197,6 +197,14 @@ void PointOfInterest::getAllPOIs(PointOfInterestCallback callback) {
         callback(pois, count);
         delete[] pois;
     });
+}
+
+void PointOfInterest::getOutgoingRoutes(RoutesCallback callback) {
+    Route::outgoingRoutes(this->id, callback);
+}
+
+void PointOfInterest::getIncomingRoutes(RoutesCallback callback) {
+    Route::incomingRoutes(this->id, callback);
 }
 
 int PointOfInterest::createPointOfInterest(const char* bs, int length) {

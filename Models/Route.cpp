@@ -137,16 +137,32 @@ void Route::bark() const {
     ServiceLocator::getServiceLocator().sendMessageToClient(str.c_str());
 }
 
+void Route::callbackFromDAOs(RouteDAO* daos, unsigned int count, RoutesCallback callback) {
+    Route* routes = new Route[count];
+        
+    for(int i = 0; i < count; i++) {
+        routes[i].dao = daos[i];
+    }
+
+    callback(routes, count);
+    delete[] routes;
+}
+
 void Route::getAllRoutes(RoutesCallback callback) {
     RouteDAO::allRouteDAOs([&](RouteDAO* daos, int count) -> void {
-        Route* routes = new Route[count];
-        
-        for(int i = 0; i < count; i++) {
-            routes[i].dao = daos[i];
-        }
+        callbackFromDAOs(daos, count, callback);
+    });
+}
 
-        callback(routes, count);
-        delete[] routes;
+void Route::outgoingRoutes(unsigned int poiID, RoutesCallback callback) {
+    RouteDAO::outgoingRouteDAOs(poiID, [&] (RouteDAO* daos, unsigned int count) {
+        callbackFromDAOs(daos, count, callback);
+    });
+}
+
+void Route::incomingRoutes(unsigned int poiID, RoutesCallback callback) {
+    RouteDAO::incomingRouteDAOs(poiID, [&] (RouteDAO* daos, unsigned int count) {
+        callbackFromDAOs(daos, count, callback);
     });
 }
 

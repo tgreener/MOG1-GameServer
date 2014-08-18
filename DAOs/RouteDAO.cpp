@@ -1,4 +1,6 @@
 
+#include <vector>
+
 #include "RouteDAO.h"
 #include "../DBStatement.h"
 #include "../ServiceLocator.h"
@@ -210,4 +212,55 @@ void RouteDAO::allRouteDAOs(RouteDAOsCallback callback) {
     callback(daos, count);
     
     delete[] daos;
+}
+
+void RouteDAO::readRouteDAOResult(unsigned int poiID, const char* query, RouteDAOsCallback callback) {
+    if(poiID == 0) {
+        callback(nullptr, 0);
+        return; 
+    }
+    
+    DBConnection& dbc  = *(ServiceLocator::getServiceLocator().getDBConnection());
+
+    DBStatement statement = dbc.prepare(query, nullptr);
+    statement.bindInt(1, poiID);
+    statement.step();
+    
+    std::vector<RouteDAO> routeDAOVector;
+    
+    while(statement.hasNextRow()) {
+        unsigned int id = statement.getColumnInt(0);
+        unsigned int poiA = statement.getColumnInt(1);
+        unsigned int poiB = statement.getColumnInt(2);
+        unsigned int diff = statement.getColumnInt(3);
+        bool bidirectional = statement.getColumnInt(4) != 0;
+        bool reverse = statement.getColumnInt(5) != 0;
+        
+        routeDAOVector.push_back(RouteDAO());
+        
+        routeDAOVector.back().id = id;
+        routeDAOVector.back().setPOIA(poiA);
+        routeDAOVector.back().setPOIB(poiB);
+        routeDAOVector.back().setDifficulty(diff);
+        routeDAOVector.back().setBidirectional(bidirectional);
+        routeDAOVector.back().setReverse(reverse);
+        
+        statement.step();
+    }
+    
+    callback(&routeDAOVector[0], routeDAOVector.size());
+}
+
+void RouteDAO::outgoingRouteDAOs(unsigned int poiID, RouteDAOsCallback callback) {
+    const char* query = "SELECT route.* FROM route JOIN point_of_interest AS poi ON route.poi_a = poi.id "
+                        "WHERE poi.id = ? AND (bidirected = 1 OR reverse = 0)";
+    
+    readRouteDAOResult(poiID, query, callback);
+}
+
+void RouteDAO::incomingRouteDAOs(unsigned int poiID, RouteDAOsCallback callback) {
+    const char* query = "SELECT route.* FROM route JOIN point_of_interest AS poi ON route.poi_a = poi.id "
+                        "WHERE poi.id = ? AND (bidirected = 1 OR reverse = 1)";
+    
+    readRouteDAOResult(poiID, query, callback);
 }

@@ -21,7 +21,7 @@ public:
     
     void getRandomPointOfInterest(std::function<void(PointOfInterest&)> randomPOIFunction);
     void getRoutesFromPointOfInterest(const PointOfInterest& poi, std::function<void(std::vector<Route>)> callback);
-    void moveUser(const User& user, const Location& loc);
+    void moveUser(User& user, Location& loc);
     
     Location getUserLocation(unsigned int userID);
     

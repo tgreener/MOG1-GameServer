@@ -8,9 +8,10 @@
 #ifndef POINTOFINTEREST_H
 #define	POINTOFINTEREST_H
 
-#include "../DAOs/PointsOfInterestDAO.h"
 #include "AbstractModel.h"
+#include "../DAOs/PointsOfInterestDAO.h"
 #include "Route.h"
+#include "User.h"
 
 typedef struct PointOfInterestAttributes {
     const unsigned char* name;
@@ -18,8 +19,6 @@ typedef struct PointOfInterestAttributes {
     int stone;
     int wilderness;
 } POIAttrib;
-
-class PointOfInterest;
 
 typedef std::function<void(PointOfInterest*, unsigned int)> PointOfInterestCallback;
 
@@ -62,12 +61,13 @@ public:
     virtual void save();
     virtual bool remove();
     
-    virtual void onUserEnter(const User& user) override;
-    virtual void onUserExit(const User& user) override;
+    virtual void onUserEnter(const User& user);
+    virtual void onUserExit(const User& user);
+
+    void getOutgoingRoutes(RoutesCallback callback);
+    void getIncomingRoutes(RoutesCallback callback);
     
     static void getAllPOIs(PointOfInterestCallback callback);
-    static void getOutgoingRoutes(RoutesCallback callback);
-    static void getIncomingRoutes(RoutesCallback callback);
     
     static ByteInterpreterFunction getFetchFunction();
     static ByteInterpreterFunction getAddFunction();

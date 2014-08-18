@@ -9,7 +9,6 @@
 #define	POINTSOFINTERESTDAO_H
 
 #include "AbstractDAO.h"
-#include "RouteDAO.h"
 #include <stdbool.h>
 #include <functional>
 
@@ -56,8 +55,6 @@ public:
     void setPopulation(unsigned int pop);
     
     static void allPOIDAOs(PointOfInterestDAOsCallback callbackWithPOIDAOs);
-    static void outgoingRouteDAOs(RouteDAOsCallback callbackWithRouteDAOs);
-    static void incomingRouteDAOs(RouteDAOsCallback callbackWithRouteDAOs);
 };
 
 #endif	/* POINTSOFINTERESTDAO_H */

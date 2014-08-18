@@ -12,8 +12,6 @@
 #include "Location.h"
 #include "../DAOs/UserDAO.h"
 
-class User;
-
 typedef struct UserAtr {
     unsigned int location = 0;
     const char* tag = nullptr;

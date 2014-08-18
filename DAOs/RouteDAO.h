@@ -20,7 +20,7 @@ private:
     unsigned int id;
     unsigned int poiA;
     unsigned int poiB;
-    unsigned int locationID:
+    unsigned int locationID;
     
     unsigned int difficulty;
     bool bidirected;
@@ -29,6 +29,8 @@ private:
     bool needsWrite;
     
     bool checkValuesSet();
+    static void readRouteDAOResult(unsigned int poiID, const char* query, RouteDAOsCallback callback);
+    
 public:
     RouteDAO();
     virtual ~RouteDAO();
@@ -53,6 +55,9 @@ public:
     void setReverse(bool rev);
     
     static void allRouteDAOs(RouteDAOsCallback callback);
+    static void outgoingRouteDAOs(unsigned int poiID, RouteDAOsCallback callbackWithRouteDAOs);
+    static void incomingRouteDAOs(unsigned int poiID, RouteDAOsCallback callbackWithRouteDAOs);
+    
 };
 
 #endif	/* ROUTEDAO_H */

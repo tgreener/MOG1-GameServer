@@ -9,8 +9,6 @@
 #define	LOCATIONDAO_H
 
 #include "AbstractDAO.h"
-#include "../Models/PointOfInterest.h"
-#include "../Models/Route.h"
 
 class LocationDAO : public AbstractDAO {
 private:
@@ -35,8 +33,8 @@ public:
     void setIsRoute(bool isRoute);
     void setIsPOI(bool isPOI);
     
-    PointOfInterest getPOI() const;
-    Route getRoute() const;
+    unsigned int getPOIID() const;
+    unsigned int getRouteID() const;
     
     virtual bool retrieve(unsigned int id);
     virtual bool remove(unsigned int id);
