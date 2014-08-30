@@ -18,6 +18,9 @@ class Location;
 class User;
 
 typedef std::function<void(AbstractModel**, int)> AllModelsCallback;
+typedef std::function<void(PointOfInterest*, unsigned int)> PointOfInterestCallback;
+typedef std::function<void(Route*, unsigned int count)> RoutesCallback;
+typedef std::function<void(User*, unsigned int)> UsersCallback;
 
 class AbstractModel {
 public:

@@ -43,10 +43,6 @@ Location GameController::getUserLocation(unsigned int userID) {
     return user.getLocation();
 }
 
-void GameController::getRoutesFromPointOfInterest(const PointOfInterest& poi, std::function<void(std::vector<Route>)> callback) {
-    
-}
-
 void GameController::moveUser(User& user, Location& loc) {
     Location currentLocation = user.getLocation();
     
@@ -105,7 +101,23 @@ ByteInterpreterFunction GameController::getUserLocationFunction() {
 
 ByteInterpreterFunction GameController::getRoutesFromPOIFunction() {
     return [] (const char* bytes, int length) {
+        // First, parse user id.
+        unsigned int id = 1; // Mock
+        User user(id);
+        Location loc = user.getLocation();
+        PointOfInterest poi = loc.isPOI() ? loc.getPOI() : PointOfInterest();
         
+        poi.getOutgoingRoutes([&](Route* routes, unsigned int count) {
+            PointOfInterest* endPoints = new PointOfInterest[count];
+            
+            for(unsigned int i = 0; i < count; i++) {
+                if(routes[i].getEndpointAID() != poi.getID()) {
+                    
+                }
+            }
+            
+            delete[] endPoints;
+        });
     };
 }
 

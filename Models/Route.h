@@ -21,8 +21,6 @@ typedef struct RouteAttribs {
     bool reverse = false;
 } RouteAttributes;
 
-typedef std::function<void(Route*, unsigned int count)> RoutesCallback;
-
 class Route : public AbstractModel {
 private:
     RouteDAO dao;

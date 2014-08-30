@@ -17,8 +17,6 @@ typedef struct UserAtr {
     const char* tag = nullptr;
 } UserAttributes;
 
-typedef std::function<void(User*, unsigned int)> AllUsersCallback;
-
 class User : public AbstractModel{
 private:
     UserDAO dao;
@@ -47,7 +45,7 @@ public:
     virtual void serialize(unsigned char* buffer) const;
     virtual bool remove();
     
-    static void getAllUsers(AllUsersCallback callback);
+    static void getAllUsers(UsersCallback callback);
     
     static ByteInterpreterFunction getFetchFunction();
     static ByteInterpreterFunction getAddFunction();

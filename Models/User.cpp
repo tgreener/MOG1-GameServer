@@ -95,7 +95,7 @@ bool User::remove() {
     return dao.remove(dao.getID());
 }
 
-void User::getAllUsers(AllUsersCallback callback) {
+void User::getAllUsers(UsersCallback callback) {
     UserDAO::allUserDAOs([&](UserDAO* daos, int count) -> void {
         User* users = new User[count];
         

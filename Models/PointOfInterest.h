@@ -20,8 +20,6 @@ typedef struct PointOfInterestAttributes {
     int wilderness;
 } POIAttrib;
 
-typedef std::function<void(PointOfInterest*, unsigned int)> PointOfInterestCallback;
-
 class PointOfInterest : public AbstractModel {
 private:
     unsigned int id;
