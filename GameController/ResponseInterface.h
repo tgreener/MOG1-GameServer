@@ -8,6 +8,8 @@
 #ifndef RESPONSEINTERFACE_H
 #define	RESPONSEINTERFACE_H
 
+#include "../Models/AbstractModel.h"
+#include "../Models/PointOfInterest.h"
 #include "../Models/User.h"
 
 class ResponseInterface {
@@ -15,6 +17,9 @@ public:
     static void userConnectedResponse(unsigned int id);
     static void userDisconnectedResponse(bool completed);
     static void userLocationResponse(const Location& loc);
+    
+    static void modelArrayResponse(const AbstractModel** pois, unsigned int count);
+    static void poiArrayResponse(const PointOfInterest* pois, unsigned int count);
 private:
     
 };

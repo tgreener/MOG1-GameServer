@@ -230,11 +230,11 @@ void RouteDAO::readRouteDAOResult(unsigned int poiID, const char* query, RouteDA
     
     while(statement.hasNextRow()) {
         unsigned int id = statement.getColumnInt(0);
-        unsigned int poiA = statement.getColumnInt(1);
-        unsigned int poiB = statement.getColumnInt(2);
-        unsigned int diff = statement.getColumnInt(3);
-        bool bidirectional = statement.getColumnInt(4) != 0;
-        bool reverse = statement.getColumnInt(5) != 0;
+        unsigned int poiA = statement.getColumnInt(2);
+        unsigned int poiB = statement.getColumnInt(3);
+        unsigned int diff = statement.getColumnInt(4);
+        bool bidirectional = statement.getColumnInt(5) != 0;
+        bool reverse = statement.getColumnInt(6) != 0;
         
         routeDAOVector.push_back(RouteDAO());
         
@@ -252,15 +252,17 @@ void RouteDAO::readRouteDAOResult(unsigned int poiID, const char* query, RouteDA
 }
 
 void RouteDAO::outgoingRouteDAOs(unsigned int poiID, RouteDAOsCallback callback) {
-    const char* query = "SELECT route.* FROM route JOIN point_of_interest AS poi ON route.poi_a = poi.id "
-                        "WHERE poi.id = ? AND (bidirected = 1 OR reverse = 0)";
+    const char* query = "SELECT route.* FROM route JOIN point_of_interest AS poi ON route.poi_a = poi.id OR route.poi_b = poi.id "
+                        "WHERE poi.id = ? "
+                        "AND (route.bidirected = 1 OR (route.poi_a = poi.id AND route.reverse = 0) OR (route.poi_b = poi.id AND reverse = 1))";
     
     readRouteDAOResult(poiID, query, callback);
 }
 
 void RouteDAO::incomingRouteDAOs(unsigned int poiID, RouteDAOsCallback callback) {
-    const char* query = "SELECT route.* FROM route JOIN point_of_interest AS poi ON route.poi_a = poi.id "
-                        "WHERE poi.id = ? AND (bidirected = 1 OR reverse = 1)";
+    const char* query = "SELECT route.* FROM route JOIN point_of_interest AS poi ON route.poi_a = poi.id OR route.poi_b = poi.id "
+                        "WHERE poi.id = ? "
+                        "AND (route.bidirected = 1 OR (route.poi_a = poi.id AND route.reverse = 1) OR (route.poi_b = poi.id AND reverse = 0))";
     
     readRouteDAOResult(poiID, query, callback);
 }

@@ -36,7 +36,11 @@ public:
     PointOfInterest();
     PointOfInterest(unsigned int id);
     PointOfInterest(POIAttrib& attribs);
+    PointOfInterest(const PointOfInterest& that);
+    PointOfInterest(PointOfInterest&& that);
     ~PointOfInterest();
+    
+    PointOfInterest& operator=(PointOfInterest&& that);
     
     virtual unsigned int getID() const;
     virtual const char* getName() const;

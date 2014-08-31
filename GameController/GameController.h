@@ -29,7 +29,7 @@ public:
     static ByteInterpreterFunction getConnectUserFunction();
     static ByteInterpreterFunction getDisconnectUserFunction();
     static ByteInterpreterFunction getUserLocationFunction();
-    static ByteInterpreterFunction getRoutesFromPOIFunction();
+    static ByteInterpreterFunction getRoutesFromUserFunction();
     static ByteInterpreterFunction getMoveUserFunction();
     
 private:

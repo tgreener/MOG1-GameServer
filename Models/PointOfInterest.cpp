@@ -19,7 +19,20 @@ PointOfInterest::PointOfInterest(POIAttrib& attribs) : id(0), needsUpdate(true) 
     dao.setWilderness(attribs.wilderness);
 }
 
+PointOfInterest::PointOfInterest(const PointOfInterest& that) {
+    setDAO(that.dao);
+}
+
+PointOfInterest::PointOfInterest(PointOfInterest&& that) {
+    setDAO(that.dao);
+}
+
 PointOfInterest::~PointOfInterest() {
+}
+
+PointOfInterest& PointOfInterest::operator=(PointOfInterest&& that) {
+    setDAO(that.dao);
+    return *this;
 }
 
 void PointOfInterest::load() {
@@ -117,7 +130,9 @@ void PointOfInterest::bark() const {
     str += "\n\twilderness: " + std::to_string(getAttributeWilderness());
     str += "\n}\n";
     
-    ServiceLocator::getServiceLocator().sendMessageToClient(str.c_str());
+//    ServiceLocator::getServiceLocator().sendMessageToClient(str.c_str());
+    
+    printf("%s\n", str.c_str());
 }
 
 bool PointOfInterest::remove() {

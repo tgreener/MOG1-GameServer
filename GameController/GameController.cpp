@@ -99,7 +99,7 @@ ByteInterpreterFunction GameController::getUserLocationFunction() {
     };
 }
 
-ByteInterpreterFunction GameController::getRoutesFromPOIFunction() {
+ByteInterpreterFunction GameController::getRoutesFromUserFunction() {
     return [] (const char* bytes, int length) {
         // First, parse user id.
         unsigned int id = 1; // Mock
@@ -111,10 +111,12 @@ ByteInterpreterFunction GameController::getRoutesFromPOIFunction() {
             PointOfInterest* endPoints = new PointOfInterest[count];
             
             for(unsigned int i = 0; i < count; i++) {
-                if(routes[i].getEndpointAID() != poi.getID()) {
-                    
-                }
+                routes[i].bark();
+                endPoints[i] = routes[i].getEndpointAID() == poi.getID() ? routes[i].getEndpointB() : routes[i].getEndpointA();
+                endPoints[i].bark();
             }
+            
+            ResponseInterface::poiArrayResponse(endPoints, count);
             
             delete[] endPoints;
         });

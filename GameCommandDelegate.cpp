@@ -19,6 +19,6 @@ GameCommandDelegate::GameCommandDelegate() {
     functions.push_back(GameController::getConnectUserFunction());
     functions.push_back(GameController::getDisconnectUserFunction());
     functions.push_back(GameController::getUserLocationFunction());
-    functions.push_back(GameController::getRoutesFromPOIFunction());
+    functions.push_back(GameController::getRoutesFromUserFunction());
     functions.push_back(GameController::getMoveUserFunction());
 }

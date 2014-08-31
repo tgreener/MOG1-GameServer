@@ -2,6 +2,7 @@
 #include "Route.h"
 #include "../ServiceLocator.h"
 #include <string>
+#include <iostream>
 
 Route::Route() {
     
@@ -132,7 +133,8 @@ void Route::bark() const {
     str += "\n\tbidirectional: " + std::to_string(dao.isBidrectional());
     str += "\n}\n";
     
-    ServiceLocator::getServiceLocator().sendMessageToClient(str.c_str());
+//    ServiceLocator::getServiceLocator().sendMessageToClient(str.c_str());
+    std::cout << str << std::endl;
 }
 
 void Route::callbackFromDAOs(RouteDAO* daos, unsigned int count, RoutesCallback callback) {
