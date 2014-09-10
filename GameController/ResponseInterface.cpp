@@ -18,7 +18,7 @@ void ResponseInterface::userConnectedResponse(unsigned int id) {
     ServiceLocator::getServiceLocator().sendMessageToClient(bytes, responseLength);
 }
 
-void ResponseInterface::userDisconnectedResponse(bool completed) {
+void ResponseInterface::boolResponse(bool completed) {
     unsigned int responseLength = 2;
     char bytes[responseLength];
     
@@ -101,4 +101,36 @@ void ResponseInterface::poiArrayResponse(const PointOfInterest* pois, unsigned i
     ResponseInterface::modelArrayResponse(poiPointers, count);
     
     delete[] poiPointers;
+}
+
+void ResponseInterface::routesAndEndpointsReponse(const Route* routes, const PointOfInterest* pois, unsigned int count) {
+    unsigned int bufferHeaderSize = sizeof(unsigned int) + 2;
+    unsigned int bufferDataSize = bufferHeaderSize + sizeof(unsigned int) + 1;
+    for(int i = 0; i < count; i++) {
+        bufferDataSize += routes[i].serializedLength();
+        bufferDataSize += pois[i].serializedLength();
+    }
+    
+    unsigned char buffer[bufferDataSize];
+    
+    buffer[0] = 0x01;
+    buffer[1] = sizeof(unsigned int);
+    memcpy(buffer + 2, &bufferDataSize, sizeof(unsigned int));
+    buffer[bufferDataSize - 1] = 0xff;
+    
+    unsigned int bufferWriteHead = bufferHeaderSize;
+    for(int i = 0; i < count; i++) {
+        routes[i].serialize(buffer + bufferWriteHead);
+        bufferWriteHead += routes[i].serializedLength();
+    }
+    
+    memset(buffer + bufferWriteHead, 0, sizeof(unsigned int));
+    bufferWriteHead += sizeof(unsigned int);
+    
+    for(int i = 0; i < count; i++) {
+        pois[i].serialize(buffer + bufferWriteHead);
+        bufferWriteHead += pois[i].serializedLength();
+    }
+    
+    ServiceLocator::getServiceLocator().sendMessageToClient((char*)buffer, bufferDataSize);
 }

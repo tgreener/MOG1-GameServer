@@ -45,7 +45,7 @@ public:
     unsigned int getPOIA() const;
     unsigned int getPOIB() const;
     unsigned int getDifficulty() const;
-    bool isBidrectional() const;
+    bool isBidirectional() const;
     bool isReverse() const;
     
     void setPOIA(unsigned int a);

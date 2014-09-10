@@ -9,6 +9,7 @@ ThreadPool::ThreadPool() :
 count(0), runFunction([](int){}), isRunning(false)
 {
     queueLock.signal();
+    dbWriteLock.signal();
 }
     
 void ThreadPool::setSize(unsigned int count) {
@@ -35,7 +36,7 @@ void ThreadPool::run() {
     for(int i = 0; i < count; i++) {
         threads.push_back(std::thread([&] (void) -> void {
             
-            DBConnection dbc;
+            DBConnection dbc(dbWriteLock);
             dbc.open(DB_FILE);
             
             ServiceLocator sl;

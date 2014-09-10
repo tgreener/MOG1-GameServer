@@ -22,6 +22,7 @@ unsigned int GameController::connectUser(std::string tag) {
     
     User newUser(attribs);
     newUser.save();
+    newUser.getLocation().onUserEnter(newUser);
     
     return newUser.getID();
 }
@@ -29,6 +30,8 @@ unsigned int GameController::connectUser(std::string tag) {
 bool GameController::disconnectUser(unsigned int userID) {
     try {
         User disconnectingUser(userID);
+        disconnectingUser.getLocation().onUserExit(disconnectingUser);
+        
         return disconnectingUser.remove();
     }
     catch(const char* e) {
@@ -43,13 +46,17 @@ Location GameController::getUserLocation(unsigned int userID) {
     return user.getLocation();
 }
 
-void GameController::moveUser(User& user, Location& loc) {
+bool GameController::moveUser(User& user, Location& loc) {
     Location currentLocation = user.getLocation();
     
-    currentLocation.onUserExit(user);
+    if(currentLocation.getID() > 0) {
+        currentLocation.onUserExit(user);
+    }
     user.setLocation(loc);
     loc.onUserEnter(user);
     user.save();
+    
+    return true;
 }
 
 void GameController::getRandomPointOfInterest(std::function<void(PointOfInterest&)> randomPOIFunction) {
@@ -84,7 +91,7 @@ ByteInterpreterFunction GameController::getDisconnectUserFunction() {
         // Parse bytes
         // Get ID
         unsigned int id = 1;
-        ResponseInterface::userDisconnectedResponse(instance.disconnectUser(id));
+        ResponseInterface::boolResponse(instance.disconnectUser(id));
         instance.singleConnectionTaken = false;
     };
 }
@@ -101,31 +108,55 @@ ByteInterpreterFunction GameController::getUserLocationFunction() {
 
 ByteInterpreterFunction GameController::getRoutesFromUserFunction() {
     return [] (const char* bytes, int length) {
-        // First, parse user id.
-        unsigned int id = 1; // Mock
-        User user(id);
-        Location loc = user.getLocation();
-        PointOfInterest poi = loc.isPOI() ? loc.getPOI() : PointOfInterest();
-        
-        poi.getOutgoingRoutes([&](Route* routes, unsigned int count) {
-            PointOfInterest* endPoints = new PointOfInterest[count];
-            
-            for(unsigned int i = 0; i < count; i++) {
-                routes[i].bark();
-                endPoints[i] = routes[i].getEndpointAID() == poi.getID() ? routes[i].getEndpointB() : routes[i].getEndpointA();
-                endPoints[i].bark();
-            }
-            
-            ResponseInterface::poiArrayResponse(endPoints, count);
-            
-            delete[] endPoints;
-        });
+        try {
+            // First, parse user id.
+            unsigned int id = 1; // Mock
+            User user(id);
+            Location loc = user.getLocation();
+            PointOfInterest poi = loc.isPOI() ? loc.getPOI() : PointOfInterest();
+
+            poi.getOutgoingRoutes([&](Route* routes, unsigned int count) {
+                PointOfInterest* endPoints = new PointOfInterest[count];
+
+                for(unsigned int i = 0; i < count; i++) {
+                    if(routes[i].getEndpointAID() == poi.getID()) {
+                        endPoints[i] =  routes[i].getEndpointB();
+                    }
+                    else {
+                        endPoints[i] =  routes[i].getEndpointA();
+                    }
+                }
+
+                ResponseInterface::routesAndEndpointsReponse(routes, endPoints, count);
+
+                delete[] endPoints;
+
+            });
+        }
+        catch(const char* e) {
+            printf("%s\n", e);
+        }
     };
 }
 
 ByteInterpreterFunction GameController::getMoveUserFunction() {
     return [] (const char* bytes, int length) {
-        
+        try {
+            if (length >= 11 && (unsigned char)bytes[length - 1] == 0xff) {
+                // User id stored in bytes 2 - 5, but I'll just mock for now
+                unsigned int id = 1;
+                unsigned int locationID = *((unsigned int*)(bytes + 6));
+
+                User user(id);
+                Location loc(locationID);
+
+                ResponseInterface::boolResponse(instance.moveUser(user, loc));
+            }
+        }
+        catch(const char* e) {
+            printf("%s\n", e);
+             ResponseInterface::boolResponse(false);
+        }
     };
 }
 

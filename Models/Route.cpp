@@ -53,7 +53,7 @@ unsigned int Route::getDifficulty() const {
 }
 
 bool Route::isBidirectional() const {
-    return dao.isBidrectional();
+    return dao.isBidirectional();
 }
 
 bool Route::isReverse() const {
@@ -99,16 +99,26 @@ void Route::onUserExit(const User& user) {
 }
 
 unsigned int Route::serializedLength() const {
-    return 6;
+    return sizeof(unsigned int) * 7;
 }
 
 void Route::serialize(unsigned char* buffer) const {
-    buffer[0] = (unsigned char)this->getID();
-    buffer[1] = (unsigned char)dao.getPOIA();
-    buffer[2] = (unsigned char)dao.getPOIB();
-    buffer[3] = (unsigned char)dao.getDifficulty();
-    buffer[4] = (unsigned char)dao.isBidrectional();
-    buffer[5] = (unsigned char)dao.isReverse();
+    
+    unsigned int id = this->getID();
+    unsigned int loc = dao.getLocationID();
+    unsigned int poi_a = dao.getPOIA();
+    unsigned int poi_b = dao.getPOIB();
+    unsigned int diff = dao.getDifficulty();
+    unsigned int bi = dao.isBidirectional();
+    unsigned int rev = dao.isReverse();
+    
+    memcpy(buffer + (sizeof(unsigned int) * 0), &id, sizeof(unsigned int));
+    memcpy(buffer + (sizeof(unsigned int) * 1), &loc, sizeof(unsigned int));
+    memcpy(buffer + (sizeof(unsigned int) * 2), &poi_a, sizeof(unsigned int));
+    memcpy(buffer + (sizeof(unsigned int) * 3), &poi_b, sizeof(unsigned int));
+    memcpy(buffer + (sizeof(unsigned int) * 4), &diff, sizeof(unsigned int));
+    memcpy(buffer + (sizeof(unsigned int) * 5), &bi, sizeof(unsigned int));
+    memcpy(buffer + (sizeof(unsigned int) * 6), &rev, sizeof(unsigned int));
 }
 
 bool Route::remove() {
@@ -127,13 +137,14 @@ void Route::save() {
 void Route::bark() const {
     std::string str = "Route: {";
     str += "\n\tid: " + std::to_string(dao.getID());
+    str += "\n\tlocationID: " + std::to_string(dao.getLocationID());
     str += "\n\tpoiA: " + std::to_string(dao.getPOIA());
     str += "\n\tpoiB: " + std::to_string(dao.getPOIB());
     str += "\n\tdifficulty: " + std::to_string(dao.getDifficulty());
-    str += "\n\tbidirectional: " + std::to_string(dao.isBidrectional());
+    str += "\n\tbidirectional: " + std::to_string(dao.isBidirectional());
+    str += "\n\treverse: " + std::to_string(dao.isReverse());
     str += "\n}\n";
     
-//    ServiceLocator::getServiceLocator().sendMessageToClient(str.c_str());
     std::cout << str << std::endl;
 }
 

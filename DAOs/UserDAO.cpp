@@ -45,7 +45,10 @@ bool UserDAO::remove(unsigned int id) {
     DBStatement statement = dbc.prepare(query, nullptr);
     statement.bindInt(1, this->id);
     
+    dbc.obtainWriteLock();
     int result = statement.step();
+    dbc.releaseWriteLock();
+    
     return result != 0;
 }
 
@@ -56,10 +59,10 @@ int UserDAO::write() {
     statement.bindInt(1, this->location);
     statement.bindText(2, tag);
     
+    dbc.obtainWriteLock();
     if(statement.step()) id = dbc.lastInsertRowId();
     else id = -1;
-    
-    statement.finalize();
+    dbc.releaseWriteLock();
     
     if((int)id < 0) {
         printf("Error inserting user { id : %d, location : %d tag : %s }\n", id, location, tag);
@@ -74,9 +77,11 @@ int UserDAO::write(int id) {
     DBStatement statement = dbc.prepare(query, nullptr);
     statement.bindInt(1, this->location);
     statement.bindText(2, this->tag);
+    statement.bindInt(3, this->id);
     
+    dbc.obtainWriteLock();
     statement.step();
-    statement.finalize();
+    dbc.releaseWriteLock();
     
     return id;
 }

@@ -123,6 +123,7 @@ void PointOfInterest::setPopulation(unsigned int pop) {
 void PointOfInterest::bark() const {
     std::string str = "Point of Interest {";
     str += "\n\tid: " + std::to_string(id);
+    str += "\n\tlocationID: " + std::to_string(getLocationID());
     str += "\n\tname: ";
     str += (const char*)getName(); 
     str += "\n\tsoil: " + std::to_string(getAttributeSoil());
@@ -166,22 +167,22 @@ void PointOfInterest::serialize(unsigned char* buffer) const {
 
 void PointOfInterest::onUserEnter(const User& user) {
     if(user.getLocationID() == dao.getLocationID()) {
-        dao.setPopulation(dao.getPopulation() + 1);
+        setPopulation(getPopulation() + 1);
         save();        
     }
     else {
-        printf("Attempted PointOfInterest::onUserEnter when user was not on Route.\n");
+        printf("Attempted PointOfInterest::onUserEnter when user was not on POI.\n");
     }
 }
 
 void PointOfInterest::onUserExit(const User& user) {
-    unsigned int population = dao.getPopulation();
+    unsigned int population = getPopulation();
     if(population > 0 && user.getLocationID() == dao.getLocationID()) {
-        dao.setPopulation(population - 1);
+        setPopulation(population - 1);
         save();
     }
     else {
-        printf("Attempted PointOfInterest::onUserExit when user was not on Route.\n");
+        printf("Attempted PointOfInterest::onUserExit when user was not on POI.\n");
     }
 }
 

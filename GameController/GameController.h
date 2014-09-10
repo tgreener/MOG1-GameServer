@@ -20,7 +20,7 @@ public:
     bool disconnectUser(unsigned int userID);
     
     void getRandomPointOfInterest(std::function<void(PointOfInterest&)> randomPOIFunction);
-    void moveUser(User& user, Location& loc);
+    bool moveUser(User& user, Location& loc);
     
     Location getUserLocation(unsigned int userID);
     

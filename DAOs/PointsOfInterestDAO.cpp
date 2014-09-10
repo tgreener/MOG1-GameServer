@@ -6,7 +6,7 @@
 #include <stdio.h>
 #include <vector>
 
-PointsOfInterestDAO::PointsOfInterestDAO() : name(nullptr), soil(0), stone(0), wilderness(0) {
+PointsOfInterestDAO::PointsOfInterestDAO() : name(nullptr), soil(0), stone(0), wilderness(0), locationID(0) {
 }
 
 PointsOfInterestDAO::PointsOfInterestDAO(int id, const unsigned char* name, int soil, int stone, int wild) : 
@@ -76,7 +76,9 @@ bool PointsOfInterestDAO::remove(unsigned int id) {
     DBStatement statement = dbc->prepare(query, nullptr);
     statement.bindInt(1, locationID);
     
+    dbc->obtainWriteLock();
     int result = statement.step();
+    dbc->releaseWriteLock();
     
     return result != 0;
 }
@@ -87,7 +89,9 @@ int PointsOfInterestDAO::write() {
     DBStatement statement1 = dbc->prepare(query, nullptr);
     statement1.bindText(1, (const char*)name);
     
+    dbc->obtainWriteLock();
     bool result = statement1.step();
+    dbc->releaseWriteLock();
     statement1.finalize();
     
     int locationID;
@@ -107,7 +111,9 @@ int PointsOfInterestDAO::write() {
     statement3.bindInt(3, stone);
     statement3.bindInt(4, wilderness);
     
+    dbc->obtainWriteLock();
     result = statement3.step();
+    dbc->releaseWriteLock();
     statement3.finalize();
     
     if(!result) {
@@ -135,8 +141,12 @@ int PointsOfInterestDAO::write(int id) {
     statement.bindInt(4, population);
     statement.bindInt(5, id);
     
+    dbc->obtainWriteLock();
     int result = statement.step();
+    dbc->releaseWriteLock();
+    
     if(!result) {
+        dbc->printError();
         return -1;
     }
     
