@@ -10,19 +10,34 @@
 
 #include "../Definitions.h"
 #include "../Models/PointOfInterest.h"
+#include "../Models/Location.h"
+#include <atomic>
+#include <vector>
 
 class GameController {
 public:
-    static GameController& getInstance();
-    static ByteInterpreterFunction getConnectUserFunction();
-    
     unsigned int connectUser(std::string tag);
+    bool disconnectUser(unsigned int userID);
+    
     void getRandomPointOfInterest(std::function<void(PointOfInterest&)> randomPOIFunction);
+    bool moveUser(User& user, Location& loc);
+    
+    Location getUserLocation(unsigned int userID);
+    
+    static GameController& getInstance();
+    
+    static ByteInterpreterFunction getConnectUserFunction();
+    static ByteInterpreterFunction getDisconnectUserFunction();
+    static ByteInterpreterFunction getUserLocationFunction();
+    static ByteInterpreterFunction getRoutesFromUserFunction();
+    static ByteInterpreterFunction getMoveUserFunction();
     
 private:
     GameController();
     
     static GameController instance;
+    
+    std::atomic<bool> singleConnectionTaken;
 };
 
 #endif	/* GAMECONTROLLER_H */

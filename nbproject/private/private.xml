@@ -9,8 +9,22 @@
         <group>
             <file>file:/Users/toddgreener/Documents/Development/ForFun/OnlineGame1/GameDataServer/DAOs/PointsOfInterestDAO.cpp</file>
             <file>file:/Users/toddgreener/Documents/Development/ForFun/OnlineGame1/GameDataServer/Models/PointOfInterest.cpp</file>
+            <file>file:/Users/toddgreener/Documents/Development/ForFun/OnlineGame1/GameDataServer/DAOs/UserDAO.cpp</file>
+            <file>file:/Users/toddgreener/Documents/Development/ForFun/OnlineGame1/GameDataServer/GameCommandDelegate.cpp</file>
+            <file>file:/Users/toddgreener/Documents/Development/ForFun/OnlineGame1/GameDataServer/GameController/ResponseInterface.h</file>
+            <file>file:/Users/toddgreener/Documents/Development/ForFun/OnlineGame1/GameDataServer/GameController/GameController.h</file>
+            <file>file:/Users/toddgreener/Documents/Development/ForFun/OnlineGame1/GameDataServer/Models/Route.h</file>
+            <file>file:/Users/toddgreener/Documents/Development/ForFun/OnlineGame1/GameDataServer/Models/Route.cpp</file>
+            <file>file:/Users/toddgreener/Documents/Development/ForFun/OnlineGame1/GameDataServer/DBConnection.cpp</file>
+            <file>file:/Users/toddgreener/Documents/Development/ForFun/OnlineGame1/GameDataServer/Server.cpp</file>
             <file>file:/Users/toddgreener/Documents/Development/ForFun/OnlineGame1/GameDataServer/Models/PointOfInterest.h</file>
-            <file>file:/Users/toddgreener/Documents/Development/ForFun/OnlineGame1/GameDataServer/DAOs/PointsOfInterestDAO.h</file>
+            <file>file:/Users/toddgreener/Documents/Development/ForFun/OnlineGame1/GameDataServer/Models/User.cpp</file>
+            <file>file:/Users/toddgreener/Documents/Development/ForFun/OnlineGame1/GameDataServer/DBStatement.cpp</file>
+            <file>file:/Users/toddgreener/Documents/Development/ForFun/OnlineGame1/GameDataServer/GameController/ResponseInterface.cpp</file>
+            <file>file:/Users/toddgreener/Documents/Development/ForFun/OnlineGame1/GameDataServer/GameController/GameController.cpp</file>
+            <file>file:/Users/toddgreener/Documents/Development/ForFun/OnlineGame1/GameDataServer/Models/Location.cpp</file>
+            <file>file:/Users/toddgreener/Documents/Development/ForFun/OnlineGame1/GameDataServer/DBConnection.h</file>
+            <file>file:/Users/toddgreener/Documents/Development/ForFun/OnlineGame1/GameDataServer/DBStatement.h</file>
         </group>
     </open-files>
 </project-private>

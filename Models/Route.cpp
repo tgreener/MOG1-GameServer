@@ -1,8 +1,8 @@
 
 #include "Route.h"
-
 #include "../ServiceLocator.h"
 #include <string>
+#include <iostream>
 
 Route::Route() {
     
@@ -28,6 +28,18 @@ unsigned int Route::getID() const {
     return dao.getID();
 }
 
+unsigned int Route::getLocationID() const {
+    return dao.getLocationID();
+}
+
+unsigned int Route::getEndpointAID() const {
+    return dao.getPOIA();
+}
+
+unsigned int Route::getEndpointBID() const {
+    return dao.getPOIB();
+}
+
 PointOfInterest Route::getEndpointA() const {
     return PointOfInterest(dao.getPOIA());
 }
@@ -41,7 +53,7 @@ unsigned int Route::getDifficulty() const {
 }
 
 bool Route::isBidirectional() const {
-    return dao.isBidrectional();
+    return dao.isBidirectional();
 }
 
 bool Route::isReverse() const {
@@ -68,17 +80,45 @@ void Route::setReverse(bool rev) {
     dao.setReverse(rev);
 }
 
+void Route::onUserEnter(const User& user) {
+    if(user.getLocationID() == dao.getLocationID()) {
+        
+    }
+    else {
+        printf("Attempted Route::onUserEnter when user was not on Route.\n");
+    }
+}
+
+void Route::onUserExit(const User& user) {
+    if(user.getLocationID() == dao.getLocationID()) {
+        
+    }
+    else {
+        printf("Attempted Route::onUserExit when user was not on Route.\n");
+    }
+}
+
 unsigned int Route::serializedLength() const {
-    return 6;
+    return sizeof(unsigned int) * 7;
 }
 
 void Route::serialize(unsigned char* buffer) const {
-    buffer[0] = (unsigned char)this->getID();
-    buffer[1] = (unsigned char)dao.getPOIA();
-    buffer[2] = (unsigned char)dao.getPOIB();
-    buffer[3] = (unsigned char)dao.getDifficulty();
-    buffer[4] = (unsigned char)dao.isBidrectional();
-    buffer[5] = (unsigned char)dao.isReverse();
+    
+    unsigned int id = this->getID();
+    unsigned int loc = dao.getLocationID();
+    unsigned int poi_a = dao.getPOIA();
+    unsigned int poi_b = dao.getPOIB();
+    unsigned int diff = dao.getDifficulty();
+    unsigned int bi = dao.isBidirectional();
+    unsigned int rev = dao.isReverse();
+    
+    memcpy(buffer + (sizeof(unsigned int) * 0), &id, sizeof(unsigned int));
+    memcpy(buffer + (sizeof(unsigned int) * 1), &loc, sizeof(unsigned int));
+    memcpy(buffer + (sizeof(unsigned int) * 2), &poi_a, sizeof(unsigned int));
+    memcpy(buffer + (sizeof(unsigned int) * 3), &poi_b, sizeof(unsigned int));
+    memcpy(buffer + (sizeof(unsigned int) * 4), &diff, sizeof(unsigned int));
+    memcpy(buffer + (sizeof(unsigned int) * 5), &bi, sizeof(unsigned int));
+    memcpy(buffer + (sizeof(unsigned int) * 6), &rev, sizeof(unsigned int));
 }
 
 bool Route::remove() {
@@ -97,25 +137,43 @@ void Route::save() {
 void Route::bark() const {
     std::string str = "Route: {";
     str += "\n\tid: " + std::to_string(dao.getID());
+    str += "\n\tlocationID: " + std::to_string(dao.getLocationID());
     str += "\n\tpoiA: " + std::to_string(dao.getPOIA());
     str += "\n\tpoiB: " + std::to_string(dao.getPOIB());
     str += "\n\tdifficulty: " + std::to_string(dao.getDifficulty());
-    str += "\n\tbidirectional: " + std::to_string(dao.isBidrectional());
+    str += "\n\tbidirectional: " + std::to_string(dao.isBidirectional());
+    str += "\n\treverse: " + std::to_string(dao.isReverse());
     str += "\n}\n";
     
-    ServiceLocator::getServiceLocator().sendMessageToClient(str.c_str());
+    std::cout << str << std::endl;
 }
 
-void Route::getAllRoutes(AllRoutesCallback callback) {
-    RouteDAO::allRouteDAOs([&](RouteDAO* daos, int count) -> void {
-        Route* routes = new Route[count];
+void Route::callbackFromDAOs(RouteDAO* daos, unsigned int count, RoutesCallback callback) {
+    Route* routes = new Route[count];
         
-        for(int i = 0; i < count; i++) {
-            routes[i].dao = daos[i];
-        }
+    for(int i = 0; i < count; i++) {
+        routes[i].dao = daos[i];
+    }
 
-        callback(routes, count);
-        delete[] routes;
+    callback(routes, count);
+    delete[] routes;
+}
+
+void Route::getAllRoutes(RoutesCallback callback) {
+    RouteDAO::allRouteDAOs([&](RouteDAO* daos, int count) -> void {
+        callbackFromDAOs(daos, count, callback);
+    });
+}
+
+void Route::outgoingRoutes(unsigned int poiID, RoutesCallback callback) {
+    RouteDAO::outgoingRouteDAOs(poiID, [&] (RouteDAO* daos, unsigned int count) {
+        callbackFromDAOs(daos, count, callback);
+    });
+}
+
+void Route::incomingRoutes(unsigned int poiID, RoutesCallback callback) {
+    RouteDAO::incomingRouteDAOs(poiID, [&] (RouteDAO* daos, unsigned int count) {
+        callbackFromDAOs(daos, count, callback);
     });
 }
 

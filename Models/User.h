@@ -12,14 +12,10 @@
 #include "Location.h"
 #include "../DAOs/UserDAO.h"
 
-class User;
-
 typedef struct UserAtr {
     unsigned int location = 0;
     const char* tag = nullptr;
 } UserAttributes;
-
-typedef std::function<void(User*, unsigned int)> AllUsersCallback;
 
 class User : public AbstractModel{
 private:
@@ -35,7 +31,8 @@ public:
     virtual ~User() {}
     
     unsigned int getID() const;
-    unsigned int getLocation() const;
+    unsigned int getLocationID() const;
+    Location getLocation() const;
     const char* getTag() const;
     
     void setLocation(unsigned int loc);
@@ -48,7 +45,7 @@ public:
     virtual void serialize(unsigned char* buffer) const;
     virtual bool remove();
     
-    static void getAllUsers(AllUsersCallback callback);
+    static void getAllUsers(UsersCallback callback);
     
     static ByteInterpreterFunction getFetchFunction();
     static ByteInterpreterFunction getAddFunction();

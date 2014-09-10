@@ -1,9 +1,11 @@
 
+#include <vector>
+
 #include "RouteDAO.h"
 #include "../DBStatement.h"
 #include "../ServiceLocator.h"
 
-RouteDAO::RouteDAO() : needsWrite(false), poiA(0), poiB(0), id(0), difficulty(0), bidirected(false), reverse(false) {
+RouteDAO::RouteDAO() : needsWrite(false), poiA(0), poiB(0), id(0), difficulty(0), bidirected(false), reverse(false), locationID(0) {
     
 }
 
@@ -23,7 +25,7 @@ bool RouteDAO::retrieve(unsigned int id) {
             "location.id, location.name " 
             "FROM route INNER JOIN location " 
             "ON location.id = route.location_id "
-            "WHERE route.id = ?";
+            "WHERE route.id = ? AND location.is_route <> 0";
     
     DBStatement statement = dbc.prepare(query, nullptr);
     statement.bindInt(1, this->id);
@@ -35,6 +37,7 @@ bool RouteDAO::retrieve(unsigned int id) {
         this->difficulty = statement.getColumnInt(3);
         this->bidirected = statement.getColumnInt(4) == 1;
         this->reverse = statement.getColumnInt(5) == 1;
+        this->locationID = statement.getColumnInt(6);
         
         statement.finalize();
         return true;
@@ -62,7 +65,9 @@ bool RouteDAO::remove(unsigned int id) {
     DBStatement statement = dbc.prepare(deleteQuery, nullptr);
     statement.bindInt(1, locationID);
     
+    dbc.obtainWriteLock();
     int result = statement.step();
+    dbc.releaseWriteLock();
     
     return result != 0;
 }
@@ -73,10 +78,9 @@ int RouteDAO::write() {
     DBStatement statement1 = dbc.prepare(query, NULL);
     statement1.bindText(1, "A Route");
     
-    bool result = statement1.step();
-    statement1.finalize();
-    
-    int locationID;
+    dbc.obtainWriteLock();
+    bool result = statement1.step();    
+    dbc.releaseWriteLock();
     
     if(result) locationID = dbc.lastInsertRowId();
     else return -1;
@@ -92,10 +96,10 @@ int RouteDAO::write() {
     statement.bindInt(5, (unsigned int)reverse);
     statement.bindInt(6, locationID);
     
+    dbc.obtainWriteLock();
     if(statement.step()) id = dbc.lastInsertRowId();
     else id = -1;
-    
-    statement.finalize();
+    dbc.releaseWriteLock();
     
     return id;
 }
@@ -112,9 +116,10 @@ int RouteDAO::write(int id) {
     statement.bindInt(4, (unsigned int)bidirected);
     statement.bindInt(5, (unsigned int)reverse);
     statement.bindInt(6, id);
-    
+
+    dbc.obtainWriteLock();
     statement.step();
-    statement.finalize();
+    dbc.releaseWriteLock();
     
     return id;
 }
@@ -122,6 +127,10 @@ int RouteDAO::write(int id) {
 
 unsigned int RouteDAO::getID() const {
     return this->id;
+}
+
+unsigned int RouteDAO::getLocationID() const {
+    return this->locationID;
 }
 
 unsigned int RouteDAO::getPOIA() const {
@@ -136,7 +145,7 @@ unsigned int RouteDAO::getDifficulty() const {
     return this->difficulty;
 }
 
-bool RouteDAO::isBidrectional() const {
+bool RouteDAO::isBidirectional() const {
     return this->bidirected;
 }
 
@@ -164,7 +173,7 @@ void RouteDAO::setReverse(bool rev) {
     this->reverse = rev;
 }
 
-void RouteDAO::allRouteDAOs(AllRouteDAOsCallback callback) {
+void RouteDAO::allRouteDAOs(RouteDAOsCallback callback) {
     DBConnection& dbc = *(ServiceLocator::getServiceLocator().getDBConnection());
     
     const char* countQuery = "SELECT COUNT() FROM route";
@@ -183,7 +192,8 @@ void RouteDAO::allRouteDAOs(AllRouteDAOsCallback callback) {
     const char* poisQuery = "SELECT route.id, route.poi_a, route.poi_b, route.difficulty, route.bidirected, route.reverse, "
             "location.id, location.name " 
             "FROM route INNER JOIN location " 
-            "ON location.id = route.location_id";
+            "ON location.id = route.location_id "
+            "WHERE location.is_route <> 0";
     DBStatement statement = dbc.prepare(poisQuery, NULL);
     
     for(int i = 0; i < count; i++) {
@@ -195,8 +205,12 @@ void RouteDAO::allRouteDAOs(AllRouteDAOsCallback callback) {
         unsigned int diff = statement.getColumnInt(3);
         bool bidirectional = statement.getColumnInt(4) != 0;
         bool reverse = statement.getColumnInt(5) != 0;
+        unsigned int locID = statement.getColumnInt(6);
+        
+        printf("%d\n", locID);
         
         daos[i].id = id;
+        daos[i].locationID = locID;
         daos[i].setPOIA(poiA);
         daos[i].setPOIB(poiB);
         daos[i].setDifficulty(diff);
@@ -208,4 +222,70 @@ void RouteDAO::allRouteDAOs(AllRouteDAOsCallback callback) {
     callback(daos, count);
     
     delete[] daos;
+}
+
+void RouteDAO::readRouteDAOResult(unsigned int poiID, const char* query, RouteDAOsCallback callback) {
+    if(poiID == 0) {
+        callback(nullptr, 0);
+        return; 
+    }
+    
+    DBConnection& dbc  = *(ServiceLocator::getServiceLocator().getDBConnection());
+
+    DBStatement statement = dbc.prepare(query, nullptr);
+    statement.bindInt(1, poiID);
+    statement.step();
+    
+    std::vector<RouteDAO> routeDAOVector;
+    
+    while(statement.hasNextRow()) {
+        unsigned int id = statement.getColumnInt(0);
+        unsigned int poiA = statement.getColumnInt(1);
+        unsigned int poiB = statement.getColumnInt(2);
+        unsigned int diff = statement.getColumnInt(3);
+        bool bidirectional = statement.getColumnInt(4) != 0;
+        bool reverse = statement.getColumnInt(5) != 0;
+        unsigned int loc_id = statement.getColumnInt(6);
+        
+        routeDAOVector.push_back(RouteDAO());
+        
+        routeDAOVector.back().id = id;
+        routeDAOVector.back().locationID = loc_id;
+        routeDAOVector.back().setPOIA(poiA);
+        routeDAOVector.back().setPOIB(poiB);
+        routeDAOVector.back().setDifficulty(diff);
+        routeDAOVector.back().setBidirectional(bidirectional);
+        routeDAOVector.back().setReverse(reverse);
+        
+        statement.step();
+    }
+    
+    callback(&routeDAOVector[0], routeDAOVector.size());
+}
+
+void RouteDAO::outgoingRouteDAOs(unsigned int poiID, RouteDAOsCallback callback) {
+    const char* query = "SELECT route.id, route.poi_a, route.poi_b, route.difficulty, route.bidirected, route.reverse, "
+                        "location.id, location.name "
+                        "FROM route INNER JOIN location "
+                        "ON location.id = route.location_id "
+                        "JOIN point_of_interest AS poi "
+                        "ON route.poi_a = poi.id OR route.poi_b = poi.id "
+                        "WHERE poi.id = ? "
+                        "AND (route.bidirected = 1 OR (route.poi_a = poi.id AND route.reverse = 0) OR (route.poi_b = poi.id AND reverse = 1))";
+    
+    readRouteDAOResult(poiID, query, callback);
+}
+
+void RouteDAO::incomingRouteDAOs(unsigned int poiID, RouteDAOsCallback callback) {
+    const char* query = "SELECT route.id, route.poi_a, route.poi_b, route.difficulty, route.bidirected, route.reverse, "
+                        "location.id, location.name "
+                        "FROM route INNER JOIN location "
+                        "ON location.id = route.location_id "
+                        "JOIN point_of_interest AS poi "
+                        "ON route.poi_a = poi.id OR route.poi_b = poi.id "
+                        "WHERE poi.id = ? "
+                        "AND (route.bidirected = 1 OR (route.poi_a = poi.id AND route.reverse = 1) OR (route.poi_b = poi.id AND reverse = 0))";
+
+    
+    readRouteDAOResult(poiID, query, callback);
 }

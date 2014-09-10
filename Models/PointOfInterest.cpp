@@ -1,6 +1,7 @@
 
 #include "PointOfInterest.h"
 #include "../ServiceLocator.h"
+#include "User.h"
 #include <cstdlib>
 #include <string>
 
@@ -18,7 +19,20 @@ PointOfInterest::PointOfInterest(POIAttrib& attribs) : id(0), needsUpdate(true) 
     dao.setWilderness(attribs.wilderness);
 }
 
+PointOfInterest::PointOfInterest(const PointOfInterest& that) {
+    setDAO(that.dao);
+}
+
+PointOfInterest::PointOfInterest(PointOfInterest&& that) {
+    setDAO(that.dao);
+}
+
 PointOfInterest::~PointOfInterest() {
+}
+
+PointOfInterest& PointOfInterest::operator=(PointOfInterest&& that) {
+    setDAO(that.dao);
+    return *this;
 }
 
 void PointOfInterest::load() {
@@ -60,11 +74,11 @@ void PointOfInterest::save() {
 }
 
 unsigned int PointOfInterest::getID() const {
-    return id;
+    return dao.getID();
 }
 
-const unsigned char* PointOfInterest::getName() const {
-    return dao.getName();
+const char* PointOfInterest::getName() const {
+    return (const char*)(dao.getName());
 }
 
 unsigned int PointOfInterest::getAttributeStone() const {
@@ -109,6 +123,7 @@ void PointOfInterest::setPopulation(unsigned int pop) {
 void PointOfInterest::bark() const {
     std::string str = "Point of Interest {";
     str += "\n\tid: " + std::to_string(id);
+    str += "\n\tlocationID: " + std::to_string(getLocationID());
     str += "\n\tname: ";
     str += (const char*)getName(); 
     str += "\n\tsoil: " + std::to_string(getAttributeSoil());
@@ -116,7 +131,9 @@ void PointOfInterest::bark() const {
     str += "\n\twilderness: " + std::to_string(getAttributeWilderness());
     str += "\n}\n";
     
-    ServiceLocator::getServiceLocator().sendMessageToClient(str.c_str());
+//    ServiceLocator::getServiceLocator().sendMessageToClient(str.c_str());
+    
+    printf("%s\n", str.c_str());
 }
 
 bool PointOfInterest::remove() {
@@ -148,6 +165,27 @@ void PointOfInterest::serialize(unsigned char* buffer) const {
     strcpy((char*)buffer + (sizeof(unsigned int) * 6), (char*)this->getName());
 }
 
+void PointOfInterest::onUserEnter(const User& user) {
+    if(user.getLocationID() == dao.getLocationID()) {
+        setPopulation(getPopulation() + 1);
+        save();        
+    }
+    else {
+        printf("Attempted PointOfInterest::onUserEnter when user was not on POI.\n");
+    }
+}
+
+void PointOfInterest::onUserExit(const User& user) {
+    unsigned int population = getPopulation();
+    if(population > 0 && user.getLocationID() == dao.getLocationID()) {
+        setPopulation(population - 1);
+        save();
+    }
+    else {
+        printf("Attempted PointOfInterest::onUserExit when user was not on POI.\n");
+    }
+}
+
 void PointOfInterest::getAllPOIs(AllModelsCallback callback) {
     PointsOfInterestDAO::allPOIDAOs([&](PointsOfInterestDAO* daos, int count) -> void {
         PointOfInterest* pois = new PointOfInterest[count];
@@ -175,6 +213,14 @@ void PointOfInterest::getAllPOIs(PointOfInterestCallback callback) {
         callback(pois, count);
         delete[] pois;
     });
+}
+
+void PointOfInterest::getOutgoingRoutes(RoutesCallback callback) {
+    Route::outgoingRoutes(this->id, callback);
+}
+
+void PointOfInterest::getIncomingRoutes(RoutesCallback callback) {
+    Route::incomingRoutes(this->id, callback);
 }
 
 int PointOfInterest::createPointOfInterest(const char* bs, int length) {

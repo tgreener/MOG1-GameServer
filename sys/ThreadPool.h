@@ -23,6 +23,7 @@ class ThreadPool {
 private:
     Semaphore poolLock;
     Semaphore queueLock;
+    Semaphore dbWriteLock;
 
     GenericFunction initFunction;
     GenericFunction deinitFunction;

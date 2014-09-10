@@ -23,8 +23,12 @@ unsigned int User::getID() const {
     return dao.getID();
 }
 
-unsigned int User::getLocation() const {
+unsigned int User::getLocationID() const {
     return dao.getLocation();
+}
+
+Location User::getLocation() const {
+    return Location(dao.getLocation());
 }
 
 const char* User::getTag() const {
@@ -66,10 +70,8 @@ void User::save() {
 unsigned int User::serializedLength() const {
     int idSize = sizeof(unsigned int);
     int locationIDSize = sizeof(unsigned int);
-    int tagSize = strlen(dao.getTag()) + 1; // Plus null character
-    int metaDataSize = 2; // For response code byte, and final byte
-    
-    return idSize + locationIDSize + tagSize + metaDataSize; 
+    int tagSize = strlen(dao.getTag()) + 1; // Plus null character    
+    return idSize + locationIDSize + tagSize; 
 }
 
 void User::serialize(unsigned char* buffer) const {
@@ -93,7 +95,7 @@ bool User::remove() {
     return dao.remove(dao.getID());
 }
 
-void User::getAllUsers(AllUsersCallback callback) {
+void User::getAllUsers(UsersCallback callback) {
     UserDAO::allUserDAOs([&](UserDAO* daos, int count) -> void {
         User* users = new User[count];
         

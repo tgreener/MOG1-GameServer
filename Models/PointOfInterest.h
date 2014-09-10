@@ -8,8 +8,10 @@
 #ifndef POINTOFINTEREST_H
 #define	POINTOFINTEREST_H
 
-#include "Location.h"
+#include "AbstractModel.h"
 #include "../DAOs/PointsOfInterestDAO.h"
+#include "Route.h"
+#include "User.h"
 
 typedef struct PointOfInterestAttributes {
     const unsigned char* name;
@@ -18,11 +20,7 @@ typedef struct PointOfInterestAttributes {
     int wilderness;
 } POIAttrib;
 
-class PointOfInterest;
-
-typedef std::function<void(PointOfInterest*, unsigned int)> PointOfInterestCallback;
-
-class PointOfInterest : public Location {
+class PointOfInterest : public AbstractModel {
 private:
     unsigned int id;
     bool needsUpdate;
@@ -38,10 +36,14 @@ public:
     PointOfInterest();
     PointOfInterest(unsigned int id);
     PointOfInterest(POIAttrib& attribs);
+    PointOfInterest(const PointOfInterest& that);
+    PointOfInterest(PointOfInterest&& that);
     ~PointOfInterest();
     
-    unsigned int getID() const;
-    const unsigned char* getName() const;
+    PointOfInterest& operator=(PointOfInterest&& that);
+    
+    virtual unsigned int getID() const;
+    virtual const char* getName() const;
     
     unsigned int getAttributeSoil() const;
     unsigned int getAttributeStone() const;
@@ -60,6 +62,12 @@ public:
     virtual void serialize(unsigned char* buffer) const;
     virtual void save();
     virtual bool remove();
+    
+    virtual void onUserEnter(const User& user);
+    virtual void onUserExit(const User& user);
+
+    void getOutgoingRoutes(RoutesCallback callback);
+    void getIncomingRoutes(RoutesCallback callback);
     
     static void getAllPOIs(PointOfInterestCallback callback);
     

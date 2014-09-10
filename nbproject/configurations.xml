@@ -16,8 +16,10 @@
       <itemPath>GameController/GameController.h</itemPath>
       <itemPath>ImmutableServiceLocator.h</itemPath>
       <itemPath>Models/Location.h</itemPath>
+      <itemPath>DAOs/LocationDAO.h</itemPath>
       <itemPath>Models/PointOfInterest.h</itemPath>
       <itemPath>DAOs/PointsOfInterestDAO.h</itemPath>
+      <itemPath>GameController/ResponseInterface.h</itemPath>
       <itemPath>Models/Route.h</itemPath>
       <itemPath>DAOs/RouteDAO.h</itemPath>
       <itemPath>sys/Semaphore.h</itemPath>
@@ -47,8 +49,10 @@
       <itemPath>GameCommandDelegate.cpp</itemPath>
       <itemPath>GameController/GameController.cpp</itemPath>
       <itemPath>Models/Location.cpp</itemPath>
+      <itemPath>LocationDAO.cpp</itemPath>
       <itemPath>Models/PointOfInterest.cpp</itemPath>
       <itemPath>DAOs/PointsOfInterestDAO.cpp</itemPath>
+      <itemPath>GameController/ResponseInterface.cpp</itemPath>
       <itemPath>Models/Route.cpp</itemPath>
       <itemPath>DAOs/RouteDAO.cpp</itemPath>
       <itemPath>sys/Semaphore.cpp</itemPath>
@@ -108,6 +112,8 @@
       </item>
       <item path="DAOs/AbstractDAO.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="DAOs/LocationDAO.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="DAOs/PointsOfInterestDAO.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="DAOs/PointsOfInterestDAO.h" ex="false" tool="3" flavor2="0">
@@ -146,7 +152,16 @@
       </item>
       <item path="GameController/GameController.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="GameController/ResponseInterface.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="GameController/ResponseInterface.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="ImmutableServiceLocator.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="LocationDAO.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="Models/AbstractModel.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -225,6 +240,8 @@
       </item>
       <item path="DAOs/AbstractDAO.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="DAOs/LocationDAO.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="DAOs/PointsOfInterestDAO.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="DAOs/PointsOfInterestDAO.h" ex="false" tool="3" flavor2="0">
@@ -263,7 +280,16 @@
       </item>
       <item path="GameController/GameController.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="GameController/ResponseInterface.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="GameController/ResponseInterface.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="ImmutableServiceLocator.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="LocationDAO.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="Models/AbstractModel.cpp" ex="false" tool="1" flavor2="0">
       </item>

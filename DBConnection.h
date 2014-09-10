@@ -11,6 +11,7 @@
 #include <sqlite3.h>
 #include <stdbool.h>
 #include "DBStatement.h"
+#include "sys/Semaphore.h"
 
 #define DB_FILE "game_data.db"
 
@@ -20,15 +21,23 @@ class DBConnection {
 private:
 
     DBHandle db;
+    Semaphore& updateLock;
+    
+    void printTrace(bool trace);
     
 public:
-    DBConnection();
+    DBConnection(Semaphore& lock);
     ~DBConnection();
     
     int open(const char* dbfile);
+    int close();
+    
     DBStatement prepare(const char* query, const char** nextQuery);
     unsigned int lastInsertRowId();
-    int close();
+    
+    void obtainWriteLock();
+    void releaseWriteLock();
+    void printError();
 };
 
 #endif	/* DAO_H */

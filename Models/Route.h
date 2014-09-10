@@ -8,11 +8,10 @@
 #ifndef ROUTE_H
 #define	ROUTE_H
 
-#include "Location.h"
+#include "AbstractModel.h"
 #include "../DAOs/RouteDAO.h"
 #include "PointOfInterest.h"
-
-class Route;
+#include "User.h"
 
 typedef struct RouteAttribs {
     unsigned int poiAID = 0;
@@ -22,9 +21,7 @@ typedef struct RouteAttribs {
     bool reverse = false;
 } RouteAttributes;
 
-typedef std::function<void(Route*, unsigned int count)> AllRoutesCallback;
-
-class Route : public Location {
+class Route : public AbstractModel {
 private:
     RouteDAO dao;
     
@@ -32,13 +29,18 @@ private:
     static void getAllRoutes(AllModelsCallback callback);
     static RouteAttributes extractAttributes(const char* bytes, int length);
     
+    static void callbackFromDAOs(RouteDAO*, unsigned int count, RoutesCallback callback);
+    
 public:
     Route();
     Route(RouteAttributes& attribs);
     Route(unsigned int id);
     virtual ~Route();
     
-    unsigned int getID() const;
+    virtual unsigned int getID() const;
+    unsigned int getLocationID() const;
+    unsigned int getEndpointAID() const;
+    unsigned int getEndpointBID() const;
     PointOfInterest getEndpointA() const;
     PointOfInterest getEndpointB() const;
     unsigned int getDifficulty() const;
@@ -57,7 +59,12 @@ public:
     virtual void serialize(unsigned char* buffer) const;
     virtual bool remove();
     
-    static void getAllRoutes(AllRoutesCallback callback);
+    virtual void onUserEnter(const User& user);
+    virtual void onUserExit(const User& user);
+    
+    static void getAllRoutes(RoutesCallback callback);
+    static void outgoingRoutes(unsigned int poiID, RoutesCallback callbackWithRouteDAOs);
+    static void incomingRoutes(unsigned int poiID, RoutesCallback callbackWithRouteDAOs);
     
     static ByteInterpreterFunction getFetchFunction();
     static ByteInterpreterFunction getAddFunction();

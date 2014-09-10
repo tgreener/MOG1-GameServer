@@ -44,6 +44,8 @@ OBJECTFILES= \
 	${OBJECTDIR}/DataRequestDelegate.o \
 	${OBJECTDIR}/GameCommandDelegate.o \
 	${OBJECTDIR}/GameController/GameController.o \
+	${OBJECTDIR}/GameController/ResponseInterface.o \
+	${OBJECTDIR}/LocationDAO.o \
 	${OBJECTDIR}/Models/AbstractModel.o \
 	${OBJECTDIR}/Models/Location.o \
 	${OBJECTDIR}/Models/PointOfInterest.o \
@@ -126,6 +128,16 @@ ${OBJECTDIR}/GameController/GameController.o: GameController/GameController.cpp
 	${MKDIR} -p ${OBJECTDIR}/GameController
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/GameController/GameController.o GameController/GameController.cpp
+
+${OBJECTDIR}/GameController/ResponseInterface.o: GameController/ResponseInterface.cpp 
+	${MKDIR} -p ${OBJECTDIR}/GameController
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/GameController/ResponseInterface.o GameController/ResponseInterface.cpp
+
+${OBJECTDIR}/LocationDAO.o: LocationDAO.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/LocationDAO.o LocationDAO.cpp
 
 ${OBJECTDIR}/Models/AbstractModel.o: Models/AbstractModel.cpp 
 	${MKDIR} -p ${OBJECTDIR}/Models

@@ -12,6 +12,10 @@
 #include <stdbool.h>
 #include <functional>
 
+class PointsOfInterestDAO;
+
+typedef std::function<void(PointsOfInterestDAO*, int)> PointOfInterestDAOsCallback;
+
 class PointsOfInterestDAO : public AbstractDAO{
 private:
     unsigned int id;
@@ -23,8 +27,8 @@ private:
     
     const unsigned char* name;
     
-    void freeName();
     bool checkValuesSet();
+    void freeName();
 public:
     PointsOfInterestDAO();
     PointsOfInterestDAO(int id, const unsigned char* name, int soil, int stone, int wild);
@@ -50,7 +54,7 @@ public:
     void setLocation(unsigned int loc);
     void setPopulation(unsigned int pop);
     
-    static void allPOIDAOs(std::function<void(PointsOfInterestDAO*, int)>);
+    static void allPOIDAOs(PointOfInterestDAOsCallback callbackWithPOIDAOs);
 };
 
 #endif	/* POINTSOFINTERESTDAO_H */
